@@ -1,0 +1,73 @@
+-- [[ YUTA HUB V1.0 - BLOX FRUITS - ENGLISH VERSION ]]
+-- Full Menu Optimized for Android 15 & All Executers
+
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+
+local Window = Fluent:CreateWindow({
+    Title = "YUTA HUB", -- <<-- Changed Banana to YUTA
+    SubTitle = "V1.0 : Blox Fruits", -- <<-- Changed Banana Hub to Yuta Hub V1.0
+    TabWidth = 160,
+    Size = UDim2.fromOffset(480, 320), -- A bit larger for UI
+    Acrylic = true,
+    Theme = "Dark"
+})
+
+-- Assassin/Ninja Logo from Roblox Library
+local LogoId = "rbxassetid://15270275525" -- New Assassin Logo
+Window:SetIcon(LogoId)
+
+local Tabs = {
+    Main = Window:AddTab({ Title = "Main Functions", Icon = "home" }),
+    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+}
+
+-- FUNCTIONS INSIDE MENU
+
+Tabs.Main:AddToggle("EspToggle", {Title = "Highlight Eggs/Candy", Default = false})
+:OnChanged(function(Value)
+    _G.EspEggs = Value
+    task.spawn(function()
+        while _G.EspEggs do
+            for i,v in pairs(workspace:GetDescendants()) do
+                if (v.Name:find("Egg") or v.Name:find("Candy")) and v:IsA("BasePart") then
+                    if not v:FindFirstChild("YutaGlow") then
+                        local highlight = Instance.new("Highlight", v)
+                        highlight.Name = "YutaGlow"
+                        highlight.FillColor = Color3.fromRGB(255, 0, 0) -- Bright Red
+                        highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+                    end
+                end
+            end
+            task.wait(2)
+        end
+    end)
+end)
+
+Tabs.Main:AddToggle("AutoAFKToggle", {Title = "Anti-AFK System", Default = false})
+:OnChanged(function(Value)
+    _G.AntiAFK = Value
+    if _G.AntiAFK then
+        local vu = game:GetService("VirtualUser")
+        game:GetService("Players").LocalPlayer.Idled:Connect(function()
+            if _G.AntiAFK then
+                vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+                task.wait(1)
+                vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+            end
+        end)
+        Fluent:Notify({Title = "YUTA HUB", Content = "Anti-AFK Enabled!"})
+    else
+        Fluent:Notify({Title = "YUTA HUB", Content = "Anti-AFK Disabled!"})
+    end
+end)
+
+Tabs.Settings:AddButton({
+    Title = "Reset Hub",
+    Description = "Close and clear UI",
+    Callback = function()
+        Fluent:Destroy()
+    end
+})
+
+Window:SelectTab(1)
+Fluent:Notify({Title = "YUTA HUB V1.0", Content = "Successfully Loaded! Logo Assassin Set!"})

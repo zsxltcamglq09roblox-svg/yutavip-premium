@@ -1,0 +1,16 @@
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local Window = Fluent:CreateWindow({
+    Title = "YUTA HUB",
+    SubTitle = "V1.0 : Blox Fruits",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(450, 320),
+    Theme = "Dark"
+})
+local Tabs = { Main = Window:AddTab({ Title = "Main", Icon = "home" }) }
+
+Tabs.Main:AddToggle("MyToggle", {Title = "Highlight Eggs", Default = false}):OnChanged(function(Value)
+    _G.EspEggs = Value
+    print("Esp Status:", Value)
+end)
+
+Window:SelectTab(1)

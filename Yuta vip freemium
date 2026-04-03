@@ -1,0 +1,59 @@
+-- [[ YUTA HUB V1.0 - BLOX FRUITS - ENGLISH VERSION ]]
+-- [[ FULL MENU (FARM, EVENTS, ITEMS) OPTIMIZED ]]
+
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+
+-- Create Window with YUTA Name
+local Window = Fluent:CreateWindow({
+    Title = "YUTA HUB", -- <<-- Changed Banana to YUTA
+    SubTitle = "V1.0 : Blox Fruits", -- <<-- Set Hub Version
+    TabWidth = 160,
+    Size = UDim2.fromOffset(480, 320), -- Large enough for all functions
+    Acrylic = true,
+    Theme = "Dark"
+})
+
+-- Sets Assassin Logo
+local LogoId = "rbxassetid://15270275525" -- Ninja Assassin Logo
+Window:SetIcon(LogoId)
+
+-- TABS (Based on your screenshots)
+local Tabs = {
+    Farm = Window:AddTab({ Title = "Farm", Icon = "rbxassetid://15270275525" }), -- Farm Icon
+    SeaEvents = Window:AddTab({ Title = "Sea Events", Icon = "rbxassetid://15270275525" }), -- Sea Events Icon
+    Items = Window:AddTab({ Title = "Items Farm", Icon = "rbxassetid://15270275525" }), -- Items Icon
+    Styles = Window:AddTab({ Title = "Fighting Style", Icon = "rbxassetid://15270275525" }), -- Style Icon
+    Config = Window:AddTab({ Title = "Config", Icon = "rbxassetid://15270275525" }) -- Config Icon
+}
+
+-- FUNCTIONS INSIDE TABS (Drafted for structure, needs specific game-code for full function)
+
+-- 1. FARM TAB (Draft)
+Tabs.Farm:AddToggle("FarmToggle", {Title = "Auto Farm Level", Default = false}):OnChanged(function(Value)
+    -- Insert Auto Farm Code here
+    Fluent:Notify({Title = "YUTA HUB", Content = "Auto Farm is "..(Value and "Enabled" or "Disabled")})
+end)
+
+-- 2. SEA EVENTS TAB (Draft - Like Screenshot)
+Tabs.SeaEvents:AddParagraph({Title = "Spy Leviathan : Draft Function", Content = "Draft Leviathan code below"})
+
+-- 3. ITEMS FARM TAB (Draft - Like Tushita/Yama Screenshot)
+Tabs.Items:AddToggle("TushitaToggle", {Title = "Auto Tushita Sword", Default = false})
+
+-- 4. FIGHTING STYLE TAB (Draft - Like Styles Screenshot)
+Tabs.Styles:AddToggle("SuperhumanToggle", {Title = "Auto Superhuman", Default = false})
+
+-- 5. CONFIG TAB (Draft - Like Config Screenshot)
+Tabs.Config:AddToggle("AutoBusoToggle", {Title = "Auto Turn on Buso", Default = false})
+
+-- BUTTON TO CLOSE HUB
+Tabs.Config:AddButton({
+    Title = "Reset Hub",
+    Description = "Close and clear UI",
+    Callback = function()
+        Fluent:Destroy()
+    end
+})
+
+Window:SelectTab(1)
+Fluent:Notify({Title = "YUTA HUB V1.0", Content = "Successfully Loaded! Ninja Logo Set!"})

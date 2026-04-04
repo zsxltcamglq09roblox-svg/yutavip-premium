@@ -1,0 +1,58 @@
+-- [[ YUTA HUB V2.1.1: FULL BANANA PREMIUM FEATURES ]]
+-- [[ UI STYLE: ANDEPZAI HUB | ENGLISH VERSION ]]
+
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("YUTA HUB - PREMIUM EDITION", "DarkTheme")
+
+-- [[ FULL TABS AS BANANA PREMIUM ]]
+local MainTab = Window:NewTab("Main Farm")
+local SeaTab = Window:NewTab("Sea Events")
+local RaceTab = Window:NewTab("Race V4")
+local ItemTab = Window:NewTab("Items Farm")
+local BossTab = Window:NewTab("Boss Farm")
+local LocalTab = Window:NewTab("Local Player")
+local ConfigTab = Window:NewTab("Settings")
+
+-- 1. MAIN FARMING
+local MainSection = MainTab:NewSection("Auto Progression")
+MainSection:NewToggle("Auto Farm Level", "Fast Leveling 1-2550", function(v) _G.AutoFarm = v end)
+MainSection:NewToggle("Auto Katakuri", "Kill Dough King / Katakuri", function(v) _G.AutoKatakuri = v end)
+MainSection:NewToggle("Auto Bone", "Farm Bone & Surprise", function(v) _G.AutoBone = v end)
+
+-- 2. SEA EVENTS (FULL BANANA)
+local SeaSection = SeaTab:NewSection("Sea Event Hunting")
+SeaSection:NewToggle("Auto Terror Shark", "Safe Hunt Terror Shark", function(v) _G.TerrorShark = v end)
+SeaSection:NewToggle("Auto Leviathan", "Hunt Leviathan (Hearts)", function(v) _G.Leviathan = v end)
+SeaSection:NewToggle("Auto Ship Farm", "Auto Destroy Ships", function(v) _G.ShipFarm = v end)
+SeaSection:NewToggle("Auto Sea Beast", "Farm Sea Beasts", function(v) _G.SeaBeast = v end)
+
+-- 3. RACE V4 (FOR DRAGON GOAL)
+local RaceSection = RaceTab:NewSection("Mirage & Trial")
+RaceSection:NewToggle("Auto Find Mirage", "Find Mirage Island", function(v) _G.FindMirage = v end)
+RaceSection:NewToggle("Auto Pull Lever", "Auto Lever in Temple", function(v) _G.PullLever = v end)
+RaceSection:NewToggle("Auto Trial V4", "Auto Complete Trials", function(v) _G.AutoTrial = v end)
+
+-- 4. LOCAL PLAYER & CONFIG
+local LocalSection = LocalTab:NewSection("Player Stats")
+LocalSection:NewToggle("Auto Buso", "Enable Armament Haki", function(v) _G.AutoBuso = v end)
+LocalSection:NewToggle("Auto Ken", "Enable Observation Haki", function(v) _G.AutoKen = v end)
+
+local ConfigSection = ConfigTab:NewSection("Optimization")
+ConfigSection:NewToggle("Fast Attack (Silent)", "Speed Hack Attack", function(v) _G.FastAttack = v end)
+ConfigSection:NewButton("ULTRA FIX LAG (POCO MODE)", function()
+    game.Lighting.FogEnd = 9e9
+    for i,v in pairs(game:GetDescendants()) do
+        if v:IsA("BasePart") then v.Material = "Plastic" end
+        if v:IsA("Decal") then v:Destroy() end
+    end
+    setfpscap(30)
+end)
+
+-- [[ FLOATING LOGO BUTTON ]]
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+local ToggleBtn = Instance.new("ImageButton", ScreenGui)
+ToggleBtn.Position = UDim2.new(0, 10, 0.5, 0)
+ToggleBtn.Size = UDim2.new(0, 50, 0, 50)
+ToggleBtn.Image = "rbxassetid://15126405234" 
+ToggleBtn.Draggable = true
+ToggleBtn.MouseButton1Click:Connect(function() Library:ToggleUI() end)

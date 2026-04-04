@@ -1,0 +1,46 @@
+-- [[ YUTA HUB: BLOX FRUIT ]]
+-- [[ ENGLISH REBRANDING & RED-WHITE THEME ]]
+
+-- 1. EXECUTE YOUR ORIGINAL SOURCE
+loadstring(game:HttpGet("https://raw.githubusercontent.com/aloaloalo322/sssdas/refs/heads/main/cc"))()
+
+-- 2. FORCE UI REBRANDING (ENGLISH + RED & WHITE)
+task.spawn(function()
+    while task.wait(0.5) do
+        -- Scan all UI elements in CoreGui
+        for _, v in pairs(game.CoreGui:GetDescendants()) do
+            
+            -- RENAME TEXT TO ENGLISH & YUTA HUB
+            if v:IsA("TextLabel") or v:IsA("TextButton") then
+                -- Change Main Titles
+                if v.Text:find("BANANA") or v.Text:find("Cat") or v.Text:find("Hub") then
+                    v.Text = "YUTA HUB: BLOX FRUIT"
+                    v.TextColor3 = Color3.fromRGB(255, 0, 0) -- Red Text
+                end
+                
+                -- Translate common Vietnamese terms to English (if any remain)
+                if v.Text == "Tập kích" then v.Text = "Raid" end
+                if v.Text == "Cấu hình" then v.Text = "Config" end
+            end
+            
+            -- CHANGE COLORS TO RED & WHITE
+            if v:IsA("Frame") then
+                -- Turn Yellow/Blue accents to Red
+                if v.BackgroundColor3 == Color3.fromRGB(255, 255, 0) or v.BackgroundColor3 == Color3.fromRGB(0, 255, 255) then
+                    v.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+                end
+                
+                -- Turn Dark Backgrounds to White/Light Gray for Red-White theme
+                if v.BackgroundColor3 == Color3.fromRGB(30, 30, 30) or v.BackgroundColor3 == Color3.fromRGB(25, 25, 25) then
+                    v.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                    v.BackgroundTransparency = 0.15
+                end
+            end
+            
+            -- Update ScrollingBar colors to Red
+            if v:IsA("ScrollingFrame") then
+                v.ScrollBarImageColor3 = Color3.fromRGB(255, 0, 0)
+            end
+        end
+    end
+end)

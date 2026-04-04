@@ -1,0 +1,83 @@
+-- [[ YUTA HUB v26.10 - FINAL POLISH BEFORE v27 ]]
+-- [[ MATCHING TRANSPARENCY - COMPACT SIZE - NO FARM LEVEL ]]
+
+local YutaHub = Instance.new("ScreenGui", game.CoreGui)
+local Main = Instance.new("Frame", YutaHub)
+local Sidebar = Instance.new("Frame", Main)
+local PageContainer = Instance.new("Frame", Main)
+local Title = Instance.new("TextLabel", Main)
+
+-- 1. KHUNG CHÍNH (THU NHỎ & TRONG SUỐT)
+Main.Name = "YutaV2610"
+Main.Size = UDim2.new(0, 440, 0, 260) -- Kích thước cực gọn cho Poco C71
+Main.Position = UDim2.new(0.5, -220, 0.5, -130)
+Main.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+Main.BackgroundTransparency = 0.2 -- Độ trong suốt nhìn xuyên thấu
+Main.BorderSizePixel = 0
+Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 6)
+local Stroke = Instance.new("UIStroke", Main)
+Stroke.Color = Color3.fromRGB(255, 0, 0) -- Viền Đỏ
+Stroke.Thickness = 1.2
+
+-- 2. SIDEBAR (TRONG SUỐT GIỐNG BANANA)
+Sidebar.Size = UDim2.new(0, 120, 1, -40)
+Sidebar.Position = UDim2.new(0, 6, 0, 34)
+Sidebar.BackgroundColor3 = Color3.fromRGB(30, 0, 0)
+Sidebar.BackgroundTransparency = 0.4 
+Sidebar.BorderSizePixel = 0
+Instance.new("UICorner", Sidebar).CornerRadius = UDim.new(0, 5)
+
+-- 3. TIÊU ĐỀ (FONT CHỮ GỌN)
+Title.Size = UDim2.new(1, 0, 0, 32)
+Title.Text = "BANANA CAT HUB : Blox Fruits" -- Giữ tên này cho giống 100% khung
+Title.TextColor3 = Color3.fromRGB(255, 0, 0)
+Title.Font = Enum.Font.SourceSansBold
+Title.TextSize = 15
+Title.BackgroundTransparency = 1
+
+-- 4. CÁC TAB XÁO TRỘN (KHÔNG CÓ FARM LEVEL)
+local function AddTab(name, pos)
+    local Tab = Instance.new("TextButton", Sidebar)
+    Tab.Size = UDim2.new(1, -8, 0, 26)
+    Tab.Position = UDim2.new(0, 4, 0, (pos-1)*30 + 6)
+    Tab.BackgroundColor3 = Color3.fromRGB(50, 0, 0)
+    Tab.BackgroundTransparency = 0.5
+    Tab.Text = "  " .. name
+    Tab.TextColor3 = Color3.fromRGB(200, 200, 200)
+    Tab.Font = Enum.Font.SourceSansBold
+    Tab.TextSize = 12
+    Tab.TextXAlignment = Enum.TextXAlignment.Left
+    Instance.new("UICorner", Tab).CornerRadius = UDim.new(0, 3)
+end
+
+AddTab("Sea Events", 1)
+AddTab("Drago Dojo", 2)
+AddTab("Mirage + RaceV4", 3)
+AddTab("Config", 4)
+AddTab("Tập kích", 5)
+
+-- 5. NỘI DUNG PAGE (TRONG SUỐT ĐỒNG BỘ)
+PageContainer.Size = UDim2.new(1, -135, 1, -42)
+PageContainer.Position = UDim2.new(0, 130, 0, 36)
+PageContainer.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+PageContainer.BackgroundTransparency = 0.3
+Instance.new("UICorner", PageContainer).CornerRadius = UDim.new(0, 5)
+
+-- Nút Toggle (Bật/Tắt đổi màu)
+local Toggle = Instance.new("TextButton", PageContainer)
+Toggle.Size = UDim2.new(1, -12, 0, 32)
+Toggle.Position = UDim2.new(0, 6, 0, 8)
+Toggle.BackgroundColor3 = Color3.fromRGB(35, 0, 0)
+Toggle.Text = "Enable Auto Sea Event: OFF"
+Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+Instance.new("UICorner", Toggle).CornerRadius = UDim.new(0, 4)
+
+-- 6. NÚT ĐÓNG (NHỎ GỌN)
+local Close = Instance.new("TextButton", Main)
+Close.Size = UDim2.new(0, 20, 0, 20)
+Close.Position = UDim2.new(1, -25, 0, 5)
+Close.Text = "X"
+Close.TextColor3 = Color3.fromRGB(255, 0, 0)
+Close.BackgroundTransparency = 1
+Close.TextSize = 16
+Close.MouseButton1Click:Connect(function() YutaHub:Destroy() end)

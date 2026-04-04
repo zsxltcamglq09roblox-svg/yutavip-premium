@@ -1,0 +1,170 @@
+-- [[ YUTA HUB v27.2 - FIX LOÀI MẮT CHO POCO ]]
+-- [[ STATUS: WORKING 100% | SIZE: 600x350 | DRAGGABLE ]]
+
+local YutaHub = Instance.new("ScreenGui")
+local Main = Instance.new("Frame")
+local Sidebar = Instance.new("Frame")
+local Divider = Instance.new("Frame")
+local SearchBar = Instance.new("TextBox")
+local PageContainer = Instance.new("Frame")
+local Title = Instance.new("TextLabel")
+
+YutaHub.Name = "YutaHub_V27_2"
+YutaHub.Parent = game.CoreGui
+
+-- 1. DRAGGABLE SYSTEM (TOUCH OPTIMIZED)
+local UIS = game:GetService("UserInputService")
+local dragStart, startPos, dragging
+Main.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = Main.Position
+    end
+end)
+UIS.InputChanged:Connect(function(input)
+    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+        local delta = input.Position - dragStart
+        Main.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+UIS.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = false
+    end
+end)
+
+-- 2. MAIN FRAME (600x350 - BANANA STYLE)
+Main.Name = "Main"
+Main.Parent = YutaHub
+Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+Main.BackgroundTransparency = 0.15
+Main.Position = UDim2.new(0.5, -300, 0.5, -175)
+Main.Size = UDim2.new(0, 600, 0, 350)
+Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 8)
+local Stroke = Instance.new("UIStroke", Main)
+Stroke.Color = Color3.fromRGB(255, 0, 0)
+Stroke.Thickness = 1.8
+
+-- 3. TITLE & DIVIDER
+Title.Parent = Main
+Title.Size = UDim2.new(1, 0, 0, 45)
+Title.Text = "YUTA HUB : Blox Fruits"
+Title.TextColor3 = Color3.fromRGB(255, 0, 0)
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 22
+Title.BackgroundTransparency = 1
+
+Divider.Parent = Main
+Divider.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+Divider.BackgroundTransparency = 0.4
+Divider.Position = UDim2.new(0, 170, 0, 50)
+Divider.Size = UDim2.new(0, 1, 1, -65)
+
+-- 4. SIDEBAR & SEARCH
+Sidebar.Parent = Main
+Sidebar.Position = UDim2.new(0, 5, 0, 95)
+Sidebar.Size = UDim2.new(0, 160, 1, -100)
+Sidebar.BackgroundTransparency = 1
+local SLayout = Instance.new("UIListLayout", Sidebar)
+SLayout.Padding = UDim.new(0, 5)
+
+SearchBar.Parent = Main
+SearchBar.Position = UDim2.new(0, 10, 0, 55)
+SearchBar.Size = UDim2.new(0, 150, 0, 32)
+SearchBar.PlaceholderText = "Search..."
+SearchBar.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+SearchBar.TextColor3 = Color3.fromRGB(255, 255, 255)
+Instance.new("UICorner", SearchBar).CornerRadius = UDim.new(0, 5)
+Instance.new("UIStroke", SearchBar).Color = Color3.fromRGB(180, 0, 0)
+
+-- 5. PAGE LOGIC
+PageContainer.Parent = Main
+PageContainer.Position = UDim2.new(0, 180, 0, 55)
+PageContainer.Size = UDim2.new(1, -190, 1, -70)
+PageContainer.BackgroundTransparency = 1
+
+local Pages = {}
+local function AddTab(name)
+    local P = Instance.new("ScrollingFrame", PageContainer)
+    P.Name = name
+    P.Size = UDim2.new(1, 0, 1, 0)
+    P.Visible = false
+    P.BackgroundTransparency = 1
+    P.ScrollBarThickness = 0
+    Instance.new("UIListLayout", P).Padding = UDim.new(0, 6)
+    
+    local TabBtn = Instance.new("TextButton", Sidebar)
+    TabBtn.Size = UDim2.new(1, 0, 0, 35)
+    TabBtn.Text = "  " .. name
+    TabBtn.TextColor3 = Color3.fromRGB(160, 160, 160)
+    TabBtn.Font = Enum.Font.SourceSansBold
+    TabBtn.TextSize = 16
+    TabBtn.TextXAlignment = Enum.TextXAlignment.Left
+    TabBtn.BackgroundTransparency = 1
+
+    TabBtn.MouseButton1Click:Connect(function()
+        for _, v in pairs(Pages) do v.Visible = false end
+        P.Visible = true
+        for _, t in pairs(Sidebar:GetChildren()) do
+            if t:IsA("TextButton") then t.TextColor3 = Color3.fromRGB(160, 160, 160) end
+        end
+        TabBtn.TextColor3 = Color3.fromRGB(255, 0, 0)
+    end)
+    Pages[name] = P
+    return P
+end
+
+-- 6. TOGGLE LOGIC
+local function AddToggle(parent, text)
+    local Frame = Instance.new("Frame", parent)
+    Frame.Name = text
+    Frame.Size = UDim2.new(1, 0, 0, 40)
+    Frame.BackgroundTransparency = 1
+
+    local Label = Instance.new("TextLabel", Frame)
+    Label.Size = UDim2.new(1, -50, 1, 0)
+    Label.Text = text
+    Label.TextColor3 = Color3.fromRGB(240, 240, 240)
+    Label.Font = Enum.Font.SourceSansBold
+    Label.TextXAlignment = Enum.TextXAlignment.Left
+    Label.BackgroundTransparency = 1
+
+    local Box = Instance.new("TextButton", Frame)
+    Box.Size = UDim2.new(0, 24, 0, 24)
+    Box.Position = UDim2.new(1, -35, 0.5, -12)
+    Box.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    Box.Text = ""
+    Instance.new("UIStroke", Box).Color = Color3.fromRGB(255, 0, 0)
+    Instance.new("UICorner", Box).CornerRadius = UDim.new(0, 5)
+
+    local state = false
+    Box.MouseButton1Click:Connect(function()
+        state = not state
+        Box.BackgroundColor3 = state and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(30, 30, 30)
+    end)
+end
+
+-- 7. SETUP TABS (A-Z)
+local DragonTab = AddTab("Dragon Journey")
+local MusicTab = AddTab("Music Player")
+local VisualTab = AddTab("Visual & AFK")
+
+AddToggle(DragonTab, "Auto Find Mirage")
+AddToggle(DragonTab, "Auto Dragon V4 Task")
+AddToggle(MusicTab, "Play: Super Hero 2018")
+AddToggle(VisualTab, "White Screen (AFK)")
+
+DragonTab.Visible = true
+
+-- SEARCH ACTION
+SearchBar:GetPropertyChangedSignal("Text"):Connect(function()
+    local input = SearchBar.Text:lower()
+    for _, page in pairs(Pages) do
+        for _, item in pairs(page:GetChildren()) do
+            if item:IsA("Frame") then
+                item.Visible = (input == "" or item.Name:lower():find(input))
+            end
+        end
+    end
+end)

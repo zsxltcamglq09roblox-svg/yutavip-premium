@@ -1,0 +1,88 @@
+-- [[ YUTA HUB V2.1.1: PREMIUM ENGLISH UI EDITION ]]
+-- [[ ALL FEATURES CONNECTED | DRAGGABLE | LOGO TOGGLE ]]
+
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("YUTA HUB - PREMIUM EDITION", "DarkTheme")
+
+-- [[ TABS - ALL IN ENGLISH ]]
+local MainTab = Window:NewTab("Main Farm")
+local SeaTab = Window:NewTab("Sea Events")
+local RaceTab = Window:NewTab("Race V4")
+local ItemTab = Window:NewTab("Items & Raid")
+local LocalTab = Window:NewTab("Local Player")
+local SettingTab = Window:NewTab("Settings")
+
+-- 1. MAIN FARM (LEVEL, BONE, KATAKURI)
+local MainSec = MainTab:NewSection("Auto Progression")
+MainSec:NewToggle("Auto Farm Level", "Fast Quest Leveling", function(v) _G.AutoFarm = v end)
+MainSec:NewToggle("Auto Farm Bone", "Collect Bones & Surprise", function(v) _G.AutoBone = v end)
+MainSec:NewToggle("Auto Katakuri / Dough King", "Summon & Kill Boss", function(v) _G.AutoKatakuri = v end)
+
+-- 2. SEA EVENTS (SĂN ĐỒ RỒNG)
+local SeaSec = SeaTab:NewSection("Sea Event Hunting")
+SeaSec:NewToggle("Auto Terror Shark", "Hunt Sharks (Anchor)", function(v) _G.TerrorShark = v end)
+SeaSec:NewToggle("Auto Leviathan", "Hunt Dragon (Heart)", function(v) _G.Leviathan = v end)
+SeaSec:NewToggle("Auto Ship Farm", "Destroy Navy Ships", function(v) _G.ShipFarm = v end)
+
+-- 3. RACE V4 (UP TỘC)
+local RaceSec = RaceTab:NewSection("Awakening System")
+RaceSec:NewToggle("Auto Find Mirage", "Search Mirage Island", function(v) _G.FindMirage = v end)
+RaceSec:NewToggle("Auto Blue Gear", "Get Gear on Mirage", function(v) _G.GetGear = v end)
+RaceSec:NewToggle("Auto Trial V4", "Auto Complete Trials", function(v) _G.AutoTrial = v end)
+
+-- 4. ITEMS & RAID
+local ItemSec = ItemTab:NewSection("Legendary & Raid")
+ItemSec:NewButton("Auto Soul Guitar", "Start Soul Guitar Quest", function() _G.AutoSoulGuitar = true end)
+ItemSec:NewButton("Auto Cursed Dual Katana", "Start CDK Quest", function() _G.AutoCDK = true end)
+ItemSec:NewToggle("Auto Raid (Chip)", "Auto Buy Chip & Start", function(v) _G.AutoRaid = v end)
+
+-- 5. LOCAL PLAYER (FULL BRIGHT - SÁNG VL)
+local LocalSec = LocalTab:NewSection("Visuals & Buffs")
+LocalSec:NewToggle("Full Bright", "Max Brightness (Sáng vl)", function(v)
+    if v then
+        game:GetService("Lighting").Ambient = Color3.fromRGB(255, 255, 255)
+        game:GetService("Lighting").Brightness = 2
+    else
+        game:GetService("Lighting").Ambient = Color3.fromRGB(0, 0, 0)
+        game:GetService("Lighting").Brightness = 1
+    end
+end)
+LocalSec:NewToggle("Auto Buso", "Enable Armament Haki", function(v) _G.AutoBuso = v end)
+
+-- 6. SETTINGS (CUỐI BẢNG - NO FOG, NO CHAT, FIX LAG)
+local SetSec = SettingTab:NewSection("Optimization")
+SetSec:NewToggle("Remove Fog", "Clear Visibility", function(v)
+    game:GetService("Lighting").FogEnd = v and 9e9 or 1000
+end)
+SetSec:NewButton("Hide Chat", "Disable Chat Window", function()
+    game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.Chat, false)
+end)
+SetSec:NewButton("Show Chat", "Enable Chat Window", function()
+    game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.Chat, true)
+end)
+SetSec:NewButton("ULTRA FIX LAG (POCO)", function()
+    for i,v in pairs(game:GetDescendants()) do
+        if v:IsA("BasePart") then v.Material = "Plastic" v.Reflectance = 0 end
+        if v:IsA("Decal") then v:Destroy() end
+    end
+    setfpscap(30)
+end)
+
+-- [[ LOGO TOGGLE - BẬT TẮT MENU ]]
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+local ToggleBtn = Instance.new("ImageButton", ScreenGui)
+
+ToggleBtn.Name = "YutaLogo"
+ToggleBtn.Position = UDim2.new(0, 15, 0.5, 0)
+ToggleBtn.Size = UDim2.new(0, 50, 0, 50)
+ToggleBtn.Image = "rbxassetid://15126405234" 
+ToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+ToggleBtn.BackgroundTransparency = 0.4
+ToggleBtn.Draggable = true 
+
+local Corner = Instance.new("UICorner", ToggleBtn)
+Corner.CornerRadius = UDim.new(1, 0)
+
+ToggleBtn.MouseButton1Click:Connect(function()
+    Library:ToggleUI() 
+end)

@@ -1,0 +1,36 @@
+-- [[ YUTA HUB: THE FINAL FIX ]]
+
+-- 1. CHẠY SOURCE GỐC (LẤY TOÀN BỘ CHỨC NĂNG FARM)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/aloaloalo322/sssdas/refs/heads/main/cc"))()
+
+-- 2. ĐỢI 3 GIÂY CHO MENU GỐC HIỆN RA RỒI MỚI "NHUỘM" MÀU YUTA
+task.wait(3)
+
+local function RebrandUI()
+    -- Tìm tất cả các bảng điều khiển của Banana Cat trong hệ thống
+    for _, ui in pairs(game.CoreGui:GetDescendants()) do
+        -- ĐỔI TÊN SANG TIẾNG ANH & YUTA HUB
+        if ui:IsA("TextLabel") or ui:IsA("TextButton") then
+            if ui.Text:find("BANANA") or ui.Text:find("Cat") or ui.Text:find("Hub") then
+                ui.Text = "YUTA HUB: BLOX FRUIT"
+                ui.TextColor3 = Color3.fromRGB(255, 0, 0) -- Chữ Đỏ
+            end
+        end
+        
+        -- ĐỔI MÀU VÀNG/XANH SANG ĐỎ (GIỮ NGUYÊN BỐ CỤC GỐC)
+        if ui:IsA("Frame") then
+            -- Chỉ đổi màu các thanh ngang/viền trang trí
+            if ui.BackgroundColor3 == Color3.fromRGB(255, 255, 0) or ui.BackgroundColor3 == Color3.fromRGB(0, 255, 255) then
+                ui.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+            end
+            -- Chỉnh nền sang trắng mờ (Red & White Theme)
+            if ui.BackgroundColor3 == Color3.fromRGB(30, 30, 30) or ui.BackgroundColor3 == Color3.fromRGB(25, 25, 25) then
+                ui.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                ui.BackgroundTransparency = 0.1
+            end
+        end
+    end
+end
+
+-- Chạy lệnh nhuộm màu
+RebrandUI()

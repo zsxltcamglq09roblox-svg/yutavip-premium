@@ -1,0 +1,118 @@
+-- [[ YUTA HUB v27.6.4 - FINAL VERIFIED ]]
+-- [[ FIX: DRAG LOGO, DRAG MENU, BANANA UI 100% ]]
+
+local TweenService = game:GetService("TweenService")
+local UIS = game:GetService("UserInputService")
+local YutaHub = Instance.new("ScreenGui", game.CoreGui)
+
+-- 1. LOGO YV (DI CHUYỂN ĐƯỢC)
+local LogoToggle = Instance.new("TextButton", YutaHub)
+LogoToggle.Size = UDim2.new(0, 50, 0, 50)
+LogoToggle.Position = UDim2.new(0, 30, 1, -85)
+LogoToggle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+LogoToggle.Text = "YV"
+LogoToggle.TextColor3 = Color3.fromRGB(255, 0, 0)
+LogoToggle.Font = Enum.Font.GothamBold
+LogoToggle.TextSize = 22
+LogoToggle.ZIndex = 100
+Instance.new("UICorner", LogoToggle).CornerRadius = UDim.new(1, 0)
+Instance.new("UIStroke", LogoToggle).Color = Color3.fromRGB(255, 0, 0)
+
+-- 2. KHUNG MENU CHÍNH (GIỐNG BANANA HUB)
+local Main = Instance.new("Frame", YutaHub)
+Main.Size = UDim2.new(0, 580, 0, 340)
+Main.Position = UDim2.new(0.5, -290, 0.5, -170)
+Main.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+Main.Visible = false
+Main.ClipsDescendants = true
+Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 10)
+local MStroke = Instance.new("UIStroke", Main)
+MStroke.Color = Color3.fromRGB(255, 0, 0) -- Màu đỏ YUTA
+
+-- THANH HEADER ĐỂ KÉO MENU
+local Header = Instance.new("Frame", Main)
+Header.Size = UDim2.new(1, 0, 0, 35)
+Header.BackgroundTransparency = 1
+
+-- 3. HÀM KÉO THẢ (DÙNG CHUNG CHO LOGO VÀ MENU)
+local function MakeDraggable(obj)
+    local dragging, dragStart, startPos
+    obj.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+            dragStart = input.Position
+            startPos = obj.Position
+        end
+    end)
+    UIS.InputChanged:Connect(function(input)
+        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+            local delta = input.Position - dragStart
+            obj.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+        end
+    end)
+    obj.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = false
+        end
+    end)
+end
+
+MakeDraggable(LogoToggle)
+MakeDraggable(Main)
+
+-- 4. CẤU TRÚC NỘI DUNG (SIDEBAR + SECTION)
+local Sidebar = Instance.new("Frame", Main)
+Sidebar.Size = UDim2.new(0, 150, 1, -45)
+Sidebar.Position = UDim2.new(0, 10, 0, 40)
+Sidebar.BackgroundTransparency = 1
+Instance.new("UIListLayout", Sidebar).Padding = UDim.new(0, 3)
+
+local Container = Instance.new("ScrollingFrame", Main)
+Container.Size = UDim2.new(1, -180, 1, -45)
+Container.Position = UDim2.new(0, 170, 0, 40)
+Container.BackgroundTransparency = 1
+Container.ScrollBarThickness = 0
+local CLayout = Instance.new("UIListLayout", Container)
+CLayout.Padding = UDim.new(0, 10)
+
+-- HÀM TẠO Ô CHỨC NĂNG (SECTION) GIỐNG BANANA
+local function CreateSection(title)
+    local Sec = Instance.new("Frame", Container)
+    Sec.Size = UDim2.new(1, -10, 0, 30)
+    Sec.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+    Sec.AutomaticSize = Enum.AutomaticSize.Y
+    Instance.new("UICorner", Sec).CornerRadius = UDim.new(0, 6)
+    
+    local Title = Instance.new("TextLabel", Sec)
+    Title.Size = UDim2.new(1, 0, 0, 25)
+    Title.Text = "          " .. title
+    Title.TextColor3 = Color3.fromRGB(255, 0, 0)
+    Title.Font = Enum.Font.GothamBold
+    Title.TextSize = 12
+    Title.TextXAlignment = Enum.TextXAlignment.Left
+    Title.BackgroundTransparency = 1
+    
+    local List = Instance.new("UIListLayout", Sec)
+    List.Padding = UDim.new(0, 5)
+    List.HorizontalAlignment = Enum.HorizontalAlignment.Center
+    return Sec
+end
+
+-- 5. LOGIC BẬT MENU (FIX LỖI KHÔNG BẬT ĐƯỢC)
+local isOpen = false
+LogoToggle.MouseButton1Click:Connect(function()
+    isOpen = not isOpen
+    if isOpen then
+        Main.Visible = true
+        Main.Size = UDim2.new(0, 0, 0, 0)
+        TweenService:Create(Main, TweenInfo.new(0.4, Enum.EasingStyle.Back), {Size = UDim2.new(0, 580, 0, 340)}):Play()
+    else
+        local tw = TweenService:Create(Main, TweenInfo.new(0.3), {Size = UDim2.new(0, 0, 0, 0)})
+        tw:Play()
+        tw.Completed:Connect(function() if not isOpen then Main.Visible = false end end)
+    end
+end)
+
+-- VÍ DỤ NỘI DUNG
+local FarmSec = CreateSection("Farm")
+-- Thêm các nút Toggle vào đây...

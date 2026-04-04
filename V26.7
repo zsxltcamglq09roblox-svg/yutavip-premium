@@ -1,0 +1,87 @@
+-- [[ YUTA HUB v26.7 - UI DISPLAY ONLY ]]
+-- [[ BUTTONS ONLY TOGGLE VISUALLY - NO ACTION ]]
+
+local YutaHub = Instance.new("ScreenGui", game.CoreGui)
+local Main = Instance.new("Frame", YutaHub)
+local TabContainer = Instance.new("ScrollingFrame", Main)
+local Title = Instance.new("TextLabel", Main)
+
+-- 1. SETUP PANEL CHÍNH
+Main.Name = "YutaDisplay"
+Main.Size = UDim2.new(0, 380, 0, 280)
+Main.Position = UDim2.new(0.5, -190, 0.5, -140)
+Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+Main.BorderSizePixel = 0
+Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 12)
+local MainStroke = Instance.new("UIStroke", Main)
+MainStroke.Color = Color3.fromRGB(255, 0, 0)
+MainStroke.Thickness = 2.5
+
+-- 2. TIÊU ĐỀ
+Title.Size = UDim2.new(1, 0, 0, 50)
+Title.Text = "YUTA HUB v26.7 (DEV MODE)"
+Title.TextColor3 = Color3.fromRGB(255, 0, 0)
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 22
+Title.BackgroundTransparency = 1
+
+-- 3. CONTAINER
+TabContainer.Size = UDim2.new(1, -20, 1, -70)
+TabContainer.Position = UDim2.new(0, 10, 0, 60)
+TabContainer.BackgroundTransparency = 1
+TabContainer.CanvasSize = UDim2.new(0, 0, 0, 400)
+local Layout = Instance.new("UIListLayout", TabContainer)
+Layout.Padding = UDim.new(0, 10)
+
+-- 4. HÀM TẠO NÚT BẬT/TẮT "GIẢ" (CHỈ HIỆN THỊ)
+local function AddToggleButton(text)
+    local Enabled = false
+    local Button = Instance.new("TextButton", TabContainer)
+    Button.Size = UDim2.new(1, -10, 0, 45)
+    Button.BackgroundColor3 = Color3.fromRGB(30, 0, 0)
+    Button.Text = "  " .. text .. ": OFF"
+    Button.TextColor3 = Color3.fromRGB(200, 200, 200)
+    Button.Font = Enum.Font.GothamSemibold
+    Button.TextSize = 14
+    Button.TextXAlignment = Enum.TextXAlignment.Left
+    
+    local BCorner = Instance.new("UICorner", Button)
+    BCorner.CornerRadius = UDim.new(0, 8)
+    local BStroke = Instance.new("UIStroke", Button)
+    BStroke.Color = Color3.fromRGB(150, 0, 0)
+    
+    -- Xử lý Bật/Tắt ảo
+    Button.MouseButton1Click:Connect(function()
+        Enabled = not Enabled
+        if Enabled then
+            Button.Text = "  " .. text .. ": ON (ENABLED)"
+            Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+            Button.BackgroundColor3 = Color3.fromRGB(100, 0, 0)
+            BStroke.Color = Color3.fromRGB(255, 0, 0)
+        else
+            Button.Text = "  " .. text .. ": OFF"
+            Button.TextColor3 = Color3.fromRGB(200, 200, 200)
+            Button.BackgroundColor3 = Color3.fromRGB(30, 0, 0)
+            BStroke.Color = Color3.fromRGB(150, 0, 0)
+        end
+        -- CHƯA THÊM CODE HOẠT ĐỘNG Ở ĐÂY THEO Ý ÔNG
+    end)
+end
+
+-- 5. DANH SÁCH NÚT ĐÃ XÁO TRỘN
+AddToggleButton("DRAGO DOJO")
+AddToggleButton("MIRAGE + RACE V4")
+AddToggleButton("SEA EVENTS (LEVIATHAN)")
+AddToggleButton("AUTO RAID CASTLE")
+AddToggleButton("COLLECT ALL CHESTS")
+AddToggleButton("PREHISTORIC ISLAND")
+
+-- 6. NÚT ĐÓNG
+local Close = Instance.new("TextButton", Main)
+Close.Size = UDim2.new(0, 30, 0, 30)
+Close.Position = UDim2.new(1, -35, 0, 10)
+Close.Text = "X"
+Close.TextColor3 = Color3.fromRGB(255, 0, 0)
+Close.BackgroundTransparency = 1
+Close.TextSize = 20
+Close.MouseButton1Click:Connect(function() YutaHub:Destroy() end)

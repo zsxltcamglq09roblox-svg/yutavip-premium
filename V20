@@ -1,0 +1,45 @@
+-- [[ YUTA HUB: BLOX FRUIT ]]
+-- [[ SOURCE GỐC: aloaloalo322/sssdas/main/cc ]]
+
+-- Tải mã nguồn gốc từ link của ông
+local Source = game:HttpGet("https://raw.githubusercontent.com/aloaloalo322/sssdas/refs/heads/main/cc")
+
+-- CHỈNH SỬA TRỰC TIẾP TRÊN CODE GỐC:
+-- 1. Đổi tên từ Banana Hub thành Yuta Hub
+Source = Source:gsub("Banana Hub", "Yuta Hub: Blox Fruit")
+Source = Source:gsub("BananaHub", "YutaHub")
+Source = Source:gsub("banana", "yuta")
+
+-- 2. Đổi màu giao diện sang Đỏ - Trắng (Red & White)
+-- Chỉnh các mã màu RGB trong code gốc (Giả định code dùng Color3)
+Source = Source:gsub("Color3.fromRGB%(%d+, %d+, %d+%)", "Color3.fromRGB(255, 255, 255)") -- Đổi nền thành Trắng
+Source = Source:gsub("Color3.new%(%d+, %d+, %d+%)", "Color3.new(1, 1, 1)")
+
+-- Chỉnh các phần highlight/viền thành màu Đỏ
+Source = Source:gsub("Color3.fromRGB%(255, 255, 0%)", "Color3.fromRGB(255, 0, 0)") -- Vàng sang Đỏ
+Source = Source:gsub("Color3.fromRGB%(0, 255, 0%)", "Color3.fromRGB(255, 0, 0)") -- Xanh sang Đỏ
+
+-- THỰC THI CODE ĐÃ CHỈNH SỬA
+loadstring(Source)()
+
+-- [[ GIAO DIỆN LOGO Y ĐỂ MỞ MENU ]]
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+local Logo = Instance.new("TextButton", ScreenGui)
+
+Logo.Size = UDim2.new(0, 50, 0, 50)
+Logo.Position = UDim2.new(0, 20, 0.5, -25)
+Logo.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Nền Trắng
+Logo.Text = "Y"
+Logo.TextColor3 = Color3.fromRGB(255, 0, 0) -- Chữ Đỏ
+Logo.Font = Enum.Font.SourceSansBold
+Logo.TextSize = 35
+Logo.Draggable = true
+Instance.new("UICorner", Logo).CornerRadius = UDim.new(0, 10)
+Instance.new("UIStroke", Logo).Color = Color3.fromRGB(255, 0, 0)
+
+Logo.MouseButton1Click:Connect(function()
+    -- Lệnh mở menu của source gốc (Yêu cầu nhấn vào logo)
+    pcall(function()
+        game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.RightControl, false, game)
+    end)
+end)

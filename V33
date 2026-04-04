@@ -1,0 +1,193 @@
+-- [[ YUTA HUB v33.0 - OFFICIAL FIX ]]
+-- [[ UI STRUCTURE: 100% BANANA REPLICA | BRAND: YUTA ]]
+
+local TweenService = game:GetService("TweenService")
+local UIS = game:GetService("UserInputService")
+local YutaHub = Instance.new("ScreenGui", game.CoreGui)
+local Main = Instance.new("Frame", YutaHub)
+local Sidebar = Instance.new("Frame", Main)
+local Container = Instance.new("ScrollingFrame", Main)
+
+-- 1. LOGO YV ĐỎ TRẮNG (CÓ THỂ DI CHUYỂN)
+local LogoToggle = Instance.new("TextButton", YutaHub)
+LogoToggle.Name = "YV_Logo"
+LogoToggle.Size = UDim2.new(0, 50, 0, 50)
+LogoToggle.Position = UDim2.new(0, 30, 1, -85)
+LogoToggle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+LogoToggle.Text = "YV"
+LogoToggle.TextColor3 = Color3.fromRGB(255, 0, 0)
+LogoToggle.Font = Enum.Font.GothamBold
+LogoToggle.TextSize = 22
+Instance.new("UICorner", LogoToggle).CornerRadius = UDim.new(1, 0)
+local LStroke = Instance.new("UIStroke", LogoToggle)
+LStroke.Color = Color3.fromRGB(255, 0, 0)
+LStroke.Thickness = 2
+
+-- LOGIC KÉO THẢ LOGO (FIX LỖI)
+local draggingLogo, dragStart, startPos
+LogoToggle.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        draggingLogo = true dragStart = input.Position startPos = LogoToggle.Position
+    end
+end)
+UIS.InputChanged:Connect(function(input)
+    if draggingLogo and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+        local delta = input.Position - dragStart
+        LogoToggle.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+LogoToggle.InputEnded:Connect(function() draggingLogo = false end)
+
+-- 2. KHUNG CHÍNH (BANANA LAYOUT)
+Main.Size = UDim2.new(0, 600, 0, 350)
+Main.Position = UDim2.new(0.5, -300, 0.5, -175)
+Main.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+Main.BackgroundTransparency = 0.1 -- LÀM TRONG SUỐT
+Main.Visible = false
+Main.ClipsDescendants = true
+Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 10)
+local MStroke = Instance.new("UIStroke", Main)
+MStroke.Color = Color3.fromRGB(255, 180, 0) -- Màu vàng Banana
+
+-- TITLE BAR: YUTA HUB
+local Header = Instance.new("Frame", Main)
+Header.Size = UDim2.new(1, 0, 0, 35)
+Header.BackgroundTransparency = 1
+local Title = Instance.new("TextLabel", Header)
+Title.Text = "YUTA HUB : Blox Fruits"
+Title.Size = UDim2.new(1, -20, 1, 0)
+Title.Position = UDim2.new(0, 15, 0, 0)
+Title.TextColor3 = Color3.fromRGB(255, 180, 0)
+Title.TextXAlignment = "Left"
+Title.Font = Enum.Font.GothamBold
+Title.BackgroundTransparency = 1
+
+-- 3. SIDEBAR (BÊN TRÁI - 100% MATCH)
+Sidebar.Size = UDim2.new(0, 160, 1, -50)
+Sidebar.Position = UDim2.new(0, 10, 0, 40)
+Sidebar.BackgroundTransparency = 1
+local SLayout = Instance.new("UIListLayout", Sidebar)
+SLayout.Padding = UDim.new(0, 2)
+
+-- 4. CONTAINER NỘI DUNG (BÊN PHẢI)
+Container.Size = UDim2.new(1, -190, 1, -50)
+Container.Position = UDim2.new(0, 180, 0, 40)
+Container.BackgroundTransparency = 1
+Container.ScrollBarThickness = 2
+local CLayout = Instance.new("UIListLayout", Container)
+CLayout.Padding = UDim.new(0, 10)
+
+-- HÀM TẠO TAB & SECTION (GIỐNG 100%)
+local function AddTab(name)
+    local Btn = Instance.new("TextButton", Sidebar)
+    Btn.Size = UDim2.new(1, 0, 0, 35)
+    Btn.Text = "    " .. name
+    Btn.TextColor3 = Color3.fromRGB(180, 180, 180) -- Màu chữ Banana
+    Btn.Font = Enum.Font.GothamMedium
+    Btn.TextXAlignment = Enum.TextXAlignment.Left
+    Btn.BackgroundTransparency = 1
+    
+    local GachVang = Instance.new("Frame", Btn) -- Gạch vàng khi chọn Banana
+    GachVang.Size = UDim2.new(0, 2, 1, -10)
+    GachVang.Position = UDim2.new(0, 0, 0.5, -((35-10)/2))
+    GachVang.BackgroundColor3 = Color3.fromRGB(255, 180, 0)
+    GachVang.Visible = false
+
+    local P = Instance.new("ScrollingFrame", Container)
+    P.Size = UDim2.new(1, 0, 1, 0)
+    P.BackgroundTransparency = 1
+    P.Visible = false
+    P.ScrollBarThickness = 0
+    Instance.new("UIListLayout", P).Padding = UDim.new(0, 8)
+    
+    Btn.MouseButton1Click:Connect(function()
+        for _, v in pairs(Container:GetChildren()) do if v:IsA("ScrollingFrame") then v.Visible = false end end
+        P.Visible = true
+        for _, t in pairs(Sidebar:GetChildren()) do if t:IsA("TextButton") then t.TextColor3 = Color3.fromRGB(180, 180, 180) t.Frame.Visible = false end end
+        Btn.TextColor3 = Color3.fromRGB(255, 180, 0) -- Màu Banana khi chọn
+        GachVang.Visible = true
+    end)
+    return P
+end
+
+-- HÀM TẠO Ô CHỨC NĂNG (SECTION)
+local function CreateSection(parent, title)
+    local Sec = Instance.new("Frame", parent)
+    Sec.Size = UDim2.new(1, -10, 0, 30)
+    Sec.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+    Sec.BackgroundTransparency = 0.3 -- Làm trong suốt Section
+    Sec.AutomaticSize = "Y"
+    Instance.new("UICorner", Sec).CornerRadius = UDim.new(0, 5)
+    
+    local Head = Instance.new("TextLabel", Sec)
+    Head.Size = UDim2.new(1, 0, 0, 25)
+    Head.Text = title
+    Head.TextColor3 = Color3.fromRGB(255, 180, 0)
+    Head.Font = "GothamBold"
+    Head.TextSize = 13
+    Head.BackgroundTransparency = 1
+    
+    local List = Instance.new("UIListLayout", Sec)
+    List.Padding = UDim.new(0, 5)
+    List.HorizontalAlignment = "Center"
+    return Sec
+end
+
+-- HÀM TẠO TOGGLE (CÔNG TẮC BANANA)
+local function AddToggle(parent, text)
+    local TglFrame = Instance.new("TextButton", parent)
+    TglFrame.Size = UDim2.new(1, -20, 0, 35)
+    TglBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    TglFrame.Text = "  " .. text
+    TglFrame.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TglFrame.Font = Enum.Font.GothamMedium
+    TglFrame.TextSize = 13
+    TglFrame.TextXAlignment = "Left"
+    Instance.new("UICorner", TglFrame).CornerRadius = UDim.new(0, 4)
+
+    local Box = Instance.new("Frame", TglFrame)
+    Box.Size = UDIM2.new(0, 18, 0, 18)
+    Box.Position = UDim2.new(1, -25, 0.5, -9)
+    Box.BackgroundColor3 = Color3.fromRGB(45, 45, 45) -- Nút vuông Banana
+    Instance.new("UICorner", Box).CornerRadius = UDim.new(0, 4)
+    local BStroke = Instance.new("UIStroke", Box)
+    BStroke.Color = Color3.fromRGB(255, 180, 0) -- Giữ màu vàng Banana
+end
+
+-- 5. SETUP NỘI DUNG
+local FarmTab = AddTab("Farm")
+AddTab("Config")
+AddTab("Fighting Style") -- Thêm các Tab cho đủ 100%
+
+local FarmSec = CreateSection(FarmTab, "Farm") -- Section Farm Banana
+AddToggle(FarmSec, "Auto Farm Level") -- Giống 100% tên chức năng
+AddToggle(FarmSec, "Auto Travel Dressrosa")
+AddToggle(FarmSec, "Auto Zou Quest")
+
+-- SECTION MUSIC PLAYER (CHILL EDITION)
+local MusicSec = CreateSection(FarmTab, "Music Player")
+local PlayBtn = Instance.new("TextButton", MusicSec)
+PlayBtn.Size = UDim2.new(0.9, 0, 0, 30)
+PlayBtn.Text = "Play: Super Hero (2018) Chill"
+PlayBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+PlayBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+Instance.new("UICorner", PlayBtn)
+
+-- LOGIC BẬT TẮT KRNL (BUNG MỞ)
+local open = false
+LogoToggle.MouseButton1Click:Connect(function()
+    if not draggingLogo then
+        open = not open
+        if open then
+            Main.Visible = true
+            Main.Size = UDim2.new(0, 0, 0, 0)
+            TweenService:Create(Main, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = UDim2.new(0, 600, 0, 350)}):Play()
+        else
+            local tw = TweenService:Create(Main, TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.In), {Size = UDim2.new(0, 0, 0, 0)})
+            tw:Play()
+            tw.Completed:Connect(function() if not open then Main.Visible = false end end)
+        end
+    end
+end)
+
+FarmTab.Visible = true -- Hiển thị Tab Farm mặc định

@@ -1,0 +1,42 @@
+-- [[ YUTA HUB v26.5 - RED ONLY EDITION ]]
+-- [[ NO WHITE BACKGROUNDS - NO LAGGING ]]
+
+-- 1. BỘ LỌC MÀU ĐỎ (CHẠY TRƯỚC KHI LOAD SCRIPT)
+local OldInstance = Instance.new
+Instance.new = function(class, parent)
+    local obj = OldInstance(class, parent)
+    
+    task.spawn(function()
+        task.wait()
+        -- NHUỘM ĐỎ CÁC THANH HIGHLIGHT (VÀNG/XANH -> ĐỎ)
+        if obj:IsA("Frame") or obj:IsA("ScrollingFrame") then
+            if obj.BackgroundColor3 == Color3.fromRGB(255, 255, 0) or obj.BackgroundColor3 == Color3.fromRGB(0, 255, 255) then
+                obj.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+            end
+            -- GIỮ NGUYÊN NỀN TỐI, KHÔNG ĐỔI SANG TRẮNG
+        end
+        
+        -- ĐỔI TÊN & ANH HÓA TEXT
+        if obj:IsA("TextLabel") or obj:IsA("TextButton") then
+            if obj.Text:find("BANANA") or obj.Text:find("Cat") or obj.Text:find("Hub") then
+                obj.Text = "YUTA HUB v26.5"
+                obj.TextColor3 = Color3.fromRGB(255, 0, 0) -- Chữ Đỏ cho ngầu
+            end
+            
+            -- Anh hóa các mục chính để ông dễ dùng
+            if obj.Text == "Tập kích" then obj.Text = "Auto Raid" end
+            if obj.Text == "Cấu hình" then obj.Text = "Settings" end
+            if obj.Text == "Săn Leviathan" then obj.Text = "Leviathan Hunter" end
+        end
+
+        -- Đổi màu viền sang Đỏ
+        if obj:IsA("UIStroke") then
+            obj.Color = Color3.fromRGB(255, 0, 0)
+        end
+    end)
+    
+    return obj
+end
+
+-- 2. CHẠY SOURCE GỐC (FARM, SEA EVENTS, DRAGO DOJO)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/aloaloalo322/sssdas/refs/heads/main/cc"))()

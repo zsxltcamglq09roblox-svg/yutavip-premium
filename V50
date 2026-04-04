@@ -1,0 +1,145 @@
+-- [[ YUTA HUB v50.0 - ULTIMATE REPLICA ]]
+-- [[ SYSTEM: ANTI-AFK & ANTI-BAN | UI: 100% BANANA STYLE ]]
+
+local UIS = game:GetService("UserInputService")
+local TS = game:GetService("TweenService")
+local CoreGui = game:GetService("CoreGui")
+local Players = game:GetService("Players")
+
+-- 1. HỆ THỐNG BẢO VỆ (ANTI-AFK & ANTI-BAN)
+task.spawn(function()
+    local VU = game:GetService("VirtualUser")
+    Players.LocalPlayer.Idled:Connect(function()
+        VU:CaptureController()
+        VU:ClickButton2(Vector2.new())
+    end)
+    -- Lệnh chặn Check-Server (Anti-Ban cơ bản)
+    local old; old = hookmetamethod(game, "__namecall", function(self, ...)
+        local method = getnamecallmethod()
+        if method == "FireServer" and self.Name == "AdminCheck" then return nil end
+        return old(self, ...)
+    end)
+end)
+
+-- 2. KHỞI TẠO GUI
+local YutaHub = Instance.new("ScreenGui", CoreGui)
+local Main = Instance.new("Frame", YutaHub)
+Main.Size = UDim2.new(0, 580, 0, 340)
+Main.Position = UDim2.new(0.5, -290, 0.5, -170)
+Main.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+Main.BackgroundTransparency = 0.15
+Main.Visible = false
+Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 10)
+local MStroke = Instance.new("UIStroke", Main)
+MStroke.Color = Color3.fromRGB(255, 180, 0) -- Viền vàng Banana
+
+-- 3. LOGO YV - KÉO THẢ & CHỐNG "LIỀN"
+local Logo = Instance.new("TextButton", YutaHub)
+Logo.Size = UDim2.new(0, 55, 0, 55)
+Logo.Position = UDim2.new(0, 30, 1, -110)
+Logo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Logo.Text = "YV"
+Logo.TextColor3 = Color3.fromRGB(255, 0, 0)
+Logo.Font = "GothamBold"
+Logo.TextSize = 24
+Instance.new("UICorner", Logo).CornerRadius = UDim.new(1, 0)
+
+-- Logic kéo thả Logo (Fix lỗi không di chuyển được)
+local dragging, dragInput, dragStart, startPos
+Logo.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = Logo.Position
+    end
+end)
+UIS.InputChanged:Connect(function(input)
+    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+        local delta = input.Position - dragStart
+        Logo.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+Logo.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = false
+        Main.Visible = not Main.Visible -- Click để bật/tắt
+    end
+end)
+
+-- 4. SIDEBAR CHUẨN BANANA
+local Sidebar = Instance.new("ScrollingFrame", Main)
+Sidebar.Size = UDim2.new(0, 150, 1, -45)
+Sidebar.Position = UDim2.new(0, 10, 0, 40)
+Sidebar.BackgroundTransparency = 1
+Sidebar.ScrollBarThickness = 0
+Instance.new("UIListLayout", Sidebar).Padding = UDim.new(0, 3)
+
+local PageContainer = Instance.new("Frame", Main)
+PageContainer.Size = UDim2.new(1, -175, 1, -50)
+PageContainer.Position = UDim2.new(0, 165, 0, 45)
+PageContainer.BackgroundTransparency = 1
+
+-- 5. HÀM TẠO TAB & SECTION ĐÚNG VỊ TRÍ
+local function AddTab(name)
+    local T = Instance.new("TextButton", Sidebar)
+    T.Size = UDim2.new(1, 0, 0, 35)
+    T.Text = "    " .. name
+    T.TextColor3 = Color3.fromRGB(180, 180, 180)
+    T.Font = "GothamMedium"
+    T.TextXAlignment = "Left"
+    T.BackgroundTransparency = 1
+    
+    local Line = Instance.new("Frame", T)
+    Line.Size = UDim2.new(0, 3, 1, -12)
+    Line.Position = UDim2.new(0, -2, 0.5, -11)
+    Line.BackgroundColor3 = Color3.fromRGB(255, 180, 0)
+    Line.Visible = false
+
+    local P = Instance.new("ScrollingFrame", PageContainer)
+    P.Size = UDim2.new(1, 0, 1, 0)
+    P.BackgroundTransparency = 1
+    P.Visible = false
+    P.ScrollBarThickness = 0
+    Instance.new("UIListLayout", P).Padding = UDim.new(0, 12)
+    
+    T.MouseButton1Click:Connect(function()
+        for _,v in pairs(PageContainer:GetChildren()) do if v:IsA("ScrollingFrame") then v.Visible = false end end
+        P.Visible = true
+        for _,b in pairs(Sidebar:GetChildren()) do if b:IsA("TextButton") then b.TextColor3 = Color3.fromRGB(180, 180, 180) b.Frame.Visible = false end end
+        T.TextColor3 = Color3.fromRGB(255, 180, 0)
+        Line.Visible = true
+    end)
+    return P
+end
+
+-- 6. SETUP ĐẦY ĐỦ CÁC MỤC THEO YÊU CẦU
+local FarmTab = AddTab("Farm")
+local SeaTab = AddTab("Sea Events")
+local ItemTab = AddTab("Item Farm")
+local ShopTab = AddTab("Shop")
+local DojoTab = AddTab("Dragon Dojo")
+local MissTab = AddTab("Miss (Settings)")
+
+local function NewSec(parent, title)
+    local S = Instance.new("Frame", parent)
+    S.Size = UDim2.new(1, -5, 0, 35)
+    S.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    S.BackgroundTransparency = 0.4
+    S.AutomaticSize = "Y"
+    Instance.new("UICorner", S).CornerRadius = UDim.new(0, 6)
+    local L = Instance.new("TextLabel", S)
+    L.Size = UDim2.new(1, 0, 0, 28)
+    L.Text = title
+    L.TextColor3 = Color3.fromRGB(255, 180, 0)
+    L.Font = "GothamBold"
+    L.BackgroundTransparency = 1
+    Instance.new("UIListLayout", S).HorizontalAlignment = "Center"
+    return S
+end
+
+-- Mẫu nội dung (Section)
+NewSec(FarmTab, "Auto Farm Level")
+NewSec(SeaTab, "Mirage Island / Race V4")
+NewSec(DojoTab, "Dragon Skills")
+
+FarmTab.Visible = true -- Mặc định hiện Tab Farm

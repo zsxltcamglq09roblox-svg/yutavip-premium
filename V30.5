@@ -1,0 +1,99 @@
+-- [[ YUTA HUB v30.5 - ANTI-BAN & AFK SYSTEM ]]
+-- [[ SYSTEM: BYPASS + ANTI-KICK | UI: BANANA GHOST ]]
+
+local UIS = game:GetService("UserInputService")
+local TS = game:GetService("TweenService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- 1. HỆ THỐNG ANTI-AFK & ANTI-BAN
+task.spawn(function()
+    local VirtualUser = game:GetService("VirtualUser")
+    LocalPlayer.Idled:Connect(function()
+        VirtualUser:CaptureController()
+        VirtualUser:ClickButton2(Vector2.new())
+    end)
+end)
+
+-- 2. SETUP GIAO DIỆN (FIX LỖI KHÔNG CHẠY)
+local YutaHub = Instance.new("ScreenGui", game.CoreGui)
+local Main = Instance.new("Frame", YutaHub)
+Main.Size = UDim2.new(0, 580, 0, 340)
+Main.Position = UDim2.new(0.5, -290, 0.5, -170)
+Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+Main.BackgroundTransparency = 0.2
+Main.Visible = false
+Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 10)
+local MStroke = Instance.new("UIStroke", Main)
+MStroke.Color = Color3.fromRGB(255, 200, 0)
+MStroke.Thickness = 1.5
+
+-- 3. LOGO YV - FIX CLICK CỰC NHẠY
+local Logo = Instance.new("TextButton", YutaHub)
+Logo.Size = UDim2.new(0, 50, 0, 50)
+Logo.Position = UDim2.new(0, 20, 1, -80)
+Logo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Logo.Text = "YV"
+Logo.TextColor3 = Color3.fromRGB(255, 0, 0)
+Logo.Font = "GothamBold"
+Logo.TextSize = 22
+Instance.new("UICorner", Logo).CornerRadius = UDim.new(1, 0)
+Instance.new("UIStroke", Logo).Color = Color3.fromRGB(255, 0, 0)
+
+-- HÀM MỞ MENU (TÁCH BIỆT KHỎI DRAG)
+Logo.MouseButton1Click:Connect(function()
+    Main.Visible = not Main.Visible
+    if Main.Visible then
+        Main.Size = UDim2.new(0, 0, 0, 0)
+        TS:Create(Main, TweenInfo.new(0.3, Enum.EasingStyle.Back), {Size = UDim2.new(0, 580, 0, 340)}):Play()
+    end
+end)
+
+-- HÀM KÉO LOGO (DÀNH RIÊNG CHO MOBILE)
+local dragging, dragStart, startPos
+Logo.TouchMoved:Connect(function(touch, gpe)
+    if not gpe then
+        local delta = touch.Position - dragStart
+        Logo.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+Logo.TouchLongPress:Connect(function(touchPos, state, gpe)
+    if state == Enum.UserInputState.Begin then
+        dragStart = touchPos
+        startPos = Logo.Position
+    end
+end)
+
+-- 4. SIDEBAR & SECTION (CHUẨN BANANA)
+local Sidebar = Instance.new("Frame", Main)
+Sidebar.Size = UDim2.new(0, 150, 1, -45)
+Sidebar.Position = UDim2.new(0, 10, 0, 40)
+Sidebar.BackgroundTransparency = 1
+Instance.new("UIListLayout", Sidebar).Padding = UDim.new(0, 4)
+
+local function CreateSection(title)
+    local Sec = Instance.new("Frame", Main) -- Tạm để trong Main để test hiển thị
+    Sec.Size = UDim2.new(1, -170, 1, -50)
+    Sec.Position = UDim2.new(0, 165, 0, 45)
+    Sec.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    Sec.BackgroundTransparency = 0.3
+    Instance.new("UICorner", Sec).CornerRadius = UDim.new(0, 8)
+    
+    local T = Instance.new("TextLabel", Sec)
+    T.Size = UDim2.new(1, 0, 0, 30)
+    T.Text = title
+    T.TextColor3 = Color3.fromRGB(255, 200, 0)
+    T.Font = "GothamBold"
+    T.BackgroundTransparency = 1
+    return Sec
+end
+
+local Title = Instance.new("TextLabel", Main)
+Title.Text = "  YUTA HUB : Blox Fruits (Anti-Ban On)"
+Title.Size = UDim2.new(1, 0, 0, 35)
+Title.TextColor3 = Color3.fromRGB(255, 200, 0)
+Title.Font = "GothamBold"
+Title.TextXAlignment = "Left"
+Title.BackgroundTransparency = 1
+
+local FarmSec = CreateSection("Farm & Anti-AFK")

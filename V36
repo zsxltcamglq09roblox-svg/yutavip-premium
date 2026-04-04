@@ -1,0 +1,109 @@
+-- [[ YUTA HUB v35.0 - POCO EMERGENCY FIX ]]
+-- [[ FIX: TOUCH SENSITIVITY | SYSTEM: ANTI-AFK & BAN ]]
+
+local UIS = game:GetService("UserInputService")
+local TS = game:GetService("TweenService")
+local CoreGui = game:GetService("CoreGui")
+
+-- 1. ANTI-AFK (CHẠY NGẦM NGAY LẬP TỨC)
+task.spawn(function()
+    local VU = game:GetService("VirtualUser")
+    game:GetService("Players").LocalPlayer.Idled:Connect(function()
+        VU:CaptureController()
+        VU:ClickButton2(Vector2.new())
+    end)
+end)
+
+-- 2. GUI CHÍNH (THIẾT KẾ BANANA GHOST)
+local YutaHub = Instance.new("ScreenGui", CoreGui)
+local Main = Instance.new("Frame", YutaHub)
+Main.Size = UDim2.new(0, 580, 0, 340)
+Main.Position = UDim2.new(0.5, -290, 0.5, -170)
+Main.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+Main.BackgroundTransparency = 0.2
+Main.Visible = false
+Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 10)
+local MStroke = Instance.new("UIStroke", Main)
+MStroke.Color = Color3.fromRGB(255, 200, 0)
+MStroke.Thickness = 1.5
+
+-- LOGO YV - FIX CẢM ỨNG POCO
+local Logo = Instance.new("TextButton", YutaHub)
+Logo.Size = UDim2.new(0, 55, 0, 55)
+Logo.Position = UDim2.new(0, 20, 1, -90)
+Logo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Logo.Text = "YV"
+Logo.TextColor3 = Color3.fromRGB(255, 0, 0)
+Logo.Font = "GothamBold"
+Logo.TextSize = 24
+Instance.new("UICorner", Logo).CornerRadius = UDim.new(1, 0)
+local LStroke = Instance.new("UIStroke", Logo)
+LStroke.Color = Color3.fromRGB(255, 0, 0)
+LStroke.Thickness = 2
+
+-- FIX: DÙNG INPUTBEGAN ĐỂ NHẬN DIỆN CHẠM TỨC THÌ
+Logo.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+        Main.Visible = not Main.Visible
+        if Main.Visible then
+            -- Animation bung mở nhanh
+            Main.Size = UDim2.new(0, 0, 0, 0)
+            TS:Create(Main, TweenInfo.new(0.3, Enum.EasingStyle.Back), {Size = UDim2.new(0, 580, 0, 340)}):Play()
+        end
+    end
+end)
+
+-- 3. CẤU TRÚC SIDEBAR (GIỐNG BANANA 100%)
+local Sidebar = Instance.new("Frame", Main)
+Sidebar.Size = UDim2.new(0, 150, 1, -45)
+Sidebar.Position = UDim2.new(0, 10, 0, 40)
+Sidebar.BackgroundTransparency = 1
+Instance.new("UIListLayout", Sidebar).Padding = UDim.new(0, 5)
+
+-- TITLE: YUTA HUB
+local Title = Instance.new("TextLabel", Main)
+Title.Text = "  YUTA HUB : Blox Fruits"
+Title.Size = UDim2.new(1, 0, 0, 35)
+Title.TextColor3 = Color3.fromRGB(255, 200, 0)
+Title.Font = "GothamBold"
+Title.TextXAlignment = "Left"
+Title.BackgroundTransparency = 1
+
+-- 4. KHU VỰC NỘI DUNG (SECTIONS)
+local Page = Instance.new("ScrollingFrame", Main)
+Page.Size = UDim2.new(1, -170, 1, -50)
+Page.Position = UDim2.new(0, 165, 0, 45)
+Page.BackgroundTransparency = 1
+Page.ScrollBarThickness = 0
+Instance.new("UIListLayout", Page).Padding = UDim.new(0, 10)
+
+local function AddSection(name)
+    local Sec = Instance.new("Frame", Page)
+    Sec.Size = UDim2.new(1, -5, 0, 35)
+    Sec.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    Sec.BackgroundTransparency = 0.4
+    Sec.AutomaticSize = "Y"
+    Instance.new("UICorner", Sec).CornerRadius = UDim.new(0, 6)
+    
+    local T = Instance.new("TextLabel", Sec)
+    T.Size = UDim2.new(1, 0, 0, 25)
+    T.Text = name
+    T.TextColor3 = Color3.fromRGB(255, 200, 0)
+    T.Font = "GothamBold"
+    T.BackgroundTransparency = 1
+    
+    local L = Instance.new("UIListLayout", Sec)
+    L.Padding = UDim.new(0, 5)
+    L.HorizontalAlignment = "Center"
+    return Sec
+end
+
+-- THÊM MỤC THEO YÊU CẦU
+local FarmSec = AddSection("Farm")
+local MusicSec = AddSection("Music Player")
+local MusicBtn = Instance.new("TextButton", MusicSec)
+MusicBtn.Size = UDim2.new(0.9, 0, 0, 30)
+MusicBtn.Text = "Play: Super Hero (2018)"
+MusicBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+MusicBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+Instance.new("UICorner", MusicBtn)

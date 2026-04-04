@@ -1,0 +1,79 @@
+-- [[ YUTA HUB: BLOX FRUIT ]]
+-- [[ THEME: RED & WHITE | LANGUAGE: ENGLISH ]]
+
+-- 1. CHẠY SOURCE GỐC ĐỂ LẤY CHỨC NĂNG
+loadstring(game:HttpGet("https://raw.githubusercontent.com/aloaloalo322/sssdas/refs/heads/main/cc"))()
+
+-- 2. ĐÈ GIAO DIỆN MỚI (PHONG CÁCH REDZ HUB)
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+local MainFrame = Instance.new("Frame", ScreenGui)
+local Sidebar = Instance.new("Frame", MainFrame)
+local Content = Instance.new("ScrollingFrame", MainFrame)
+
+-- Cấu hình Main Frame (Nền Trắng Viền Đỏ)
+MainFrame.Size = UDim2.new(0, 550, 0, 330)
+MainFrame.Position = UDim2.new(0.5, -275, 0.5, -165)
+MainFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+MainFrame.BackgroundTransparency = 0.1
+Instance.new("UICorner", MainFrame)
+Instance.new("UIStroke", MainFrame).Color = Color3.fromRGB(255, 0, 0)
+
+-- Sidebar (Màu Đỏ)
+Sidebar.Size = UDim2.new(0, 140, 1, 0)
+Sidebar.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+Sidebar.BackgroundTransparency = 0.2
+Instance.new("UICorner", Sidebar)
+
+-- Content Area (Tiếng Anh)
+Content.Size = UDim2.new(1, -150, 1, -10)
+Content.Position = UDim2.new(0, 145, 0, 5)
+Content.BackgroundTransparency = 1
+Content.CanvasSize = UDim2.new(0, 0, 0, 1000)
+local Layout = Instance.new("UIListLayout", Content)
+Layout.Padding = UDim.new(0, 5)
+
+-- Hàm tạo nút bấm thực thi link của ông
+local function AddButton(text)
+    local btn = Instance.new("TextButton", Content)
+    btn.Size = UDim2.new(1, -10, 0, 40)
+    btn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    btn.Text = "  [ EXECUTE ] " .. text
+    btn.TextColor3 = Color3.fromRGB(255, 0, 0)
+    btn.Font = Enum.Font.SourceSansBold
+    btn.TextXAlignment = Enum.TextXAlignment.Left
+    Instance.new("UICorner", btn)
+    Instance.new("UIStroke", btn).Color = Color3.fromRGB(255, 0, 0)
+    
+    btn.MouseButton1Click:Connect(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/aloaloalo322/sssdas/refs/heads/main/cc"))()
+    end)
+end
+
+-- TIÊU ĐỀ TIẾNG ANH
+local Title = Instance.new("TextLabel", Sidebar)
+Title.Size = UDim2.new(1, 0, 0, 50)
+Title.Text = "YUTA HUB"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.Font = Enum.Font.SourceSansBold
+Title.TextSize = 20
+Title.BackgroundTransparency = 1
+
+-- CÁC MỤC FARM CHÍNH (ENGLISH)
+AddButton("AUTO FARM LEVEL")
+AddButton("AUTO SEA EVENTS")
+AddButton("AUTO DRAGON DOJO")
+AddButton("AUTO RAID CASTLE")
+AddButton("AUTO COLLECT ITEMS")
+
+-- 3. TỰ ĐỘNG ẨN MENU GỐC (BANANA) NẾU NÓ HIỆN RA
+task.spawn(function()
+    while task.wait(1) do
+        for _, v in pairs(game.CoreGui:GetChildren()) do
+            if v:IsA("ScreenGui") and v.Name ~= ScreenGui.Name then
+                if v:FindFirstChild("Main") or v:FindFirstChild("Container") then
+                    v.Enabled = false -- Tắt cái menu cũ đi để dùng menu Yuta
+                end
+            end
+        end
+    end
+end)

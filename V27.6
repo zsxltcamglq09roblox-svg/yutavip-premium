@@ -1,0 +1,130 @@
+-- [[ YUTA HUB v27.6 - YV LOGO EDITION ]]
+-- [[ LAYOUT: LANDSCAPE | LOGO: YV RED-WHITE | ANIMATION: KRNL ]]
+
+local TweenService = game:GetService("TweenService")
+local YutaHub = Instance.new("ScreenGui")
+local MainContainer = Instance.new("Frame") 
+local LogoToggle = Instance.new("TextButton") -- Dùng TextButton để tạo logo YV
+
+YutaHub.Name = "YutaHub_V27_6"
+YutaHub.Parent = game.CoreGui
+YutaHub.ResetOnSpawn = false
+
+-- 1. LOGO YV ĐỎ TRẮNG TẠI GÓC TRÁI DƯỚI
+LogoToggle.Name = "YV_Logo"
+LogoToggle.Parent = YutaHub
+LogoToggle.Size = UDim2.new(0, 50, 0, 50)
+LogoToggle.Position = UDim2.new(0, 30, 1, -80) -- Góc trái dưới
+LogoToggle.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Nền trắng
+LogoToggle.Text = "YV"
+LogoToggle.TextColor3 = Color3.fromRGB(255, 0, 0) -- Chữ đỏ
+LogoToggle.Font = Enum.Font.GothamBold
+LogoToggle.TextSize = 24
+Instance.new("UICorner", LogoToggle).CornerRadius = UDim.new(1, 0) -- Hình tròn
+local LStroke = Instance.new("UIStroke", LogoToggle)
+LStroke.Color = Color3.fromRGB(255, 0, 0)
+LStroke.Thickness = 2
+
+-- 2. KHUNG MENU NẰM NGANG (BO GÓC MƯỢT)
+MainContainer.Name = "HorizontalMenu"
+MainContainer.Parent = YutaHub
+MainContainer.Size = UDim2.new(0, 550, 0, 300)
+MainContainer.Position = UDim2.new(0.5, -275, 0.5, -150)
+MainContainer.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+MainContainer.BackgroundTransparency = 0.1
+MainContainer.Visible = false 
+Instance.new("UICorner", MainContainer).CornerRadius = UDim.new(0, 15)
+local Stroke = Instance.new("UIStroke", MainContainer)
+Stroke.Color = Color3.fromRGB(255, 0, 0)
+Stroke.Thickness = 2
+
+-- 3. HIỆU ỨNG BUNG MỞ KIỂU KRNL
+local isOpen = false
+local function ToggleMenu()
+    isOpen = not isOpen
+    if isOpen then
+        MainContainer.Visible = true
+        MainContainer.Size = UDim2.new(0, 0, 0, 0)
+        TweenService:Create(MainContainer, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+            Size = UDim2.new(0, 550, 0, 300),
+            BackgroundTransparency = 0.1
+        }):Play()
+    else
+        local closeTween = TweenService:Create(MainContainer, TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.In), {
+            Size = UDim2.new(0, 0, 0, 0),
+            BackgroundTransparency = 1
+        })
+        closeTween:Play()
+        closeTween.Completed:Connect(function() if not isOpen then MainContainer.Visible = false end end)
+    end
+end
+LogoToggle.MouseButton1Click:Connect(ToggleMenu)
+
+-- 4. GIAO DIỆN NỘI DUNG (GIỮ NGUYÊN COLLAB NHẠC)
+local Sidebar = Instance.new("Frame", MainContainer)
+Sidebar.Position = UDim2.new(0, 15, 0, 15)
+Sidebar.Size = UDim2.new(0, 130, 1, -30)
+Sidebar.BackgroundTransparency = 1
+Instance.new("UIListLayout", Sidebar).Padding = UDim.new(0, 6)
+
+local PageContainer = Instance.new("Frame", MainContainer)
+PageContainer.Position = UDim2.new(0, 155, 0, 15)
+PageContainer.Size = UDim2.new(1, -170, 1, -30)
+PageContainer.BackgroundTransparency = 1
+
+local Pages = {}
+local function AddTab(name)
+    local P = Instance.new("ScrollingFrame", PageContainer)
+    P.Size = UDim2.new(1, 0, 1, 0)
+    P.Visible = false
+    P.BackgroundTransparency = 1
+    P.ScrollBarThickness = 0
+    Instance.new("UIListLayout", P).Padding = UDim.new(0, 6)
+    
+    local TabBtn = Instance.new("TextButton", Sidebar)
+    TabBtn.Size = UDim2.new(1, 0, 0, 35)
+    TabBtn.Text = name
+    TabBtn.TextColor3 = Color3.fromRGB(150, 150, 150)
+    TabBtn.Font = Enum.Font.SourceSansBold
+    TabBtn.BackgroundTransparency = 1
+
+    TabBtn.MouseButton1Click:Connect(function()
+        for _, v in pairs(Pages) do v.Visible = false end
+        P.Visible = true
+        for _, t in pairs(Sidebar:GetChildren()) do if t:IsA("TextButton") then t.TextColor3 = Color3.fromRGB(150, 150, 150) end end
+        TabBtn.TextColor3 = Color3.fromRGB(255, 0, 0)
+    end)
+    Pages[name] = P
+    return P
+end
+
+-- SETUP TRANG & NHẠC
+local DragonTab = AddTab("Dragon Journey")
+local MusicTab = AddTab("Music Player")
+
+local function AddToggle(parent, text)
+    local Frame = Instance.new("TextButton", parent)
+    Frame.Size = UDim2.new(1, -10, 0, 40)
+    Frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    Frame.Text = "  " .. text
+    Frame.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Frame.TextXAlignment = Enum.TextXAlignment.Left
+    Instance.new("UICorner", Frame)
+    
+    local Box = Instance.new("Frame", Frame)
+    Box.Size = UDim2.new(0, 18, 0, 18)
+    Box.Position = UDim2.new(1, -25, 0.5, -9)
+    Box.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    Instance.new("UIStroke", Box).Color = Color3.fromRGB(255, 0, 0)
+    
+    local state = false
+    Frame.MouseButton1Click:Connect(function()
+        state = not state
+        Box.BackgroundColor3 = state and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(40, 40, 40)
+    end)
+end
+
+AddToggle(DragonTab, "Find Mirage Island")
+AddToggle(MusicTab, "Super Hero 2018") --
+
+DragonTab.Visible = true

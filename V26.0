@@ -1,0 +1,54 @@
+-- [[ YUTA HUB V26.0 - NO FAKE UI - CORE REBRAND ]]
+-- [[ TARGET: ALOALOALO322 SOURCE ]]
+
+-- 1. CHẠY SOURCE GỐC (BANANA CAT HUB)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/aloaloalo322/sssdas/refs/heads/main/cc"))()
+
+-- 2. ĐỢI 3 GIÂY CHO MENU HIỆN RỒI "ĐÈ" TÊN & MÀU
+task.spawn(function()
+    while task.wait(1) do
+        -- Scan all UI elements in CoreGui
+        for _, v in pairs(game.CoreGui:GetDescendants()) do
+            
+            -- RENAME TITLES TO ENGLISH & YUTA HUB
+            if v:IsA("TextLabel") or v:IsA("TextButton") then
+                if v.Text:find("BANANA") or v.Text:find("Cat") or v.Text:find("Hub") then
+                    v.Text = "YUTA HUB V26.0"
+                    v.TextColor3 = Color3.fromRGB(255, 0, 0) -- RED TEXT
+                end
+                
+                -- Translate common labels to English
+                if v.Text == "Tập kích" then v.Text = "Auto Raid" end
+                if v.Text == "Cấu hình" then v.Text = "Config" end
+            end
+            
+            -- FORCE RED & WHITE COLORS
+            if v:IsA("Frame") then
+                -- Change Yellow/Blue accents to RED
+                if v.BackgroundColor3 == Color3.fromRGB(255, 255, 0) or v.BackgroundColor3 == Color3.fromRGB(0, 255, 255) then
+                    v.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+                end
+                
+                -- Change Dark backgrounds to WHITE/LIGHT GRAY
+                if v.BackgroundColor3 == Color3.fromRGB(30, 30, 30) or v.BackgroundColor3 == Color3.fromRGB(25, 25, 25) then
+                    v.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                    v.BackgroundTransparency = 0.1
+                end
+            end
+        end
+    end
+end)
+
+-- [[ LOGO Y ĐỂ MỞ MENU ]]
+local SG = Instance.new("ScreenGui", game.CoreGui)
+local B = Instance.new("TextButton", SG)
+B.Size = UDim2.new(0, 45, 0, 45)
+B.Position = UDim2.new(0, 10, 0.5, 0)
+B.Text = "Y"
+B.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+B.TextColor3 = Color3.fromRGB(255, 0, 0)
+B.Font = Enum.Font.SourceSansBold
+B.TextSize = 30
+B.Draggable = true
+Instance.new("UICorner", B).CornerRadius = UDim.new(0, 10)
+Instance.new("UIStroke", B).Color = Color3.fromRGB(255, 0, 0)

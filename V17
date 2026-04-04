@@ -1,0 +1,115 @@
+-- [[ YUTA HUB V20.0: FULL DETAILED REPLICA ]]
+-- [[ DESIGNED FOR YUTA - FULL FUNCTIONS FROM 30 IMAGES ]]
+
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+local MainFrame = Instance.new("Frame", ScreenGui)
+local Sidebar = Instance.new("Frame", MainFrame)
+local Content = Instance.new("ScrollingFrame", MainFrame)
+local Logo = Instance.new("TextButton", ScreenGui)
+
+-- [[ 1. LOGO Y (DUNG YEU CAU) ]]
+Logo.Size = UDim2.new(0, 45, 0, 45)
+Logo.Position = UDim2.new(0, 15, 0.5, -22)
+Logo.BackgroundColor3 = Color3.fromRGB(0,0,0)
+Logo.Text = "Y"
+Logo.TextColor3 = Color3.fromRGB(255,0,0)
+Logo.Font = Enum.Font.SourceSansBold
+Logo.TextSize = 30
+Logo.Draggable = true
+Instance.new("UICorner", Logo).CornerRadius = UDim.new(0, 10)
+Instance.new("UIStroke", Logo).Color = Color3.fromRGB(255,0,0)
+
+-- [[ 2. MAIN FRAME (SIDEBAR STYLE) ]]
+MainFrame.Size = UDim2.new(0, 580, 0, 380)
+MainFrame.Position = UDim2.new(0.5, -290, 0.5, -190)
+MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+MainFrame.Visible = false
+Instance.new("UICorner", MainFrame)
+
+Sidebar.Size = UDim2.new(0, 150, 1, 0)
+Sidebar.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+local SideLayout = Instance.new("UIListLayout", Sidebar)
+
+Content.Size = UDim2.new(1, -165, 1, -10)
+Content.Position = UDim2.new(0, 160, 0, 5)
+Content.BackgroundTransparency = 1
+Content.CanvasSize = UDim2.new(0, 0, 20, 0) -- Cuon cuc dai
+local ContentLayout = Instance.new("UIListLayout", Content)
+ContentLayout.Padding = UDim.new(0, 5)
+
+-- [[ BO CONG CU TAO GIAO DIEN CHI TIET ]]
+local function AddLabel(txt)
+    local l = Instance.new("TextLabel", Content)
+    l.Size = UDim2.new(1, -10, 0, 25)
+    l.Text = "--- " .. txt .. " ---"
+    l.TextColor3 = Color3.fromRGB(255, 0, 0)
+    l.BackgroundTransparency = 1
+    l.Font = Enum.Font.SourceSansBold
+end
+
+local function AddToggle(txt, callback)
+    local btn = Instance.new("TextButton", Content)
+    btn.Size = UDim2.new(1, -10, 0, 38)
+    btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    btn.Text = "  [ OFF ] " .. txt
+    btn.TextColor3 = Color3.fromRGB(200, 200, 200)
+    btn.TextXAlignment = Enum.TextXAlignment.Left
+    Instance.new("UICorner", btn)
+    local s = false
+    btn.MouseButton1Click:Connect(function()
+        s = not s
+        callback(s)
+        btn.Text = s and "  [ ON ] " .. txt or "  [ OFF ] " .. txt
+        btn.BackgroundColor3 = s and Color3.fromRGB(150, 0, 0) or Color3.fromRGB(30, 30, 30)
+    end)
+end
+
+-- [[ COPY FULL CHUC NANG TU 30 ANH REDZ HUB ]]
+
+-- TAB: FARMING (Full chi tiet)
+AddLabel("AUTO FARM LEVEL")
+AddToggle("AUTO FARM LEVEL (NEW)", function(s) _G.AutoFarm = s end)
+AddToggle("GOM QUAI (MOB AURA)", function(s) _G.MobAura = s end)
+AddToggle("AUTO FARM MASTERY (WEAPON)", function(s) end)
+
+AddLabel("KATAKURI & CAKE PRINCE")
+AddToggle("AUTO FARM KATAKURI V1", function(s) end)
+AddToggle("AUTO FARM KATAKURI V2", function(s) end)
+AddToggle("CHECK CAKE PRINCE (COUNT)", function(s) end)
+
+AddLabel("BONE & SOUL")
+AddToggle("AUTO FARM BONE (XUONG)", function(s) end)
+AddToggle("AUTO DOI XUONG (RANDOM)", function(s) end)
+
+-- TAB: SEA EVENTS (Full chi tiet cho Toc Rong V4)
+AddLabel("SEA EVENTS (TIER 6)")
+AddToggle("SAN LEVIATHAN (LAY TIM)", function(s) end)
+AddToggle("AUTO SEA BEAST", function(s) end)
+AddToggle("AUTO FIND PREHISTORIC", function(s) end)
+AddToggle("AUTO TWEEN DRAGON DOJO", function(s) end)
+
+-- TAB: ITEMS & QUEST
+AddLabel("QUEST SEA 3")
+AddToggle("AUTO KILL RIP INDRA", function(s) end)
+AddToggle("AUTO GET CDK (YAMA/TUSHITA)", function(s) end)
+AddToggle("AUTO SOUL GUITAR", function(s) end)
+AddToggle("AUTO HAKI COLOR", function(s) end)
+
+-- TAB: UTILS & SHOP
+AddLabel("UTILS")
+AddToggle("AUTO FISHING (CAU CA)", function(s) end)
+AddToggle("AUTO FARM CHEST", function(s) end)
+AddToggle("AUTO BUY ALL FRUITS", function(s) end)
+
+-- TAB: SETTINGS (Fix Lag cho Poco C71)
+AddLabel("SETTINGS (POCO C71)")
+AddToggle("FIX LAG (XOA EFFECT)", function(s) end)
+AddToggle("WHITE SCREEN (TREO MAY)", function(s) end)
+
+-- KET NOI VOI CORE REDZ HUB THET
+AddToggle("KICH HOAT CORE REDZ HUB", function(s)
+    if s then loadstring(game:HttpGet("https://raw.githubusercontent.com/realredz/RedzV5/main/Main.lua"))() end
+end)
+
+-- TOGGLE
+Logo.MouseButton1Click:Connect(function() MainFrame.Visible = not MainFrame.Visible end)

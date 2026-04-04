@@ -1,0 +1,140 @@
+-- [[ YUTA HUB V16.0: BLACK & RED EDITION ]]
+-- [[ SYSTEM: ENGLISH | UI: VIETNAMESE NO EMOJI ]]
+
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+local MainFrame = Instance.new("Frame", ScreenGui)
+local Sidebar = Instance.new("Frame", MainFrame)
+local Content = Instance.new("ScrollingFrame", MainFrame)
+local LogoButton = Instance.new("TextButton", ScreenGui)
+
+-- [[ 1. LOGO Y (NỀN ĐEN CHỮ ĐỎ - NHƯ YÊU CẦU) ]]
+LogoButton.Name = "YutaLogo_Y"
+LogoButton.Size = UDim2.new(0, 50, 0, 50) -- Hình vuông gọn gàng
+LogoButton.Position = UDim2.new(0, 15, 0.5, -25)
+LogoButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Nền đen
+LogoButton.Text = "Y" 
+LogoButton.TextColor3 = Color3.fromRGB(255, 0, 0) -- Chữ đỏ
+LogoButton.Font = Enum.Font.SourceSansBold
+LogoButton.TextSize = 35
+LogoButton.Draggable = true
+Instance.new("UICorner", LogoButton).CornerRadius = UDim.new(0, 8)
+local Stroke = Instance.new("UIStroke", LogoButton)
+Stroke.Thickness = 2
+Stroke.Color = Color3.fromRGB(255, 0, 0) -- Viền đỏ nhẹ cho ngầu
+
+-- [[ 2. GIAO DIỆN CHÍNH ]]
+MainFrame.Name = "YutaMain"
+MainFrame.Size = UDim2.new(0, 600, 0, 420)
+MainFrame.Position = UDim2.new(0.5, -300, 0.5, -210)
+MainFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+MainFrame.Visible = false
+Instance.new("UICorner", MainFrame)
+
+Sidebar.Size = UDim2.new(0, 160, 1, 0)
+Sidebar.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+Instance.new("UICorner", Sidebar)
+local SideLayout = Instance.new("UIListLayout", Sidebar)
+
+Content.Size = UDim2.new(1, -175, 1, -20)
+Content.Position = UDim2.new(0, 170, 0, 10)
+Content.BackgroundTransparency = 1
+Content.CanvasSize = UDim2.new(0, 0, 15, 0)
+local ContentLayout = Instance.new("UIListLayout", Content)
+ContentLayout.Padding = UDim.new(0, 6)
+
+-- [[ HÀM TIỆN ÍCH ]]
+local function AddLabel(txt)
+    local l = Instance.new("TextLabel", Content)
+    l.Size = UDim2.new(1, -10, 0, 30)
+    l.Text = "--- " .. txt .. " ---"
+    l.TextColor3 = Color3.fromRGB(255, 0, 0) -- Tiêu đề cũng màu đỏ cho tông xuyệt tông
+    l.BackgroundTransparency = 1
+    l.Font = Enum.Font.SourceSansBold
+end
+
+local function AddToggle(txt, callback)
+    local state = false
+    local b = Instance.new("TextButton", Content)
+    b.Size = UDim2.new(1, -10, 0, 45)
+    b.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    b.Text = "  [ OFF ] " .. txt
+    b.TextColor3 = Color3.fromRGB(200, 200, 200)
+    b.TextXAlignment = Enum.TextXAlignment.Left
+    Instance.new("UICorner", b)
+    
+    b.MouseButton1Click:Connect(function()
+        state = not state
+        callback(state)
+        b.Text = state and "  [ ON ] " .. txt or "  [ OFF ] " .. txt
+        b.BackgroundColor3 = state and Color3.fromRGB(150, 0, 0) or Color3.fromRGB(25, 25, 25)
+        b.TextColor3 = Color3.fromRGB(255, 255, 255)
+    end)
+end
+
+-- [[ TỔNG HỢP CHỨC NĂNG TỪ 30 ẢNH ]]
+
+-- 1. TAB FARM (Katakuri, Bone, Levels)
+local function ShowFarm()
+    Content:ClearAllChildren()
+    Instance.new("UIListLayout", Content).Padding = UDim.new(0, 6)
+    AddLabel("AUTO FARM LEVEL")
+    AddToggle("AUTO FARM LEVEL", function(s) end)
+    AddToggle("GOM QUAI (MOB AURA)", function(s) end)
+    AddLabel("KATAKURI & BONE")
+    AddToggle("AUTO FARM KATAKURI V1/V2", function(s) end)
+    AddToggle("AUTO FARM BONE (XUONG)", function(s) end)
+end
+
+-- 2. TAB SEA & DRAGON (Leviathan, Prehistoric)
+local function ShowSea()
+    Content:ClearAllChildren()
+    Instance.new("UIListLayout", Content).Padding = UDim.new(0, 6)
+    AddLabel("SEA EVENT")
+    AddToggle("SAN LEVIATHAN LAY TIM", function(s) end)
+    AddToggle("AUTO SEA BEAST", function(s) end)
+    AddLabel("DRAGON DOJO")
+    AddToggle("TIM DAO PREHISTORIC", function(s) end)
+    AddToggle("AUTO TWEEN DRAGON DOJO", function(s) end)
+end
+
+-- 3. TAB ITEMS (CDK, Yama, Indra)
+local function ShowItems()
+    Content:ClearAllChildren()
+    Instance.new("UIListLayout", Content).Padding = UDim.new(0, 6)
+    AddLabel("BOSS & QUEST")
+    AddToggle("AUTO KILL RIP INDRA", function(s) end)
+    AddToggle("AUTO GET CDK (YAMA/TUSHITA)", function(s) end)
+    AddLabel("MISC")
+    AddToggle("AUTO FISHING (CAU CA)", function(s) end)
+end
+
+-- 4. TAB SETTINGS (Poco C71)
+local function ShowSettings()
+    Content:ClearAllChildren()
+    Instance.new("UIListLayout", Content).Padding = UDim.new(0, 6)
+    AddLabel("OPTIMIZE POCO")
+    AddToggle("XOA EFFECT GIAM LAG", function(s) end)
+    AddToggle("WHITE SCREEN (TIET KIEM PIN)", function(s) end)
+end
+
+-- [[ SIDEBAR BUTTONS ]]
+local function CreateTab(name, func)
+    local t = Instance.new("TextButton", Sidebar)
+    t.Size = UDim2.new(1, 0, 0, 45)
+    t.BackgroundTransparency = 1
+    t.Text = "  " .. name
+    t.TextXAlignment = Enum.TextXAlignment.Left
+    t.TextColor3 = Color3.fromRGB(200, 200, 200)
+    t.Font = Enum.Font.SourceSansBold
+    t.MouseButton1Click:Connect(func)
+end
+
+CreateTab("FARMING", ShowFarm)
+CreateTab("SEA/DRAGON", ShowSea)
+CreateTab("ITEMS/BOSS", ShowItems)
+CreateTab("SETTINGS", ShowSettings)
+
+-- TOGGLE MENU
+LogoButton.MouseButton1Click:Connect(function()
+    MainFrame.Visible = not MainFrame.Visible
+end)

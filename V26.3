@@ -1,0 +1,50 @@
+-- [[ YUTA HUB v26.3 - COLOR & TEXT OVERRIDE ]]
+
+-- 1. CHẠY SOURCE GỐC (GIỮ NGUYÊN CHỨC NĂNG FARM XỊN)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/aloaloalo322/sssdas/refs/heads/main/cc"))()
+
+-- 2. HÀM QUÉT VÀ NHUỘM ĐỎ - TRẮNG (ENGLISH)
+local function RebrandYuta()
+    while task.wait(0.5) do
+        -- Truy tìm mọi ngóc ngách giao diện trong CoreGui
+        for _, v in pairs(game.CoreGui:GetDescendants()) do
+            
+            -- ĐỔI TÊN & TIẾNG ANH
+            if v:IsA("TextLabel") or v:IsA("TextButton") then
+                if v.Text:find("BANANA") or v.Text:find("Cat") or v.Text:find("Hub") then
+                    v.Text = "YUTA HUB v26.3"
+                    v.TextColor3 = Color3.fromRGB(255, 0, 0) -- Chữ Đỏ
+                end
+                
+                -- Dịch các mục chính sang Tiếng Anh
+                if v.Text == "Tập kích" then v.Text = "Auto Raid" end
+                if v.Text == "Cấu hình" then v.Text = "Settings" end
+                if v.Text == "Săn Leviathan" then v.Text = "Leviathan Hunter" end
+                if v.Text == "Đảo Prehistoric" then v.Text = "Prehistoric Island" end
+            end
+            
+            -- ÉP MÀU ĐỎ - TRẮNG
+            if v:IsA("Frame") or v:IsA("ScrollingFrame") then
+                -- Nếu màu nền là Vàng/Xanh (Màu cũ của Banana) -> Đổi sang Đỏ
+                local c = v.BackgroundColor3
+                if (c.R > 0.8 and c.G > 0.8 and c.B < 0.2) or (c.G > 0.8 and c.B > 0.8 and c.R < 0.2) then
+                    v.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+                end
+                
+                -- Đổi nền tối sang nền Trắng (Red & White Theme)
+                if c.R < 0.2 and c.G < 0.2 and c.B < 0.2 then
+                    v.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                    v.BackgroundTransparency = 0.1
+                end
+            end
+            
+            -- Đổi viền (UIStroke) sang màu Đỏ
+            if v:IsA("UIStroke") then
+                v.Color = Color3.fromRGB(255, 0, 0)
+            end
+        end
+    end
+end
+
+-- Kích hoạt vòng lặp nhuộm màu
+task.spawn(RebrandYuta)

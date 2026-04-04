@@ -1,0 +1,89 @@
+-- [[ YUTA HUB v27.0 - INDEPENDENT RED ]]
+-- [[ NO CLOSE BUTTON - YV LOGO AT BOTTOM RIGHT ]]
+
+local YutaHub = Instance.new("ScreenGui", game.CoreGui)
+local Main = Instance.new("Frame", YutaHub)
+local TabContainer = Instance.new("ScrollingFrame", Main)
+local Title = Instance.new("TextLabel", Main)
+local YV_Logo = Instance.new("TextLabel", Main)
+
+-- 1. SETUP PANEL CHÍNH (ALL RED STYLE)
+Main.Name = "YutaV27"
+Main.Size = UDim2.new(0, 390, 0, 260)
+Main.Position = UDim2.new(0.5, -195, 0.5, -130)
+Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15) -- Nền tối để nổi màu Đỏ
+Main.BorderSizePixel = 0
+Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 10)
+local MainStroke = Instance.new("UIStroke", Main)
+MainStroke.Color = Color3.fromRGB(255, 0, 0) -- Viền Đỏ rực
+MainStroke.Thickness = 2.2
+
+-- 2. TIÊU ĐỀ YUTA HUB v27.0 (ENGLISH)
+Title.Size = UDim2.new(1, 0, 0, 45)
+Title.Text = "YUTA HUB v27.0"
+Title.TextColor3 = Color3.fromRGB(255, 0, 0) -- Chữ Đỏ
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 22
+Title.BackgroundTransparency = 1
+
+-- 3. KHU VỰC CHỨC NĂNG (SCROLLING)
+TabContainer.Size = UDim2.new(1, -20, 1, -70)
+TabContainer.Position = UDim2.new(0, 10, 0, 60)
+TabContainer.BackgroundTransparency = 1
+TabContainer.CanvasSize = UDim2.new(0, 0, 0, 450)
+local Layout = Instance.new("UIListLayout", TabContainer)
+Layout.Padding = UDim.new(0, 10)
+
+-- 4. HÀM TẠO NÚT BẬT/TẮT GIẢ (ENGLISH)
+local function AddToggleButton(text)
+    local Enabled = false
+    local Button = Instance.new("TextButton", TabContainer)
+    Button.Size = UDim2.new(1, -10, 0, 45)
+    Button.BackgroundColor3 = Color3.fromRGB(35, 0, 0)
+    Button.Text = "  [EXECUTE] " .. text .. ": OFF" -- English text
+    Button.TextColor3 = Color3.fromRGB(220, 220, 220) -- White/Gray text
+    Button.Font = Enum.Font.GothamSemibold
+    Button.TextSize = 14
+    Button.TextXAlignment = Enum.TextXAlignment.Left
+    Instance.new("UICorner", Button).CornerRadius = UDim.new(0, 8)
+    local BStroke = Instance.new("UIStroke", Button)
+    BStroke.Color = Color3.fromRGB(180, 0, 0) -- Pure Red border
+    
+    -- Xử lý Bật/Tắt Visual
+    Button.MouseButton1Click:Connect(function()
+        Enabled = not Enabled
+        if Enabled then
+            Button.Text = "  [ACTIVE] " .. text .. ": ON"
+            Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+            Button.BackgroundColor3 = Color3.fromRGB(100, 0, 0) -- Sáng hơn
+            BStroke.Color = Color3.fromRGB(255, 0, 0) -- Bright Red for active
+        else
+            Button.Text = "  [EXECUTE] " .. text .. ": OFF"
+            Button.TextColor3 = Color3.fromRGB(220, 220, 220)
+            Button.BackgroundColor3 = Color3.fromRGB(35, 0, 0) -- Darker
+            BStroke.Color = Color3.fromRGB(180, 0, 0) -- Dark Red for inactive
+        end
+    end)
+end
+
+-- 5. DANH SÁCH MỤC XÁO TRỘN (NO FARM LEVEL)
+AddToggleButton("DRAGO DOJO / PREHISTORIC") -- Shuffled position
+AddToggleButton("SEA EVENTS (LEVIATHAN)")
+AddToggleButton("MIRAGE + RACE V4") -- Combined
+AddToggleButton("AUTO RAID CASTLE")
+AddToggleButton("COLLECT ALL CHESTS")
+
+-- 6. LOGO YV ĐỎ-TRẮNG (GÓC DƯỚI BÊN PHẢI)
+YV_Logo.Name = "YV_Logo"
+YV_Logo.Parent = Main
+YV_Logo.Size = UDim2.new(0, 45, 0, 45) -- Kích thước tròn
+YV_Logo.Position = UDim2.new(1, -55, 1, -55) -- Góc dưới phải
+YV_Logo.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Nền Trắng
+YV_Logo.Text = "YV" -- Chữ YV
+YV_Logo.TextColor3 = Color3.fromRGB(255, 0, 0) -- Chữ Đỏ rực
+YV_Logo.Font = Enum.Font.GothamBold
+YV_Logo.TextSize = 25
+Instance.new("UICorner", YV_Logo).CornerRadius = UDim.new(1, 0) -- Biến thành hình tròn
+local LogoStroke = Instance.new("UIStroke", YV_Logo)
+LogoStroke.Color = Color3.fromRGB(255, 0, 0) -- Viền Đỏ
+LogoStroke.Thickness = 1.5

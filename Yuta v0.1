@@ -1,0 +1,102 @@
+-- [[ YUTA HUB : BANANA STYLE EDITION ]]
+-- [[ SIDEBAR UI | LOGO YV ĐỎ-TRẮNG | KEY SYSTEM ]]
+
+local CoreGui = game:GetService("CoreGui")
+if CoreGui:FindFirstChild("YutaHub_BananaStyle") then CoreGui.YutaHub_BananaStyle:Destroy() end
+
+local Screen = Instance.new("ScreenGui", CoreGui)
+Screen.Name = "YutaHub_BananaStyle"
+
+-- --- TẠO KHUNG CHÍNH ---
+local MainFrame = Instance.new("Frame", Screen)
+MainFrame.Size = UDim2.new(0, 550, 0, 320)
+MainFrame.Position = UDim2.new(0.5, -275, 0.5, -160)
+MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+MainFrame.BorderSizePixel = 0
+MainFrame.Active = true
+MainFrame.Draggable = true
+Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 6)
+local MainStroke = Instance.new("UIStroke", MainFrame)
+MainStroke.Color = Color3.fromRGB(255, 0, 0) -- Viền Đỏ
+
+-- --- LOGO YV (GÓC TRÊN TRÁI) ---
+local Logo = Instance.new("TextLabel", MainFrame)
+Logo.Text = "YV"
+Logo.Size = UDim2.new(0, 60, 0, 40)
+Logo.Position = UDim2.new(0, 10, 0, 5)
+Logo.Font = "GothamBold"
+Logo.TextSize = 25
+Logo.BackgroundTransparency = 1
+-- Đổ màu Đỏ-Trắng cho YV
+Logo.RichText = true
+Logo.Text = '<font color="#FF0000">Y</font><font color="#FFFFFF">V</font>'
+
+-- --- SIDEBAR (THANH BÊN TRÁI) ---
+local Sidebar = Instance.new("ScrollingFrame", MainFrame)
+Sidebar.Size = UDim2.new(0, 140, 1, -60)
+Sidebar.Position = UDim2.new(0, 10, 0, 50)
+Sidebar.BackgroundTransparency = 1
+Sidebar.ScrollBarThickness = 0
+local SidebarLayout = Instance.new("UIListLayout", Sidebar)
+SidebarLayout.Padding = UDim.new(0, 4)
+
+-- --- KHUNG NỘI DUNG (BÊN PHẢI) ---
+local Container = Instance.new("Frame", MainFrame)
+Container.Size = UDim2.new(1, -170, 1, -20)
+Container.Position = UDim2.new(0, 160, 0, 10)
+Container.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Instance.new("UICorner", Container)
+local ContainerStroke = Instance.new("UIStroke", Container)
+ContainerStroke.Color = Color3.fromRGB(50, 50, 50)
+
+-- Tiêu đề mục đang chọn
+local TabTitle = Instance.new("TextLabel", Container)
+TabTitle.Size = UDim2.new(1, -20, 0, 30)
+TabTitle.Position = UDim2.new(0, 10, 0, 5)
+TabTitle.BackgroundTransparency = 1
+TabTitle.Font = "GothamBold"
+TabTitle.TextSize = 16
+TabTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+TabTitle.TextXAlignment = "Left"
+TabTitle.Text = "Farm"
+
+-- Khu vực chứa các Toggle
+local PageScroll = Instance.new("ScrollingFrame", Container)
+PageScroll.Size = UDim2.new(1, -10, 1, -45)
+PageScroll.Position = UDim2.new(0, 5, 0, 40)
+PageScroll.BackgroundTransparency = 1
+PageScroll.ScrollBarThickness = 2
+local PageLayout = Instance.new("UIListLayout", PageScroll)
+PageLayout.Padding = UDim.new(0, 5)
+
+-- --- HÀM TẠO TAB VÀ CHUYỂN TRANG ---
+local function AddTab(name)
+    local TabBtn = Instance.new("TextButton", Sidebar)
+    TabBtn.Size = UDim2.new(1, -5, 0, 30)
+    TabBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    TabBtn.Text = "  " .. name
+    TabBtn.Font = "GothamMedium"
+    TabBtn.TextSize = 13
+    TabBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
+    TabBtn.TextXAlignment = "Left"
+    Instance.new("UICorner", TabBtn)
+    
+    TabBtn.MouseButton1Click:Connect(function()
+        TabTitle.Text = name
+        -- Ở đây ông có thể thêm logic để đổi trang (Clear PageScroll và hiện mục mới)
+    end)
+end
+
+-- --- THÊM CÁC MỤC THEO THỨ TỰ CỦA ÔNG ---
+local Tabs = {
+    "Farm", "Item Farm", "Sea Event", "Race V2-V4", 
+    "Dragon Dojo", "Volcanic Island", "Raid", 
+    "Combat", "Settings", "Âm nhạc"
+}
+
+for _, name in pairs(Tabs) do
+    AddTab(name)
+end
+
+-- --- HỆ THỐNG KEY (XÁC NHẬN NGẦM) ---
+print("YutaHub_Final_Infinite đã đăng nhập thành công.")

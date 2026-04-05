@@ -1,0 +1,80 @@
+local UIS = game:GetService("UserInputService")
+local TS = game:GetService("TweenService")
+local CoreGui = game:GetService("CoreGui")
+
+if CoreGui:FindFirstChild("YutaHub_Fixed") then CoreGui.YutaHub_Fixed:Destroy() end
+
+local Screen = Instance.new("ScreenGui", CoreGui)
+Screen.Name = "YutaHub_Fixed"
+
+-- 1. KHUNG CHÍNH (BAN ĐẦU SIZE = 0 ĐỂ TWEEN)
+local Main = Instance.new("Frame", Screen)
+Main.Name = "MainFrame"
+Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+Main.BackgroundTransparency = 0.3 -- ĐỘ MỜ ÔNG MUỐN
+Main.Position = UDim2.new(0.5, -275, 0.5, -155)
+Main.Size = UDim2.new(0, 0, 0, 0) -- Bắt đầu từ 0
+Main.ClipsDescendants = true
+Main.Active = true
+Main.Draggable = true -- CHO PHÉP DI CHUYỂN
+Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 10)
+
+local Stroke = Instance.new("UIStroke", Main)
+Stroke.Color = Color3.fromRGB(255, 0, 0)
+Stroke.Thickness = 1.5
+
+-- Hiệu ứng mở khung mượt mà
+TS:Create(Main, TweenInfo.new(0.4, Enum.EasingStyle.Back), {Size = UDim2.new(0, 550, 0, 310)}):Play()
+
+-- 2. SIDEBAR
+local Sidebar = Instance.new("Frame", Main)
+Sidebar.Size = UDim2.new(0, 140, 1, -50)
+Sidebar.Position = UDim2.new(0, 10, 0, 45)
+Sidebar.BackgroundTransparency = 1
+local Layout = Instance.new("UIListLayout", Sidebar)
+Layout.Padding = UDim.new(0, 5)
+
+-- 3. HÀM TẠO NÚT (FIX HOVER & STYLE)
+local function createButton(text, callback)
+    local btn = Instance.new("TextButton", Sidebar)
+    btn.Size = UDim2.new(1, 0, 0, 35)
+    btn.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    btn.BackgroundTransparency = 0.5
+    btn.Text = text
+    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    btn.Font = "GothamMedium"
+    btn.TextSize = 14
+    Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 6)
+
+    -- Hiệu ứng rê chuột
+    btn.MouseEnter:Connect(function() btn.BackgroundColor3 = Color3.fromRGB(80, 0, 0) end)
+    btn.MouseLeave:Connect(function() btn.BackgroundColor3 = Color3.fromRGB(35, 35, 35) end)
+    
+    if callback then btn.MouseButton1Click:Connect(callback) end
+    return btn
+end
+
+-- 4. LOGIC FARM (ON/OFF) - FIX TREO MÁY
+local toggle = false
+local farmBtn = createButton("Farm : OFF")
+
+farmBtn.MouseButton1Click:Connect(function()
+    toggle = not toggle
+    if toggle then
+        farmBtn.Text = "Farm : ON"
+        farmBtn.TextColor3 = Color3.fromRGB(0, 255, 0)
+        -- Chạy vòng lặp Farm trong một Thread riêng (spawn/task.spawn)
+        task.spawn(function()
+            while toggle do
+                print("Đang Farm...") -- Thay code farm của ông vào đây
+                task.wait(1) -- Tránh bị văng game
+            end
+        end)
+    else
+        farmBtn.Text = "Farm : OFF"
+        farmBtn.TextColor3 = Color3.fromRGB(255, 0, 0)
+    end
+end)
+
+createButton("Config")
+createButton("Items Farm")

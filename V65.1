@@ -1,0 +1,121 @@
+-- [[ YUTA HUB v65.1 - FIX LỖI KHÔNG BẬT ĐƯỢC ]]
+-- [[ AUTO-OPEN ON START | BANANA UI + BEAR MUSIC ]]
+
+local UIS = game:GetService("UserInputService")
+local CoreGui = game:GetService("CoreGui")
+
+-- 1. XOÁ BẢN CŨ ĐỂ TRÁNH LỖI (QUAN TRỌNG)
+if CoreGui:FindFirstChild("YutaHub_Banana_V55") then
+    CoreGui:FindFirstChild("YutaHub_Banana_V55"):Destroy()
+end
+
+-- 2. KHỞI TẠO SCREEN GUI
+local YutaHub = Instance.new("ScreenGui", CoreGui)
+YutaHub.Name = "YutaHub_Banana_V55"
+YutaHub.ResetOnSpawn = false
+
+-- 3. KHUNG MENU CHÍNH (BANANA STYLE)
+local Main = Instance.new("Frame", YutaHub)
+Main.Size = UDim2.new(0, 580, 0, 340)
+Main.Position = UDim2.new(0.5, -290, 0.5, -170)
+Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+Main.Visible = true -- TỰ ĐỘNG HIỆN KHI DÁN
+Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 10)
+local MStroke = Instance.new("UIStroke", Main)
+MStroke.Color = Color3.fromRGB(255, 185, 0) 
+
+-- 4. LOGO YV (NÚT BẬT/TẮT)
+local Logo = Instance.new("TextButton", YutaHub)
+Logo.Size = UDim2.new(0, 55, 0, 55)
+Logo.Position = UDim2.new(0, 30, 1, -120)
+Logo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Logo.Text = "YV"
+Logo.TextColor3 = Color3.fromRGB(255, 0, 0)
+Logo.Font = Enum.Font.GothamBold
+Logo.TextSize = 25
+Instance.new("UICorner", Logo).CornerRadius = UDim.new(1, 0)
+Logo.MouseButton1Click:Connect(function() Main.Visible = not Main.Visible end)
+
+-- 5. HỆ THỐNG TAB (GIỐNG ẢNH MẪU 100%)
+local Sidebar = Instance.new("Frame", Main)
+Sidebar.Size = UDim2.new(0, 155, 1, -50)
+Sidebar.Position = UDim2.new(0, 10, 0, 45)
+Sidebar.BackgroundTransparency = 1
+Instance.new("UIListLayout", Sidebar).Padding = UDim.new(0, 4)
+
+local Content = Instance.new("Frame", Main)
+Content.Size = UDim2.new(1, -180, 1, -55)
+Content.Position = UDim2.new(0, 170, 0, 45)
+Content.BackgroundTransparency = 1
+
+local function AddTab(name)
+    local T = Instance.new("TextButton", Sidebar)
+    T.Size = UDim2.new(1, 0, 0, 35)
+    T.Text = "  " .. name
+    T.TextColor3 = Color3.fromRGB(180, 180, 180)
+    T.Font = Enum.Font.GothamMedium
+    T.TextXAlignment = Enum.TextXAlignment.Left
+    T.BackgroundTransparency = 1
+    
+    local Line = Instance.new("Frame", T)
+    Line.Size = UDim2.new(0, 3, 1, -12)
+    Line.Position = UDim2.new(0, -5, 0.5, -11)
+    Line.BackgroundColor3 = Color3.fromRGB(255, 185, 0)
+    Line.Visible = false
+
+    local P = Instance.new("ScrollingFrame", Content)
+    P.Size = UDim2.new(1, 0, 1, 0)
+    P.BackgroundTransparency = 1
+    P.Visible = false
+    P.ScrollBarThickness = 0
+    Instance.new("UIListLayout", P).Padding = UDim.new(0, 10)
+    
+    T.MouseButton1Click:Connect(function()
+        for _,v in pairs(Content:GetChildren()) do v.Visible = false end
+        P.Visible = true
+        for _,b in pairs(Sidebar:GetChildren()) do if b:IsA("TextButton") then b.TextColor3 = Color3.fromRGB(180, 180, 180) b.Frame.Visible = false end end
+        T.TextColor3 = Color3.fromRGB(255, 185, 0)
+        Line.Visible = true
+    end)
+    return P
+end
+
+-- TẠO CÁC MỤC
+local FarmTab = AddTab("Farm")
+local SeaTab = AddTab("Sea Events")
+local ItemTab = AddTab("Item Farm")
+local ShopTab = AddTab("Shop")
+local DojoTab = AddTab("Dragon Dojo")
+local MusicTab = AddTab("Music")
+
+-- 6. MUSIC PLAYER (STYLE NÚT "CLICK" CAM)
+local function AddMusic(text, icon)
+    local Row = Instance.new("Frame", MusicTab)
+    Row.Size = UDim2.new(1, -10, 0, 45)
+    Row.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    Instance.new("UICorner", Row).CornerRadius = UDim.new(0, 8)
+    
+    local L = Instance.new("TextLabel", Row)
+    L.Size = UDim2.new(1, -100, 1, 0)
+    L.Position = UDim2.new(0, 12, 0, 0)
+    L.Text = (icon or "") .. " " .. text
+    L.TextColor3 = Color3.fromRGB(255, 255, 255)
+    L.Font = "GothamMedium"
+    L.TextXAlignment = "Left"
+    L.BackgroundTransparency = 1
+
+    local B = Instance.new("TextButton", Row)
+    B.Size = UDim2.new(0, 80, 0, 28)
+    B.Position = UDim2.new(1, -90, 0.5, -14)
+    B.BackgroundColor3 = Color3.fromRGB(255, 160, 0)
+    B.Text = "Click"
+    B.TextColor3 = Color3.fromRGB(255, 255, 255)
+    B.Font = "GothamBold"
+    Instance.new("UICorner", B).CornerRadius = UDim.new(0.5, 0)
+end
+
+AddMusic("Dừng Nhạc (Stop)", "🔇")
+AddMusic("Mở khung nhập ID nhạc", "🎵")
+AddMusic("Mạc Vấn Quy Kỳ - Remix", "")
+
+FarmTab.Visible = true -- Hiện tab đầu tiên

@@ -1,0 +1,65 @@
+-- [[ YUTA HUB v60.0 - MUSIC UPDATE ]]
+-- [[ STYLE: BEAR HUB PREMIUM REPLICA ]]
+
+-- (Giữ nguyên phần Anti-Ban và Main Frame ở bản cũ)
+
+-- 1. HÀM TẠO DÒNG NHẠC CHUẨN
+local function AddMusicRow(parent, text, icon, callback)
+    local Row = Instance.new("Frame", parent)
+    Row.Size = UDim2.new(1, -10, 0, 45)
+    Row.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    Row.BackgroundTransparency = 0.2
+    Instance.new("UICorner", Row).CornerRadius = UDim.new(0, 8)
+    
+    local Label = Instance.new("TextLabel", Row)
+    Label.Size = UDim2.new(1, -100, 1, 0)
+    Label.Position = UDim2.new(0, 10, 0, 0)
+    Label.Text = (icon or "") .. " " .. text
+    Label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Label.TextXAlignment = Enum.TextXAlignment.Left
+    Label.Font = Enum.Font.GothamMedium
+    Label.BackgroundTransparency = 1
+    Label.TextSize = 14
+
+    local Btn = Instance.new("TextButton", Row)
+    Btn.Size = UDim2.new(0, 85, 0, 30)
+    Btn.Position = UDim2.new(1, -95, 0.5, -15)
+    Btn.BackgroundColor3 = Color3.fromRGB(255, 165, 0) -- Màu cam vàng chuẩn
+    Btn.Text = "Click"
+    Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Btn.Font = Enum.Font.GothamBold
+    Instance.new("UICorner", Btn).CornerRadius = UDim.new(0.5, 0) -- Bo tròn cực đại
+    
+    Btn.MouseButton1Click:Connect(callback)
+end
+
+-- 2. SETUP TAB ÂM NHẠC
+local MusicTab = AddTab("Music") -- (Hàm AddTab từ bản v55)
+
+AddMusicRow(MusicTab, "Dừng Nhạc (Stop)", "🔇", function()
+    print("Stop Music")
+end)
+
+AddMusicRow(MusicTab, "Mở khung nhập ID nhạc", "🎵", function()
+    print("Open ID Input")
+end)
+
+-- List nhạc ông thích (Sắp xếp đúng vị trí)
+AddMusicRow(MusicTab, "Mạc Vấn Quy Kỳ - Remix", "", function() 
+    -- Code play song ID
+end)
+
+AddMusicRow(MusicTab, "Nhân sinh quán", "", function() 
+    -- Code play song ID
+end)
+
+AddMusicRow(MusicTab, "Poker face", "", function() 
+    -- Code play song ID
+end)
+
+AddMusicRow(MusicTab, "Lollipop", "", function() 
+    -- Code play song ID
+end)
+
+-- 3. FIX CẢM ỨNG NÚT CLICK TRÊN POCO
+-- Đảm bảo ZIndex của nút Click luôn cao nhất để không bị đè.

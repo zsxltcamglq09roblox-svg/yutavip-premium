@@ -1,0 +1,75 @@
+-- [[ YUTA HUB : FINAL FIX 100% ]]
+local CoreGui = game:GetService("CoreGui")
+local LPlayer = game:GetService("Players").LocalPlayer
+
+if CoreGui:FindFirstChild("Yuta_Final_Project") then CoreGui.Yuta_Final_Project:Destroy() end
+
+local MainGui = Instance.new("ScreenGui", CoreGui)
+MainGui.Name = "Yuta_Final_Project"
+
+-- --- 1. KHUNG CHÍNH (KEY BOARD) ---
+local KeyFrame = Instance.new("Frame", MainGui)
+KeyFrame.Size = UDim2.new(0, 400, 0, 250) -- Thu nhỏ lại cho chuẩn màn hình
+KeyFrame.Position = UDim2.new(0.5, -200, 0.5, -125)
+KeyFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+KeyFrame.BorderSizePixel = 0
+KeyFrame.ZIndex = 1
+Instance.new("UICorner", KeyFrame)
+local Stroke = Instance.new("UIStroke", KeyFrame)
+Stroke.Color = Color3.fromRGB(255, 0, 0)
+Stroke.Thickness = 2
+
+local Title = Instance.new("TextLabel", KeyFrame)
+Title.Text = "YUTA HUB : KEY SYSTEM"
+Title.Size = UDim2.new(1, 0, 0, 50)
+Title.TextColor3 = Color3.fromRGB(255, 0, 0)
+Title.Font = "GothamBold"
+Title.TextSize = 20
+Title.BackgroundTransparency = 1
+Title.ZIndex = 2
+
+-- --- 2. Ô NHẬP KEY (PASSWORD MODE) ---
+local Input = Instance.new("TextBox", KeyFrame)
+Input.Size = UDim2.new(0.85, 0, 0, 45)
+Input.Position = UDim2.new(0.075, 0, 0.35, 0)
+Input.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+Input.PlaceholderText = "Dán Key tại đây..."
+Input.Text = ""
+Input.TextPassword = true --
+Input.TextColor3 = Color3.fromRGB(255, 255, 255)
+Input.ZIndex = 3
+Instance.new("UICorner", Input)
+
+-- --- 3. NÚT VERIFY (VẼ RIÊNG BIỆT) ---
+local VerifyBtn = Instance.new("TextButton", KeyFrame)
+VerifyBtn.Name = "VerifyButton"
+VerifyBtn.Text = "VERIFY KEY"
+VerifyBtn.Size = UDim2.new(0.85, 0, 0, 45)
+VerifyBtn.Position = UDim2.new(0.075, 0, 0.65, 0) -- Đưa lên vị trí 65% để chắc chắn hiện
+VerifyBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+VerifyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+VerifyBtn.Font = "GothamBold"
+VerifyBtn.TextSize = 16
+VerifyBtn.ZIndex = 4 -- Nằm trên cùng
+Instance.new("UICorner", VerifyBtn)
+
+-- --- LOGIC ---
+if LPlayer.Name == "bebo_suacute80" then --
+    KeyFrame.Visible = false
+    print("Welcome back, YUTA!")
+    -- (Đoạn này gọi Menu chính 11/10 của ông)
+end
+
+VerifyBtn.MouseButton1Click:Connect(function()
+    if Input.Text == "YutaHub_Final_Infinite" or string.match(Input.Text, "^YutaHub_Final_6h_") then
+        VerifyBtn.Text = "SUCCESS!"
+        VerifyBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 0)
+        task.wait(1)
+        KeyFrame:Destroy()
+        -- Hiện Menu Chính
+    else
+        VerifyBtn.Text = "WRONG KEY!"
+        task.wait(1)
+        VerifyBtn.Text = "VERIFY KEY"
+    end
+end)

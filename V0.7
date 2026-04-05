@@ -1,0 +1,74 @@
+-- [[ YUTA HUB : KEY SYSTEM - BẢN KHÔNG THỂ LỖI ]]
+local CoreGui = game:GetService("CoreGui")
+local LPlayer = game:GetService("Players").LocalPlayer
+
+if CoreGui:FindFirstChild("Yuta_Final_Project") then CoreGui.Yuta_Final_Project:Destroy() end
+
+local MainGui = Instance.new("ScreenGui", CoreGui)
+MainGui.Name = "Yuta_Final_Project"
+
+-- --- KHUNG CHÍNH (CHO NHỎ LẠI ĐỂ KHÔNG BỊ TRÀN) ---
+local KeyFrame = Instance.new("Frame", MainGui)
+KeyFrame.Size = UDim2.new(0, 360, 0, 200) -- Thu nhỏ chiều cao
+KeyFrame.Position = UDim2.new(0.5, -180, 0.4, -100) -- Đẩy cao lên trên một chút
+KeyFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+Instance.new("UICorner", KeyFrame)
+local Stroke = Instance.new("UIStroke", KeyFrame)
+Stroke.Color = Color3.fromRGB(255, 0, 0)
+
+-- --- TIÊU ĐỀ (DÙNG LÀM ĐIỂM TỰA) ---
+local Title = Instance.new("TextLabel", KeyFrame)
+Title.Text = "YUTA HUB : KEY SYSTEM"
+Title.Size = UDim2.new(1, 0, 0, 40)
+Title.TextColor3 = Color3.fromRGB(255, 0, 0)
+Title.Font = "GothamBold"
+Title.TextSize = 18
+Title.BackgroundTransparency = 1
+
+-- --- Ô NHẬP KEY (ĐƯA LÊN CAO) ---
+local Input = Instance.new("TextBox", KeyFrame)
+Input.Size = UDim2.new(0.85, 0, 0, 40)
+Input.Position = UDim2.new(0.075, 0, 0.25, 0) -- Nằm ngay dưới tiêu đề
+Input.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+Input.PlaceholderText = "Dán Key tại đây..."
+Input.Text = ""
+Input.TextPassword = true 
+Input.TextColor3 = Color3.fromRGB(255, 255, 255)
+Instance.new("UICorner", Input)
+
+-- --- 2 NÚT BẤM (GẮN CỐ ĐỊNH VÀO KHUNG) ---
+local GetKeyBtn = Instance.new("TextButton", KeyFrame)
+GetKeyBtn.Text = "GET KEY"
+GetKeyBtn.Size = UDim2.new(0.4, 0, 0, 40)
+GetKeyBtn.Position = UDim2.new(0.075, 0, 0.6, 0) -- Vị trí cực kỳ an toàn
+GetKeyBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+GetKeyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+GetKeyBtn.Font = "GothamBold"
+Instance.new("UICorner", GetKeyBtn)
+
+local VerifyBtn = Instance.new("TextButton", KeyFrame)
+VerifyBtn.Text = "VERIFY"
+VerifyBtn.Size = UDim2.new(0.4, 0, 0, 40)
+VerifyBtn.Position = UDim2.new(0.525, 0, 0.6, 0) -- Song song với nút Get Key
+VerifyBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+VerifyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+VerifyBtn.Font = "GothamBold"
+Instance.new("UICorner", VerifyBtn)
+
+-- --- LOGIC ---
+if LPlayer.Name == "bebo_suacute80" then -- Tự động vào cho sếp
+    KeyFrame.Visible = false
+    -- (Ở đây gọi code Menu chính của ông)
+end
+
+VerifyBtn.MouseButton1Click:Connect(function()
+    if Input.Text == "YutaHub_Final_Infinite" or string.match(Input.Text, "^YutaHub_Final_6h_") then
+        VerifyBtn.Text = "SUCCESS!"
+        task.wait(0.5)
+        KeyFrame:Destroy()
+    else
+        VerifyBtn.Text = "WRONG!"
+        task.wait(1)
+        VerifyBtn.Text = "VERIFY"
+    end
+end)

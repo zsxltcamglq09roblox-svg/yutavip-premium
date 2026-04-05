@@ -1,0 +1,118 @@
+-- [[ YUTA HUB - EFFECT: SEMI-TRANSPARENT & BLUR ]]
+
+local UIS = game:GetService("UserInputService")
+local CoreGui = game:GetService("CoreGui")
+
+if CoreGui:FindFirstChild("YutaHub_Glass") then CoreGui.YutaHub_Glass:Destroy() end
+
+local Screen = Instance.new("ScreenGui", CoreGui)
+Screen.Name = "YutaHub_Glass"
+
+-- 1. KHUNG CHÍNH (VỪA MỜ VỪA TRONG SUỐT)
+local Main = Instance.new("Frame", Screen)
+Main.Size = UDim2.new(0, 560, 0, 320)
+Main.Position = UDim2.new(0.5, -280, 0.5, -160)
+-- Chỉnh độ trong suốt ở đây (0.2 - 0.3 là đẹp nhất)
+Main.BackgroundColor3 = Color3.fromRGB(10, 10, 10) 
+Main.BackgroundTransparency = 0.25 -- ĐỘ TRONG SUỐT VỪA PHẢI
+Main.Visible = true 
+Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 12)
+
+-- VIỀN ĐỎ "CHIẾN"
+local Stroke = Instance.new("UIStroke", Main)
+Stroke.Color = Color3.fromRGB(255, 0, 0)
+Stroke.Thickness = 1.8
+Stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
+-- 2. TIÊU ĐỀ 
+local Title = Instance.new("TextLabel", Main)
+Title.Text = " YUTA HUB : Blox Fruits"
+Title.Size = UDim2.new(0, 300, 0, 40)
+Title.Position = UDim2.new(0, 45, 0, 5)
+Title.TextColor3 = Color3.fromRGB(255, 255, 255) -- Chữ trắng cho nổi trên nền mờ
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 16
+Title.BackgroundTransparency = 1
+Title.TextXAlignment = "Left"
+
+-- 3. SIDEBAR TRONG SUỐT
+local Sidebar = Instance.new("Frame", Main)
+Sidebar.Size = UDim2.new(0, 140, 1, -60)
+Sidebar.Position = UDim2.new(0, 10, 0, 50)
+Sidebar.BackgroundTransparency = 1
+Instance.new("UIListLayout", Sidebar).Padding = UDim.new(0, 6)
+
+local Container = Instance.new("Frame", Main)
+Container.Size = UDim2.new(1, -170, 1, -70)
+Container.Position = UDim2.new(0, 160, 0, 55)
+Container.BackgroundTransparency = 1
+
+local function CreateTab(name)
+    local Btn = Instance.new("TextButton", Sidebar)
+    Btn.Size = UDim2.new(1, 0, 0, 35)
+    Btn.Text = name
+    Btn.TextColor3 = Color3.fromRGB(220, 220, 220)
+    Btn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Btn.BackgroundTransparency = 0.9 -- Nút bấm cũng hơi trong suốt
+    Btn.Font = "GothamMedium"
+    Instance.new("UICorner", Btn).CornerRadius = UDim.new(0, 6)
+    
+    local Page = Instance.new("ScrollingFrame", Container)
+    Page.Size = UDim2.new(1, 0, 1, 0)
+    Page.BackgroundTransparency = 1
+    Page.Visible = false
+    Page.ScrollBarThickness = 0
+    Instance.new("UIListLayout", Page).Padding = UDim.new(0, 8)
+    
+    Btn.MouseButton1Click:Connect(function()
+        for _,v in pairs(Container:GetChildren()) do v.Visible = false end
+        Page.Visible = true
+        for _,b in pairs(Sidebar:GetChildren()) do 
+            b.TextColor3 = Color3.fromRGB(220, 220, 220) 
+            b.BackgroundTransparency = 0.9
+        end
+        Btn.TextColor3 = Color3.fromRGB(255, 0, 0)
+        Btn.BackgroundTransparency = 0.8
+    end)
+    return Page
+end
+
+-- 4. DANH MỤC
+local Tabs = {
+    Sea = CreateTab("Sea Events"),
+    Dojo = CreateTab("Dragon Dojo"),
+    Item = CreateTab("Items Farm"),
+    Music = CreateTab("Music Player")
+}
+
+-- 5. NÚT NHẠC CAM (ĐIỂM NHẤN)
+local function AddMusic(title, icon)
+    local F = Instance.new("Frame", Tabs.Music)
+    F.Size = UDim2.new(1, -5, 0, 45)
+    F.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    F.BackgroundTransparency = 0.5 -- Khung nhạc mờ ảo
+    Instance.new("UICorner", F).CornerRadius = UDim.new(0, 8)
+    
+    local L = Instance.new("TextLabel", F)
+    L.Size = UDim2.new(0.7, 0, 1, 0)
+    L.Position = UDim2.new(0, 12, 0, 0)
+    L.Text = (icon or "") .. " " .. title
+    L.TextColor3 = Color3.fromRGB(255, 255, 255)
+    L.TextXAlignment = "Left"
+    L.BackgroundTransparency = 1
+    L.Font = "GothamMedium"
+
+    local C = Instance.new("TextButton", F)
+    C.Size = UDim2.new(0, 80, 0, 30)
+    C.Position = UDim2.new(1, -90, 0.5, -15)
+    C.BackgroundColor3 = Color3.fromRGB(255, 160, 0)
+    C.Text = "Click"
+    C.TextColor3 = Color3.fromRGB(255, 255, 255)
+    C.Font = "GothamBold"
+    Instance.new("UICorner", C).CornerRadius = UDim.new(0.5, 0)
+end
+
+AddMusic("Dừng Nhạc (Stop)", "🔇")
+AddMusic("Mạc Vấn Quy Kỳ", "🎵")
+
+Tabs.Sea.Visible = true

@@ -1,0 +1,154 @@
+-- [[ YUTA HUB : FINAL EDITION 2026 ]]
+-- [[ HỆ THỐNG KEY THÔNG MINH | ANDROID EXCLUSIVE ]]
+
+local CoreGui = game:GetService("CoreGui")
+local LPlayer = game:GetService("Players").LocalPlayer
+local UserInputService = game:GetService("UserInputService")
+
+-- --- KIỂM TRA HỆ ĐIỀU HÀNH (CHỈ CHO PHÉP ANDROID) ---
+if UserInputService:GetPlatform() == Enum.Platform.IOS then
+    LPlayer:Kick("❌ YUTA HUB KHÔNG HỖ TRỢ iOS. VUI LÒNG DÙNG ANDROID!")
+    return
+end
+
+-- Xoá bản cũ
+if CoreGui:FindFirstChild("Yuta_Ultimate_Project") then CoreGui.Yuta_Ultimate_Project:Destroy() end
+
+local MainGui = Instance.new("ScreenGui", CoreGui)
+MainGui.Name = "Yuta_Ultimate_Project"
+
+-- --- HÀM KIỂM TRA KEY THÔNG MINH ---
+local function CheckValidKey(input)
+    -- 1. Check Key Vĩnh Viễn của ông
+    if input == "YutaHub_Final_Infinite" then 
+        return "INFINITE" 
+    end
+    -- 2. Check Key 6h (Sử dụng string.match để bỏ qua các chữ số ngẫu nhiên phía sau)
+    if string.match(input, "^YutaHub_Final_6h_") then
+        return "6H"
+    end
+    return false
+end
+
+-- ==========================================
+-- [ 1. GIAO DIỆN MENU CHÍNH (ẨN) ]
+-- ==========================================
+local MainFrame = Instance.new("Frame", MainGui)
+MainFrame.Size = UDim2.new(0, 550, 0, 320)
+MainFrame.Position = UDim2.new(0.5, -275, 0.5, -160)
+MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+MainFrame.Visible = false
+MainFrame.Active = true
+MainFrame.Draggable = true
+Instance.new("UICorner", MainFrame)
+local MainStroke = Instance.new("UIStroke", MainFrame)
+MainStroke.Color = Color3.fromRGB(255, 0, 0)
+
+-- Logo YV Đỏ-Trắng trên Menu
+local LogoM = Instance.new("TextLabel", MainFrame)
+LogoM.Size = UDim2.new(0, 80, 0, 40)
+LogoM.Position = UDim2.new(0, 15, 0, 5)
+LogoM.BackgroundTransparency = 1
+LogoM.RichText = true
+LogoM.Text = '<font color="#FF0000">Y</font><font color="#FFFFFF">V</font> <font color="#FFFFFF">HUB</font>'
+LogoM.Font = "GothamBold"
+LogoM.TextSize = 22
+
+-- Sidebar & Content
+local Sidebar = Instance.new("ScrollingFrame", MainFrame)
+Sidebar.Size = UDim2.new(0, 140, 1, -60)
+Sidebar.Position = UDim2.new(0, 10, 0, 50)
+Sidebar.BackgroundTransparency = 1
+Sidebar.ScrollBarThickness = 0
+local SLayout = Instance.new("UIListLayout", Sidebar)
+SLayout.Padding = UDim.new(0, 5)
+
+local Container = Instance.new("Frame", MainFrame)
+Container.Size = UDim2.new(1, -170, 1, -20)
+Container.Position = UDim2.new(0, 160, 0, 10)
+Container.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Instance.new("UICorner", Container)
+
+local function AddTab(name)
+    local B = Instance.new("TextButton", Sidebar)
+    B.Size = UDim2.new(1, -5, 0, 32)
+    B.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    B.Text = "  " .. name
+    B.TextColor3 = Color3.fromRGB(200, 200, 200)
+    B.Font = "GothamMedium"
+    B.TextSize = 13
+    B.TextXAlignment = "Left"
+    Instance.new("UICorner", B)
+end
+
+local Tabs = {"Farm", "Item Farm", "Sea Event", "Race V2-V4", "Dragon Dojo", "Volcanic Island", "Raid", "Combat", "Settings", "Âm nhạc"}
+for _, t in pairs(Tabs) do AddTab(t) end
+
+-- ==========================================
+-- [ 2. GIAO DIỆN GET KEY (HIỆN ĐẦU) ]
+-- ==========================================
+local KeyFrame = Instance.new("Frame", MainGui)
+KeyFrame.Size = UDim2.new(0, 450, 0, 280)
+KeyFrame.Position = UDim2.new(0.5, -225, 0.5, -140)
+KeyFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+Instance.new("UICorner", KeyFrame)
+local KeyStroke = Instance.new("UIStroke", KeyFrame)
+KeyStroke.Color = Color3.fromRGB(255, 0, 0)
+
+local KeyTitle = Instance.new("TextLabel", KeyFrame)
+KeyTitle.Size = UDim2.new(1, 0, 0, 50)
+KeyTitle.BackgroundTransparency = 1
+KeyTitle.RichText = true
+KeyTitle.Text = '<font color="#FF0000">YUTA</font> <font color="#FFFFFF">HUB : KEY SYSTEM</font>'
+KeyTitle.Font = "GothamBold"
+KeyTitle.TextSize = 20
+
+local PlatformInfo = Instance.new("TextLabel", KeyFrame)
+PlatformInfo.Text = "DEVICE: ANDROID (SAFE)"
+PlatformInfo.Position = UDim2.new(0, 0, 0, 45)
+PlatformInfo.Size = UDim2.new(1, 0, 0, 20)
+PlatformInfo.TextColor3 = Color3.fromRGB(0, 255, 0)
+PlatformInfo.Font = "Gotham"
+PlatformInfo.TextSize = 12
+PlatformInfo.BackgroundTransparency = 1
+
+-- Input & Button
+local Input = Instance.new("TextBox", KeyFrame)
+Input.Size = UDim2.new(0.9, 0, 0, 40)
+Input.Position = UDim2.new(0.05, 0, 0.52, 0)
+Input.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Input.PlaceholderText = "Nhập Key (6h hoặc Infinite)..."
+Input.TextColor3 = Color3.fromRGB(255, 255, 255)
+Instance.new("UICorner", Input)
+
+local VerifyBtn = Instance.new("TextButton", KeyFrame)
+VerifyBtn.Text = "VERIFY KEY"
+VerifyBtn.Size = UDim2.new(0.9, 0, 0, 45)
+VerifyBtn.Position = UDim2.new(0.05, 0, 0.78, 0)
+VerifyBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+VerifyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+VerifyBtn.Font = "GothamBold"
+Instance.new("UICorner", VerifyBtn)
+
+-- --- LOGIC XỬ LÝ KEY ---
+VerifyBtn.MouseButton1Click:Connect(function()
+    local keyResult = CheckValidKey(Input.Text)
+    
+    if keyResult == "INFINITE" then
+        VerifyBtn.Text = "CHÀO CHỦ TỊCH YUTA! (INFINITE)"
+        VerifyBtn.BackgroundColor3 = Color3.fromRGB(255, 215, 0) -- Màu vàng Gold
+        task.wait(1)
+        KeyFrame:Destroy()
+        MainFrame.Visible = true
+    elseif keyResult == "6H" then
+        VerifyBtn.Text = "XÁC THỰC THÀNH CÔNG (6 GIỜ)"
+        VerifyBtn.BackgroundColor3 = Color3.fromRGB(0, 180, 0)
+        task.wait(1)
+        KeyFrame:Destroy()
+        MainFrame.Visible = true
+    else
+        VerifyBtn.Text = "SAI KEY RỒI ÔNG CHÁU!"
+        task.wait(1.5)
+        VerifyBtn.Text = "VERIFY KEY"
+    end
+end)

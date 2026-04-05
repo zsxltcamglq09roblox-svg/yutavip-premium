@@ -1,0 +1,135 @@
+-- [[ FRAMEWORK HDANH HUB : ĐÃ CHỈNH SỬA ]]
+-- [[ TÍNH NĂNG: ĐỔI MÀU TÊN LIÊN TỤC + NO KEY MENU + RED UI ]]
+
+local UIS = game:GetService("UserInputService")
+local TS = game:GetService("TweenService")
+local CoreGui = game:GetService("CoreGui")
+
+if CoreGui:FindFirstChild("Yuta_God_Hub") then CoreGui.Yuta_God_Hub:Destroy() end
+
+local Screen = Instance.new("ScreenGui", CoreGui)
+Screen.Name = "Yuta_God_Hub"
+
+-- 1. HỆ THỐNG KEY 6H & INFINITE
+local Keys = {
+    ["YutaHub_Final_6h_freemium"] = {Type = "Limited", Time = 21600},
+    ["YutaHub_Final_Infinite"] = {Type = "Infinite"}
+}
+
+-- [KHUNG NHẬP KEY - TỰ HỦY SAU KHI DÙNG]
+local KeyUI = Instance.new("Frame", Screen)
+KeyUI.Size = UDim2.new(0, 340, 0, 170)
+KeyUI.Position = UDim2.new(0.5, -170, 0.5, -85)
+KeyUI.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+Instance.new("UICorner", KeyUI)
+local KStroke = Instance.new("UIStroke", KeyUI)
+KStroke.Color = Color3.fromRGB(255, 0, 0) -- VIỀN ĐỎ CHIẾN
+
+local KInput = Instance.new("TextBox", KeyUI)
+KInput.PlaceholderText = "Nhập Key Yuta Hub..."
+KInput.Size = UDim2.new(0.8, 0, 0, 35)
+KInput.Position = UDim2.new(0.1, 0, 0.3, 0)
+KInput.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+KInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+Instance.new("UICorner", KInput)
+
+local KBtn = Instance.new("TextButton", KeyUI)
+KBtn.Text = "KÍCH HOẠT"
+KBtn.Size = UDim2.new(0.5, 0, 0, 35)
+KBtn.Position = UDim2.new(0.25, 0, 0.7, 0)
+KBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+KBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+Instance.new("UICorner", KBtn)
+
+-- 2. KHUNG CHÍNH (FRAMEWORK BANANA CAT - MỔ XẺ CHUẨN)
+local Main = Instance.new("Frame", Screen)
+Main.Size = UDim2.new(0, 570, 0, 330)
+Main.Position = UDim2.new(0.5, -285, 0.5, -165)
+Main.BackgroundColor3 = Color3.fromRGB(5, 5, 5)
+Main.BackgroundTransparency = 0.25 -- ĐỘ MỜ 0.25
+Main.Visible = false
+Main.Active = true
+Main.Draggable = true
+Instance.new("UICorner", Main)
+local MStroke = Instance.new("UIStroke", Main)
+MStroke.Color = Color3.fromRGB(255, 0, 0)
+
+-- 3. HIỆU ỨNG ĐỔI MÀU TÊN LIÊN TỤC (RGB TITLE)
+local Title = Instance.new("TextLabel", Main)
+Title.Size = UDim2.new(0, 300, 0, 40)
+Title.Position = UDim2.new(0, 165, 0, 5)
+Title.BackgroundTransparency = 1
+Title.Font = "GothamBold"
+Title.TextSize = 18
+Title.Text = "YUTA HUB : BLOX FRUITS"
+
+task.spawn(function()
+    while task.wait() do
+        local Hue = tick() % 3 / 3
+        Title.TextColor3 = Color3.fromHSV(Hue, 1, 1) -- ĐỔI MÀU LIÊN TỤC
+    end
+end)
+
+-- 4. SIDEBAR ĐỎ - ĐEN (STYLE HDANH HUB)
+local Sidebar = Instance.new("Frame", Main)
+Sidebar.Size = UDim2.new(0, 150, 1, -60)
+Sidebar.Position = UDim2.new(0, 10, 0, 50)
+Sidebar.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+Sidebar.BackgroundTransparency = 0.5
+Instance.new("UICorner", Sidebar)
+
+-- 5. CÔNG TẮC GẠT (TOGGLE CHUẨN - KHÔNG DÙNG NÚT CLICK)
+local function AddToggle(name)
+    local T = Instance.new("Frame", Main) -- Giả định vị trí
+    T.Size = UDim2.new(0, 380, 0, 42)
+    T.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    Instance.new("UICorner", T)
+    
+    local L = Instance.new("TextLabel", T)
+    L.Text = "  " .. name
+    L.Size = UDim2.new(0.7, 0, 1, 0)
+    L.TextColor3 = Color3.fromRGB(255, 255, 255)
+    L.TextXAlignment = "Left"
+    L.BackgroundTransparency = 1
+
+    local Sw = Instance.new("TextButton", T)
+    Sw.Text = ""
+    Sw.Size = UDim2.new(0, 42, 0, 20)
+    Sw.Position = UDim2.new(1, -50, 0.5, -10)
+    Sw.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    Instance.new("UICorner", Sw).CornerRadius = UDim.new(1, 0)
+    
+    local Dot = Instance.new("Frame", Sw)
+    Dot.Size = UDim2.new(0, 16, 0, 16)
+    Dot.Position = UDim2.new(0, 2, 0.5, -8)
+    Dot.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Instance.new("UICorner", Dot).CornerRadius = UDim.new(1, 0)
+
+    local state = false
+    Sw.MouseButton1Click:Connect(function()
+        state = not state
+        TS:Create(Dot, TweenInfo.new(0.2), {Position = state and UDim2.new(1, -18, 0.5, -8) or UDim2.new(0, 2, 0.5, -8)}):Play()
+        Sw.BackgroundColor3 = state and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(60, 60, 60)
+    end)
+end
+
+-- LOGIC KÍCH HOẠT VÀ XÓA KEY KHỎI MENU
+KBtn.MouseButton1Click:Connect(function()
+    local input = KInput.Text
+    if Keys[input] then
+        local data = Keys[input]
+        KeyUI:Destroy() -- Xóa sạch khung Key, không hiện ở menu chính
+        Main.Visible = true
+        if data.Type == "Limited" then
+            task.delay(data.Time, function() Screen:Destroy() end)
+        end
+        -- Cài đặt các mục farm
+        AddToggle("Auto Farm Sea Event")
+        AddToggle("Auto Farm Player")
+        AddToggle("Auto Farm Item")
+        AddToggle("Auto Farm Missed Items")
+    else
+        KInput.Text = ""
+        KInput.PlaceholderText = "KEY SAI RỒI ÔNG!"
+    end
+end)

@@ -1,0 +1,137 @@
+-- [[ YUTA HUB - PHIÊN BẢN CHUẨN FRAMEWORK BANANA ]]
+-- [[ MỔ XẺ CHỨC NĂNG TỪ HDANH HUB - TÔNG ĐỎ ĐEN ]]
+
+local CoreGui = game:GetService("CoreGui")
+local TS = game:GetService("TweenService")
+
+if CoreGui:FindFirstChild("YutaHub_Banana_Red") then CoreGui.YutaHub_Banana_Red:Destroy() end
+
+local Screen = Instance.new("ScreenGui", CoreGui)
+Screen.Name = "YutaHub_Banana_Red"
+
+-- 1. HỆ THỐNG KEY (TỰ HỦY KHI XONG)
+local Keys = {
+    ["YutaHub_Final_6h_freemium"] = {Type = "Limited", Time = 21600},
+    ["YutaHub_Final_Infinite"] = {Type = "Infinite"}
+}
+
+-- [CODE KHUNG KEY TỰ HỦY]
+local KeyUI = Instance.new("Frame", Screen)
+KeyUI.Size = UDim2.new(0, 350, 0, 180)
+KeyUI.Position = UDim2.new(0.5, -175, 0.5, -90)
+KeyUI.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+local KStroke = Instance.new("UIStroke", KeyUI)
+KStroke.Color = Color3.fromRGB(255, 0, 0)
+Instance.new("UICorner", KeyUI)
+
+local KInput = Instance.new("TextBox", KeyUI)
+KInput.PlaceholderText = "Nhập Key Yuta Hub..."
+KInput.Size = UDim2.new(0.8, 0, 0, 40)
+KInput.Position = UDim2.new(0.1, 0, 0.3, 0)
+KInput.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+KInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+Instance.new("UICorner", KInput)
+
+local KBtn = Instance.new("TextButton", KeyUI)
+KBtn.Text = "KÍCH HOẠT"
+KBtn.Size = UDim2.new(0, 140, 0, 35)
+KBtn.Position = UDim2.new(0.5, -70, 0.7, 0)
+KBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+KBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+Instance.new("UICorner", KBtn)
+
+-- 2. KHUNG CHÍNH (BÊ NGUYÊN FORM BANANA HUB)
+local Main = Instance.new("Frame", Screen)
+Main.Size = UDim2.new(0, 580, 0, 340)
+Main.Position = UDim2.new(0.5, -290, 0.5, -170)
+Main.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+Main.BackgroundTransparency = 0.2
+Main.Visible = false
+Main.Active = true
+Main.Draggable = true
+Instance.new("UICorner", Main)
+
+local MStroke = Instance.new("UIStroke", Main)
+MStroke.Color = Color3.fromRGB(255, 0, 0) -- VIỀN ĐỎ CHUẨN 
+
+-- Tiêu đề (Rainbow đổi màu)
+local Title = Instance.new("TextLabel", Main)
+Title.Text = "YUTA HUB : Blox Fruits"
+Title.Size = UDim2.new(1, 0, 0, 40)
+Title.BackgroundTransparency = 1
+Title.Font = "GothamBold"
+Title.TextSize = 17
+task.spawn(function()
+    while task.wait() do
+        Title.TextColor3 = Color3.fromHSV(tick() % 5 / 5, 1, 1)
+    end
+end)
+
+-- Sidebar (Dải bên trái)
+local Sidebar = Instance.new("Frame", Main)
+Sidebar.Size = UDim2.new(0, 160, 1, -50)
+Sidebar.Position = UDim2.new(0, 10, 0, 45)
+Sidebar.BackgroundTransparency = 1
+local SLayout = Instance.new("UIListLayout", Sidebar)
+SLayout.Padding = UDim.new(0, 5)
+
+-- Container chứa chức năng
+local Container = Instance.new("ScrollingFrame", Main)
+Container.Size = UDim2.new(1, -190, 1, -60)
+Container.Position = UDim2.new(0, 180, 0, 50)
+Container.BackgroundTransparency = 1
+Container.ScrollBarThickness = 2
+local CLayout = Instance.new("UIListLayout", Container)
+CLayout.Padding = UDim.new(0, 8)
+
+-- 3. HÀM TẠO CHỨC NĂNG (CHECKBOX STYLE)
+local function AddFunction(name)
+    local F = Instance.new("Frame", Container)
+    F.Size = UDim2.new(1, -10, 0, 40)
+    F.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    Instance.new("UICorner", F)
+    
+    local L = Instance.new("TextLabel", F)
+    L.Text = "  " .. name
+    L.Size = UDim2.new(0.8, 0, 1, 0)
+    L.TextColor3 = Color3.fromRGB(255, 255, 255)
+    L.TextXAlignment = "Left"
+    L.BackgroundTransparency = 1
+    
+    local Box = Instance.new("TextButton", F)
+    Box.Text = ""
+    Box.Size = UDim2.new(0, 22, 0, 22)
+    Box.Position = UDim2.new(1, -35, 0.5, -11)
+    Box.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    local BStroke = Instance.new("UIStroke", Box)
+    BStroke.Color = Color3.fromRGB(255, 0, 0)
+    Instance.new("UICorner", Box).CornerRadius = UDim.new(0, 4)
+
+    local on = false
+    Box.MouseButton1Click:Connect(function()
+        on = not on
+        Box.Text = on and "✓" or ""
+        Box.TextColor3 = Color3.fromRGB(255, 0, 0)
+        -- Chèn lệnh farm từ Hdanh Hub vào đây
+    end)
+end
+
+-- 4. KÍCH HOẠT
+KBtn.MouseButton1Click:Connect(function()
+    if Keys[KInput.Text] then
+        local data = Keys[KInput.Text]
+        KeyUI:Destroy()
+        Main.Visible = true
+        if data.Type == "Limited" then task.delay(data.Time, function() Screen:Destroy() end) end
+        
+        -- FULL CHỨC NĂNG ÔNG CẦN
+        AddFunction("Auto Farm Level")
+        AddFunction("Auto Farm Sea Event")
+        AddFunction("Auto Farm Player")
+        AddFunction("Auto Farm Item")
+        AddFunction("Auto Farm Missed Items")
+        AddFunction("Auto Factory Raid")
+    else
+        KInput.Text = "SAI KEY!"
+    end
+end)

@@ -1,0 +1,124 @@
+local CoreGui = game:GetService("CoreGui")
+local LPlayer = game:GetService("Players").LocalPlayer
+local VirtualUser = game:GetService("VirtualUser")
+
+if CoreGui:FindFirstChild("Yuta_Final_Hub") then CoreGui.Yuta_Final_Hub:Destroy() end
+
+local MainGui = Instance.new("ScreenGui", CoreGui)
+MainGui.Name = "Yuta_Final_Hub"
+
+-- --- BIẾN TRẠNG THÁI ---
+_G.AutoFarm = false
+_G.Distance = 12 -- Khoảng cách đánh xa an toàn
+
+-- --- LOGIC AUTO ĐÁNH XA (ANTI-DIE) ---
+spawn(function()
+    while task.wait() do
+        if _G.AutoFarm then
+            pcall(function()
+                local Target = nil
+                for _, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                    if v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
+                        Target = v break
+                    end
+                end
+                
+                if Target then
+                    -- Bay lên đầu quái để đánh xa
+                    LPlayer.Character.HumanoidRootPart.CFrame = Target.HumanoidRootPart.CFrame * CFrame.new(0, _G.Distance, 0)
+                    -- Click liên tục
+                    VirtualUser:CaptureController()
+                    VirtualUser:ClickButton1(Vector2.new(851, 158))
+                end
+            end)
+        end
+    end
+end)
+
+-- --- LOGO YZ BẬT TẮT ---
+local Toggle = Instance.new("ImageButton", MainGui)
+Toggle.Size = UDim2.new(0, 55, 0, 55)
+Toggle.Position = UDim2.new(0, 10, 0.5, -27)
+Toggle.Image = "rbxassetid://15115502120"
+Toggle.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Toggle.Draggable = true
+Instance.new("UICorner", Toggle).CornerRadius = UDim.new(1, 0)
+Instance.new("UIStroke", Toggle).Color = Color3.fromRGB(255, 0, 0)
+
+-- --- KHUNG MENU CHÍNH ---
+local Main = Instance.new("Frame", MainGui)
+Main.Size = UDim2.new(0, 520, 0, 320)
+Main.Position = UDim2.new(0.5, -260, 0.5, -160)
+Main.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+Main.Visible = false
+Instance.new("UICorner", Main)
+Instance.new("UIStroke", Main).Color = Color3.fromRGB(255, 0, 0)
+
+Toggle.MouseButton1Click:Connect(function() Main.Visible = not Main.Visible end)
+
+-- --- THANH TAB BÊN TRÁI ---
+local TabFrame = Instance.new("ScrollingFrame", Main)
+TabFrame.Size = UDim2.new(0, 130, 1, -20)
+TabFrame.Position = UDim2.new(0, 10, 0, 10)
+TabFrame.BackgroundTransparency = 1
+TabFrame.ScrollBarThickness = 0
+local TabList = Instance.new("UIListLayout", TabFrame)
+TabList.Padding = UDim.new(0, 5)
+
+-- --- KHUNG NỘI DUNG BÊN PHẢI ---
+local Container = Instance.new("ScrollingFrame", Main)
+Container.Size = UDim2.new(1, -160, 1, -50)
+Container.Position = UDim2.new(0, 150, 0, 40)
+Container.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Container.CanvasSize = UDim2.new(0, 0, 3, 0)
+local CList = Instance.new("UIListLayout", Container)
+CList.Padding = UDim.new(0, 7)
+
+local SectionTitle = Instance.new("TextLabel", Main)
+SectionTitle.Text = "YUTA HUB - FREE VERSION"
+SectionTitle.Size = UDim2.new(1, -160, 0, 30)
+SectionTitle.Position = UDim2.new(0, 150, 0, 5)
+SectionTitle.TextColor3 = Color3.fromRGB(255, 0, 0)
+SectionTitle.Font = "GothamBold"
+SectionTitle.BackgroundTransparency = 1
+
+-- --- HÀM TẠO NÚT CHỨC NĂNG ---
+local function CreateTab(name, items)
+    local TBtn = Instance.new("TextButton", TabFrame)
+    TBtn.Text = name
+    TBtn.Size = UDim2.new(1, 0, 0, 35)
+    TBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    TBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Instance.new("UICorner", TBtn)
+
+    TBtn.MouseButton1Click:Connect(function()
+        for _, v in pairs(Container:GetChildren()) do if v:IsA("TextButton") then v:Destroy() end end
+        SectionTitle.Text = "YUTA HUB - " .. name:upper()
+        for _, text in pairs(items) do
+            local B = Instance.new("TextButton", Container)
+            B.Text = text
+            B.Size = UDim2.new(0.9, 0, 0, 40)
+            B.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+            B.TextColor3 = Color3.fromRGB(255, 255, 255)
+            Instance.new("UICorner", B)
+            
+            -- Gán logic Auto Farm vào nút
+            if text == "Auto Farm Level" then
+                B.MouseButton1Click:Connect(function()
+                    _G.AutoFarm = not _G.AutoFarm
+                    B.Text = "Auto Farm Level: " .. (_G.AutoFarm and "ON" or "OFF")
+                    B.TextColor3 = _G.AutoFarm and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 255, 255)
+                end)
+            end
+        end
+    end)
+end
+
+-- --- KHỞI TẠO 7 MỤC THEO YÊU CẦU ---
+CreateTab("Farm", {"Auto Farm Level", "Auto Farm Bone", "Auto Farm Katakuri"})
+CreateTab("Farm Item", {"God Human", "Huyết Quỷ Thuật", "Saber", "Yama", "Tushita", "CDK", "Đàn Linh Hồn"})
+CreateTab("Sea Event", {"Chọn Thuyền", "Chọn Vùng Biển", "Auto Farm Cá", "Auto Nhặt Quỷ Hồn", "Trade Quỷ Hồn"})
+CreateTab("Dragon Dojo", {"Tele Dragon Dojo", "Auto Full Đai", "Auto Farm Lửa"})
+CreateTab("Volcano", {"Tìm Đảo Núi Lửa", "Đánh Golem", "Nhặt Xương Trứng Rồng"})
+CreateTab("Raid", {"Chọn Raid", "Auto Raid", "Auto Raid Trái trên 1m"})
+CreateTab("Setting", {"Speed Hack", "Jump Hack", "ESP", "Auto Nâng Điểm"})

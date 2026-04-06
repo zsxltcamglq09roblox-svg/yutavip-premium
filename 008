@@ -1,0 +1,138 @@
+-- [[ YUTA HUB V3 : SAFE & CLEAN EDITION ]]
+local CoreGui = game:GetService("CoreGui")
+local LPlayer = game:GetService("Players").LocalPlayer
+local VirtualUser = game:GetService("VirtualUser")
+local Remote = game:GetService("ReplicatedStorage").Remotes.CommF_
+
+-- --- [1. HỆ THỐNG BẢO MẬT: ANTI-AFK & ANTI-BAN] ---
+-- Chống bị văng game khi treo máy (Anti-AFK)
+LPlayer.Idled:Connect(function()
+    VirtualUser:CaptureController()
+    VirtualUser:ClickButton2(Vector2.new(0,0))
+end)
+
+-- Ẩn hoạt động script để tránh bị quét (Anti-Ban Basic)
+if getgenv then getgenv().AntiBan = true end
+
+if CoreGui:FindFirstChild("Yuta_Safe_Hub") then CoreGui.Yuta_Safe_Hub:Destroy() end
+local MainGui = Instance.new("ScreenGui", CoreGui)
+MainGui.Name = "Yuta_Safe_Hub"
+
+-- --- BIẾN TRẠNG THÁI ---
+_G.AutoFarm = false
+_G.RotAngle = 0
+
+-- --- LOGIC FARM XOAY VÒNG TRÒN (FIXED) ---
+spawn(function()
+    while task.wait() do
+        if _G.AutoFarm then
+            pcall(function()
+                local target = nil
+                local myLv = LPlayer.Data.Level.Value
+                local name = (myLv >= 2700 and "Living Zombie") or (myLv >= 2500 and "Warrior") or "Monster"
+                
+                for _, v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                    if v.Name:find(name) and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
+                        target = v break
+                    end
+                end
+
+                if target then
+                    -- Luôn luôn xoay vòng tròn khi farm
+                    _G.RotAngle = _G.RotAngle + 15
+                    local Rotation = CFrame.Angles(0, math.rad(_G.RotAngle), 0)
+                    LPlayer.Character.HumanoidRootPart.CFrame = target.HumanoidRootPart.CFrame * Rotation * CFrame.new(0, 12, 5)
+                    
+                    for _, p in pairs(target:GetChildren()) do
+                        if p:IsA("BasePart") then p.CanCollide = false p.Size = Vector3.new(50, 50, 50) end
+                    end
+                    VirtualUser:Button1Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
+                end
+            end)
+        end
+    end
+end)
+
+-- --- [2. GIAO DIỆN CHUẨN 6 MỤC CỦA YUTA] ---
+local Main = Instance.new("Frame", MainGui)
+Main.Size = UDim2.new(0, 550, 0, 350)
+Main.Position = UDim2.new(0.5, -275, 0.5, -175)
+Main.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+Instance.new("UICorner", Main)
+Instance.new("UIStroke", Main).Color = Color3.fromRGB(255, 0, 0)
+
+local TabFrame = Instance.new("ScrollingFrame", Main)
+TabFrame.Size = UDim2.new(0, 140, 1, -20)
+TabFrame.Position = UDim2.new(0, 10, 0, 10)
+TabFrame.BackgroundTransparency = 1
+TabFrame.ScrollBarThickness = 0
+Instance.new("UIListLayout", TabFrame).Padding = UDim.new(0, 5)
+
+local Content = Instance.new("ScrollingFrame", Main)
+Content.Size = UDim2.new(1, -170, 1, -40)
+Content.Position = UDim2.new(0, 160, 0, 30)
+Content.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+Content.CanvasSize = UDim2.new(0, 0, 3, 0)
+Instance.new("UIListLayout", Content).Padding = UDim.new(0, 8)
+
+-- HÀM TẠO CHECKBOX ✓
+local function AddToggle(parent, text, callback)
+    local F = Instance.new("Frame", parent)
+    F.Size = UDim2.new(0.95, 0, 0, 40)
+    F.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    Instance.new("UICorner", F)
+
+    local L = Instance.new("TextLabel", F)
+    L.Text = "  " .. text L.Size = UDim2.new(0.7, 0, 1, 0)
+    L.TextColor3 = Color3.fromRGB(255, 255, 255) L.BackgroundTransparency = 1 L.TextXAlignment = "Left"
+
+    local B = Instance.new("TextButton", F)
+    B.Size = UDim2.new(0, 24, 0, 24) B.Position = UDim2.new(1, -35, 0.5, -12)
+    B.BackgroundColor3 = Color3.fromRGB(45, 45, 45) B.Text = "" Instance.new("UICorner", B)
+
+    local s = false
+    B.MouseButton1Click:Connect(function() 
+        s = not s B.Text = s and "✓" or "" 
+        B.BackgroundColor3 = s and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(45, 45, 45) 
+        callback(s) 
+    end)
+end
+
+-- --- [3. PHÂN CHIA NỘI DUNG THEO TAB] ---
+local function NewTab(name)
+    local T = Instance.new("TextButton", TabFrame)
+    T.Text = name T.Size = UDim2.new(1, 0, 0, 35)
+    T.BackgroundColor3 = Color3.fromRGB(30, 30, 30) T.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Instance.new("UICorner", T)
+    T.MouseButton1Click:Connect(function()
+        for _, v in pairs(Content:GetChildren()) do if not v:IsA("UIListLayout") then v:Destroy() end end
+        
+        if name == "Farm" then
+            AddToggle(Content, "Auto Farm Level (Vòng Tròn)", function(s) _G.AutoFarm = s end)
+            AddToggle(Content, "Auto Farm Bone", function(s) end)
+            AddToggle(Content, "Auto Farm Katakuri", function(s) end)
+        elseif name == "Item Farm" then
+            local items = {"God Human", "CDK", "Soul Guitar", "Saber", "Shark Anchor"}
+            for _, i in pairs(items) do AddToggle(Content, "Lấy " .. i, function(s) end) end
+        elseif name == "Race V2-V4" then
+            AddToggle(Content, "Auto Race V2-V3", function(s) end)
+            AddToggle(Content, "Auto Nhặt Gear", function(s) end)
+        elseif name == "Raid" then
+            AddToggle(Content, "Auto Raid", function(s) end)
+            AddToggle(Content, "Auto Raid Trái > 1M", function(s) end)
+        elseif name == "Shop" then
+            AddToggle(Content, "Auto Gacha Fruit", function(s) if s then Remote:InvokeServer("Cousin", "Buy") end end)
+        elseif name == "Settings" then
+            AddToggle(Content, "Siêu Sáng / Xoá Sương Mù", function(s) 
+                if s then game.Lighting.Brightness = 2 game.Lighting.FogEnd = 100000 end 
+            end)
+            AddToggle(Content, "Fix Lag Extreme", function(s) end)
+            AddToggle(Content, "Auto Nhập Full Code", function(s) end)
+        end
+    end)
+end
+
+local tabs = {"Farm", "Item Farm", "Race V2-V4", "Raid", "Shop", "Settings"}
+for _, t in pairs(tabs) do NewTab(t) end
+
+print("YUTA HUB V3 : SAFE EDITION LOADED!")

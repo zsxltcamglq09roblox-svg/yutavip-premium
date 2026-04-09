@@ -1,0 +1,47 @@
+-- =========================================================================
+-- SCRIPT ĐỔI LOGO DELTA X THÀNH VELOCITY/COMET - BẢN THỰC TẾ YUTA
+-- =========================================================================
+
+local DeltaCore = game:GetService("CoreGui"):WaitForChild("DeltaCore", 10) -- Tìm UI chính của Delta (thời gian chờ 10s)
+local VelocityLogoURL = "https://i.imgur.com/image-comet-cai-ong-gui.png" -- <<< DÁN LINK TRỰC TIẾP (DIRECT LINK) CỦA ẢNH COMET VÀO ĐÂY
+
+-- -------------------------------------------------------------------------
+-- Kiểm tra xem UI Delta có tồn tại không
+if not DeltaCore then
+    print("[KRNL]: Không tìm thấy UI Delta Core. Chắc ông chưa bật máy, hoặc dùng executor khác rồi?")
+    return
+end
+
+-- -------------------------------------------------------------------------
+-- HÀNH ĐỘNG THAY THẾ LOGO (Duyệt qua tất cả các phần tử UI)
+local function ReplaceLogo(parent)
+    for _, instance in pairs(parent:GetDescendants()) do
+        -- Tìm các phần tử là ImageLabel hoặc ImageButton
+        if instance:IsA("ImageLabel") or instance:IsA("ImageButton") then
+            -- Kiểm tra xem ảnh gốc có phải là logo Delta không (Delta thường dùng Asset ID nội bộ hoặc link cụ thể)
+            -- Ở đây mình sẽ ghi đè tất cả các ảnh lớn có vẻ là logo. 
+            -- Đây là cách thực tế nhất vì Delta hay thay đổi cách lưu logo.
+            
+            -- Kiểm tra kích thước hoặc vị trí để chắc chắn hơn (Ví dụ: logo thường lớn)
+            -- if instance.AbsoluteSize.X > 50 then -- Ví dụ: chỉ thay ảnh có chiều rộng > 50px
+                instance.Image = VelocityLogoURL
+                print("[KRNL]: Đã thay thế ảnh: " .. instance.Name .. " bằng logo Velocity!")
+            -- end
+        end
+    end
+end
+
+-- -------------------------------------------------------------------------
+-- "BẬT MÁY" VÀ THỰC THI
+ReplaceLogo(DeltaCore)
+
+-- Lắng nghe xem có UI mới nào được tạo ra không (kiểu như khi ông mở lại menu)
+DeltaCore.DescendantAdded:Connect(function(instance)
+    if instance:IsA("ImageLabel") or instance:IsA("ImageButton") then
+        instance.Image = VelocityLogoURL
+        print("[KRNL]: Đã thay thế logo mới xuất hiện: " .. instance.Name)
+    end
+end)
+
+print("[KRNL]: Đã 'thay máu' xong logo Delta. Nhìn sướng mắt hơn nhiều!")
+-- =========================================================================

@@ -1,0 +1,9 @@
+-- YUTA PTS PREMIUM - NO LAG SKIP
+local p = game:GetService("ProximityPromptService")
+
+-- Chỉnh tốc độ mở rương/cửa về 0 ngay lập tức
+p.PromptButtonHoldBegan:Connect(function(prompt)
+    prompt.HoldDuration = 0
+end)
+
+print("YUTA VIP Premium: Script Loaded Successfully!")

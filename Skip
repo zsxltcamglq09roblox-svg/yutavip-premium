@@ -1,0 +1,49 @@
+-- YUTA PTS - MINI INSTANT OPEN MENU
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local ToggleBtn = Instance.new("TextButton")
+local UICorner = Instance.new("UICorner")
+
+-- Setup Giao diện
+ScreenGui.Parent = game.CoreGui
+MainFrame.Name = "YutaMiniMenu"
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+MainFrame.Position = UDim2.new(0.1, 0, 0.1, 0) -- Vị trí góc trên bên trái
+MainFrame.Size = UDim2.new(0, 120, 0, 50)
+MainFrame.Active = true
+MainFrame.Draggable = true -- Có thể kéo đi khắp màn hình
+
+UICorner.Parent = MainFrame
+
+ToggleBtn.Parent = MainFrame
+ToggleBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0) -- Đỏ là đang tắt
+ToggleBtn.Size = UDim2.new(1, 0, 1, 0)
+ToggleBtn.Font = Enum.Font.GothamBold
+ToggleBtn.Text = "OPEN: OFF"
+ToggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleBtn.TextSize = 14
+Instance.new("UICorner", ToggleBtn).CornerRadius = UDim.new(0, 8)
+
+-- Logic Instant Open
+local active = false
+local connection
+
+ToggleBtn.MouseButton1Click:Connect(function()
+    active = not active
+    if active then
+        ToggleBtn.Text = "OPEN: ON"
+        ToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 180, 0) -- Xanh là đang bật
+        connection = game:GetService("RunService").Stepped:Connect(function()
+            for _, v in pairs(game:GetDescendants()) do
+                if v:IsA("ProximityPrompt") then
+                    v.HoldDuration = 0
+                end
+            end
+        end)
+    else
+        ToggleBtn.Text = "OPEN: OFF"
+        ToggleBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+        if connection then connection:Disconnect() end
+    end
+end)

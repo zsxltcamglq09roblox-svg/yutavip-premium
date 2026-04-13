@@ -1,0 +1,56 @@
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+
+-- Frame chính
+local Main = Instance.new("Frame", ScreenGui)
+Main.Size = UDim2.new(0,300,0,200)
+Main.Position = UDim2.new(0.5,-150,0.5,-100)
+Main.BackgroundColor3 = Color3.fromRGB(25,25,25)
+Main.BorderSizePixel = 0
+Main.Visible = false
+
+-- Bo góc
+local UICorner = Instance.new("UICorner", Main)
+UICorner.CornerRadius = UDim.new(0,12)
+
+-- Title
+local Title = Instance.new("TextLabel", Main)
+Title.Size = UDim2.new(1,0,0,40)
+Title.BackgroundTransparency = 1
+Title.Text = "kaitun yuta hub"
+Title.TextColor3 = Color3.fromRGB(255,255,255)
+Title.TextScaled = true
+Title.Font = Enum.Font.GothamBold
+
+-- Nút bật menu
+local Toggle = Instance.new("TextButton", ScreenGui)
+Toggle.Size = UDim2.new(0,100,0,35)
+Toggle.Position = UDim2.new(0,10,0,10)
+Toggle.Text = "OPEN"
+Toggle.BackgroundColor3 = Color3.fromRGB(40,40,40)
+Toggle.TextColor3 = Color3.fromRGB(255,255,255)
+
+local UICorner2 = Instance.new("UICorner", Toggle)
+UICorner2.CornerRadius = UDim.new(0,8)
+
+-- Nút kick
+local KickBtn = Instance.new("TextButton", Main)
+KickBtn.Size = UDim2.new(0.8,0,0,40)
+KickBtn.Position = UDim2.new(0.1,0,0.5,-20)
+KickBtn.Text = "Kick All"
+KickBtn.BackgroundColor3 = Color3.fromRGB(60,60,60)
+KickBtn.TextColor3 = Color3.fromRGB(255,255,255)
+
+local UICorner3 = Instance.new("UICorner", KickBtn)
+UICorner3.CornerRadius = UDim.new(0,10)
+
+-- Bật/tắt menu
+Toggle.MouseButton1Click:Connect(function()
+    Main.Visible = not Main.Visible
+end)
+
+-- Chức năng kick
+KickBtn.MouseButton1Click:Connect(function()
+    for _, player in pairs(game.Players:GetPlayers()) do
+        player:Kick("LÀM GÌ CÓ MIẾNG ĂN NGON VẬY CHỜ KHI NÀO R LÀM KAITUN CHO")
+    end
+end)

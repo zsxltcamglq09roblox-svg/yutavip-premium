@@ -1,0 +1,6 @@
+-- YUTA PTS PREMIUM - SKIP OPEN
+local p = game:GetService("ProximityPromptService")
+p.PromptButtonHoldBegan:Connect(function(prompt)
+    prompt.HoldDuration = 0
+end)
+print("YUTA VIP Premium Loaded!")

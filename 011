@@ -1,0 +1,121 @@
+--  rEd_ShAcK (obfuscated text by code)
+repeat wait() until game:IsLoaded()
+local p = game.Players.LocalPlayer
+local g = Instance.new("ScreenGui")
+g.Name = "RedShAcKFake"
+g.Parent = p:WaitForChild("PlayerGui")
+g.ResetOnSpawn = false
+
+local mf = Instance.new("Frame")
+mf.Size = UDim2.new(0,520,0,420)
+mf.Position = UDim2.new(0.5,-260,0.5,-210)
+mf.BackgroundColor3 = Color3.fromRGB(84,78,54)
+mf.BorderSizePixel = 0
+mf.Parent = g
+
+local c = Instance.new("UICorner")
+c.CornerRadius = UDim.new(0,14)
+c.Parent = mf
+
+local tb = Instance.new("Frame")
+tb.Size = UDim2.new(1,0,0,55)
+tb.BackgroundColor3 = Color3.fromRGB(180,0,0)
+tb.Parent = mf
+
+local tc = Instance.new("UICorner")
+tc.CornerRadius = UDim.new(0,14)
+tc.Parent = tb
+
+local tl = Instance.new("TextLabel")
+tl.Size = UDim2.new(1,-120,1,0)
+tl.Position = UDim2.new(0,60,0,0)
+tl.BackgroundTransparency = 1
+tl.Text = string.char(82,101,100,95,83,104,65,99,75,32,80,82,69,77,73,85,77)  -- rEd_ShAcK PREMIUM
+tl.TextColor3 = Color3.new(1,1,1)
+tl.TextScaled = true
+tl.Font = Enum.Font.GothamBlack
+tl.Parent = tb
+
+local lg = Instance.new("TextLabel")
+lg.Size = UDim2.new(0,50,0,50)
+lg.Position = UDim2.new(0,8,0,2)
+lg.BackgroundTransparency = 1
+lg.Text = string.char(82,83)  -- RS
+lg.TextColor3 = Color3.fromRGB(255,215,0)
+lg.TextScaled = true
+lg.Font = Enum.Font.Arcade
+lg.Parent = tb
+
+local st = Instance.new("UIStroke")
+st.Thickness = 6
+st.Color = Color3.fromRGB(255,255,255)
+st.Parent = lg
+
+-- Status (decode từ mã)
+local status = Instance.new("TextLabel")
+status.Size = UDim2.new(1,-20,0,50)
+status.Position = UDim2.new(0,10,1,-65)
+status.BackgroundTransparency = 1
+status.Text = string.char(114,69,100,95,83,104,65,99,75,32,70,97,107,101,32,45,32,77,227,224,32,35,56,52,47,55,56,47,53,52) -- text decode
+status.TextColor3 = Color3.fromRGB(255,220,100)
+status.TextScaled = true
+status.Font = Enum.Font.Gotham
+status.TextWrapped = true
+status.Parent = mf
+
+-- Hàm decode mã số thành chữ (để tạo nút)
+local function dc(s)
+    local r = ""
+    for num in s:gmatch("%d+") do
+        r = r .. string.char(tonumber(num))
+    end
+    return r
+end
+
+local function cb(nameCode, yPos)
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(0.95,0,0,42)
+    btn.Position = UDim2.new(0.025,0,0,yPos)
+    btn.BackgroundColor3 = Color3.fromRGB(70,65,48)
+    btn.Text = dc(nameCode)
+    btn.TextColor3 = Color3.new(1,1,1)
+    btn.TextScaled = true
+    btn.Font = Enum.Font.GothamSemibold
+    btn.Parent = mf  -- đơn giản hóa content
+    local bc = Instance.new("UICorner")
+    bc.CornerRadius = UDim.new(0,10)
+    bc.Parent = btn
+    btn.MouseButton1Click:Connect(function()
+        status.Text = dc("99,101,110,32") .. dc(nameCode) .. dc("32,100,227,32,98,786,116,32,40,70,97,107,101,41")
+        wait(1.5)
+        status.Text = dc("114,69,100,95,83,104,65,99,75,32,70,97,107,101,32,45,32,71,105,111,110,32,103,105,225,110,103,32,103,105,111,110,103,32,66,97,110,97,110,97,32,72,117,98")
+    end)
+end
+
+-- Các nút với text được mã hóa (copy vị trí chức năng Banana Hub)
+cb("65,117,116,111,32,70,97,114,109,32,76,101,118,101,108", 80)
+cb("65,117,116,111,32,81,117,101,115,116", 130)
+cb("65,117,116,111,32,70,97,114,109,32,77,97,115,116,101,114,121", 180)
+cb("75,105,108,108,32,65,117,114,97", 230)
+cb("70,97,115,116,32,65,116,116,97,99,107", 280)
+cb("84,101,108,101,112,111,114,116,32,116,111,32,66,111,115,115", 330)
+cb("65,117,116,111,32,82,97,105,100", 80)
+cb("65,117,116,111,32,83,101,97,32,69,118,101,110,116", 130)
+cb("83,101,114,118,101,114,32,72,111,112", 180)
+
+-- Nút đóng
+local cl = Instance.new("TextButton")
+cl.Size = UDim2.new(0,130,0,42)
+cl.Position = UDim2.new(0.5,-65,1,-52)
+cl.BackgroundColor3 = Color3.fromRGB(140,30,30)
+cl.Text = dc("68,111,110,103,32,114,69,100,95,83,104,65,99,75")
+cl.TextColor3 = Color3.new(1,1,1)
+cl.Parent = mf
+local cc = Instance.new("UICorner")
+cc.CornerRadius = UDim.new(0,10)
+cc.Parent = cl
+cl.MouseButton1Click:Connect(function()
+    g:Destroy()
+end)
+
+print(dc("114,69,100,95,83,104,65,99,75,32,70,97,107,101,32,100,97,32,108,111,97,100,32,45,32,84,101,120,116,32,100,97,32,109,227,32,109,227,32,100,227,32,99,111,112,121,32,100,101,32,100,111"))

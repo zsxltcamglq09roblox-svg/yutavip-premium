@@ -1,0 +1,59 @@
+-- [[ YUTA CHEST PRO - BYPASS TIME - ANTI LAG ]]
+local CoreGui = game:GetService("CoreGui")
+local LPlayer = game:GetService("Players").LocalPlayer
+local InputManager = game:GetService("VirtualInputManager")
+
+_G.SkipChest = false
+
+-- --- LOGIC MỞ RƯƠNG SIÊU TỐC ---
+spawn(function()
+    while task.wait() do -- Chạy liên tục để bắt nhịp rương
+        if _G.SkipChest then
+            pcall(function()
+                for _, v in pairs(game:GetService("Workspace"):GetChildren()) do
+                    -- Kiểm tra rương trong tầm gần để tránh giật lag máy 4GB RAM
+                    if v.Name:find("Chest") and v:IsA("BasePart") then
+                        local dist = (LPlayer.Character.HumanoidRootPart.Position - v.Position).Magnitude
+                        if dist < 15 then
+                            -- Giả lập nhấn phím tương tác liên tục để bỏ qua thanh load
+                            InputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
+                            task.wait()
+                            InputManager:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+-- --- MENU MINI BẬT TẮT ---
+if CoreGui:FindFirstChild("Yuta_Chest_Pro") then CoreGui.Yuta_Chest_Pro:Destroy() end
+local MiniGui = Instance.new("ScreenGui", CoreGui)
+MiniGui.Name = "Yuta_Chest_Pro"
+
+local Main = Instance.new("Frame", MiniGui)
+Main.Size = UDim2.new(0, 110, 0, 35)
+Main.Position = UDim2.new(0.5, -55, 0.05, 0)
+Main.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+Main.Draggable = true
+Main.Active = true
+Instance.new("UICorner", Main)
+local UIStroke = Instance.new("UIStroke", Main)
+UIStroke.Color = Color3.fromRGB(255, 0, 0)
+
+local Toggle = Instance.new("TextButton", Main)
+Toggle.Size = UDim2.new(1, -6, 1, -6)
+Toggle.Position = UDim2.new(0, 3, 0, 3)
+Toggle.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Toggle.Text = "CHEST: OFF"
+Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+Toggle.Font = "GothamBold"
+Toggle.TextSize = 12
+Instance.new("UICorner", Toggle)
+
+Toggle.MouseButton1Click:Connect(function()
+    _G.SkipChest = not _G.SkipChest
+    Toggle.Text = _G.SkipChest and "CHEST: ON" or "CHEST: OFF"
+    Toggle.BackgroundColor3 = _G.SkipChest and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(20, 20, 20)
+end)

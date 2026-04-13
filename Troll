@@ -1,0 +1,12 @@
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+local Button = Instance.new("TextButton", ScreenGui)
+
+Button.Size = UDim2.new(0,200,0,50)
+Button.Position = UDim2.new(0.5,-100,0.5,-25)
+Button.Text = "KICK ALL "
+
+Button.MouseButton1Click:Connect(function()
+    for _, player in pairs(game.Players:GetPlayers()) do
+        player:Kick("CÒN NON LẮM MÀY NGHĨ CÓ BANANA HUB FREE À THG NGU")
+    end
+end)

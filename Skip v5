@@ -1,0 +1,54 @@
+-- [[ YUTA CHEST GOD - BYPASS WAIT - NO LOAD ]]
+local LPlayer = game:GetService("Players").LocalPlayer
+
+_G.SkipChest = false
+
+-- --- HỆ THỐNG GHI ĐÈ THỜI GIAN CHỜ ---
+spawn(function()
+    while task.wait(0.2) do -- Chạy nhịp vừa phải để Poco C71 không bị nóng máy
+        if _G.SkipChest then
+            pcall(function()
+                -- Tìm và thực thi hành động nhặt ngay lập tức
+                for _, v in pairs(game:GetService("Workspace"):GetChildren()) do
+                    if v.Name:find("Chest") and v:IsA("BasePart") then
+                        -- Tự động kích hoạt hành động mở mà không cần giữ phím hay hiện load
+                        local interact = v:FindFirstChildOfClass("ProximityPrompt") or v:FindFirstChild("TouchInterest")
+                        if interact then
+                            if interact:IsA("ProximityPrompt") then
+                                -- Ép thời gian giữ (HoldDuration) về 0 để skip load
+                                interact.HoldDuration = 0
+                                interact:InputHoldBegin()
+                                task.wait()
+                                interact:InputHoldEnd()
+                            else
+                                -- Nếu là rương chạm, ép nhận diện ngay lập tức
+                                firetouchinterest(LPlayer.Character.HumanoidRootPart, v, 0)
+                                task.wait()
+                                firetouchinterest(LPlayer.Character.HumanoidRootPart, v, 1)
+                            end
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+-- --- MENU MINI (CỰC GỌN CHO YUTA) ---
+local ScreenGui = Instance.new("ScreenGui", game:GetService("CoreGui"))
+local Btn = Instance.new("TextButton", ScreenGui)
+Btn.Size = UDim2.new(0, 120, 0, 40)
+Btn.Position = UDim2.new(0.5, -60, 0.1, 0)
+Btn.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Btn.Text = "GOD SKIP: OFF"
+Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+Btn.Draggable = true -- Ông có thể kéo nó đi chỗ khác nếu vướng
+Instance.new("UICorner", Btn)
+local Stroke = Instance.new("UIStroke", Btn)
+Stroke.Color = Color3.fromRGB(255, 0, 0)
+
+Btn.MouseButton1Click:Connect(function()
+    _G.SkipChest = not _G.SkipChest
+    Btn.Text = _G.SkipChest and "GOD SKIP: ON" or "GOD SKIP: OFF"
+    Btn.BackgroundColor3 = _G.SkipChest and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(20, 20, 20)
+end)

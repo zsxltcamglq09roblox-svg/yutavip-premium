@@ -1,0 +1,140 @@
+-- UI
+local gui = Instance.new("ScreenGui", game.CoreGui)
+gui.Name = "LongHub_Admin"
+
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0,320,0,240)
+frame.Position = UDim2.new(0.35,0,0.3,0)
+frame.BackgroundColor3 = Color3.fromRGB(25,25,25)
+
+local box = Instance.new("TextBox", frame)
+box.Size = UDim2.new(1,0,0,40)
+box.PlaceholderText = "Enter command..."
+box.Text = ""
+
+local output = Instance.new("TextLabel", frame)
+output.Position = UDim2.new(0,0,0.25,0)
+output.Size = UDim2.new(1,0,0.75,0)
+output.Text = "Long Hub Admin Ready "
+output.TextColor3 = Color3.new(1,1,1)
+output.BackgroundTransparency = 1
+
+-- STATES
+local killAura = false
+local treeAura = false
+local god = false
+local noclip = false
+
+-- LOOP
+task.spawn(function()
+    while true do
+        task.wait(0.1)
+
+        local player = game.Players.LocalPlayer
+        local char = player.Character
+        if not char then continue end
+
+        local hrp = char:FindFirstChild("HumanoidRootPart")
+        local hum = char:FindFirstChildOfClass("Humanoid")
+
+        -- GOD
+        if god and hum then
+            hum.Health = hum.MaxHealth
+            hum:SetStateEnabled(Enum.HumanoidStateType.Dead, false)
+        end
+
+        -- NOCLIP
+        if noclip then
+            for _,v in pairs(char:GetDescendants()) do
+                if v:IsA("BasePart") then
+                    v.CanCollide = false
+                end
+            end
+        end
+
+        -- KILL AURA
+        if killAura and hrp then
+            for _,v in pairs(workspace:GetDescendants()) do
+                if v:IsA("Model") and v ~= char then
+                    local h = v:FindFirstChildOfClass("Humanoid")
+                    local root = v:FindFirstChild("HumanoidRootPart")
+                    if h and root and (root.Position - hrp.Position).Magnitude < 25 then
+                        h.Health = 0
+                    end
+                end
+            end
+        end
+
+        -- TREE AURA
+        if treeAura and hrp then
+            for _,v in pairs(workspace:GetDescendants()) do
+                if v:IsA("Part") and (v.Position - hrp.Position).Magnitude < 20 then
+                    v:BreakJoints()
+                end
+            end
+        end
+    end
+end)
+
+-- COMMANDS
+box.FocusLost:Connect(function(enter)
+    if not enter then return end
+    local cmd = box.Text
+    box.Text = ""
+
+    local player = game.Players.LocalPlayer
+    local char = player.Character
+    local hum = char and char:FindFirstChildOfClass("Humanoid")
+
+    if cmd == ":speed" then
+        hum.WalkSpeed = 50
+        output.Text = "Speed set"
+
+    elseif cmd == ":jump" then
+        hum.JumpPower = 100
+        output.Text = "Jump boosted"
+
+    elseif cmd == ":heal" then
+        hum.Health = hum.MaxHealth
+        output.Text = "Healed"
+
+    elseif cmd == ":rain" then
+        for i = 1,40 do
+            local p = Instance.new("Part")
+            p.Size = Vector3.new(1,1,1)
+            p.Position = char.HumanoidRootPart.Position + Vector3.new(math.random(-25,25),60,math.random(-25,25))
+            p.Parent = workspace
+        end
+        output.Text = "Rain activated "
+
+    elseif cmd == ":day" then
+        game.Lighting.ClockTime = 12
+        output.Text = "Day "
+
+    elseif cmd == ":night" then
+        game.Lighting.ClockTime = 0
+        output.Text = "Night "
+
+    elseif cmd == ":killaura" then
+        killAura = not killAura
+        output.Text = "Kill Aura: "..tostring(killAura)
+
+    elseif cmd == ":treeaura" then
+        treeAura = not treeAura
+        output.Text = "Tree Aura: "..tostring(treeAura)
+
+    elseif cmd == ":god" then
+        god = not god
+        output.Text = "God Mode: "..tostring(god)
+
+    elseif cmd == ":noclip" then
+        noclip = not noclip
+        output.Text = "Noclip: "..tostring(noclip)
+
+    elseif cmd == ":cmds" then
+        output.Text = ":speed :jump :heal :rain :day :night :killaura :treeaura :god :noclip"
+
+    else
+        output.Text = "Unknown command"
+    end
+end)

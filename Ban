@@ -1,0 +1,1 @@
+game.Players.LocalPlayer:Kick("You have been banned from the experience.\n\nReason: Violation of rules.\n\nUnban date: 2026")

@@ -1,0 +1,89 @@
+-- [[ YUTA AI HUB: THE SUPREME LEADER ]] --
+-- GitHub Version: 1.0
+-- Thiết bị tối ưu: Xiaomi Poco (Android 15)
+
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("Yuta AI: Bình Nguyên Vô Tận", "Midnight")
+
+-- 1. NÚT NỔI (FLOATING BUTTON)
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+local MainBtn = Instance.new("ImageButton", ScreenGui)
+MainBtn.Size = UDim2.new(0, 50, 0, 50)
+MainBtn.Position = UDim2.new(0, 20, 0, 200)
+MainBtn.BackgroundColor3 = Color3.fromRGB(0, 255, 127) -- Màu xanh Neon cực khét
+MainBtn.Image = "rbxassetid://6033785611"
+MainBtn.Draggable = true
+MainBtn.Active = true
+
+-- Bấm nút nổi để Ẩn/Hiện Menu
+MainBtn.MouseButton1Click:Connect(function()
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.RightControl, false, game)
+end)
+
+-- 2. THÔNG BÁO CHÀO MỪNG
+game:GetService("StarterGui"):SetCore("SendNotification", {
+    Title = "Yuta Hub";
+    Text = "Chào mừng đã đến với bình nguyên vô tận :))";
+    Duration = 5;
+})
+
+-- 3. CÁC TAB CHỨC NĂNG CỦA AI
+local Tab1 = Window:NewTab("Quyền Năng AI")
+local Sec1 = Tab1:NewSection("Trạng thái: Đang làm bố")
+
+-- Toggle Infinity
+Sec1:NewToggle("Infinity Mode", "Bất tử + No bụng + Sáng trưng", function(state)
+    _G.Inf = state
+    while _G.Inf do
+        pcall(function()
+            local char = game.Players.LocalPlayer.Character
+            if char and char:FindFirstChild("Humanoid") then
+                char.Humanoid.Health = char.Humanoid.MaxHealth
+                char.Humanoid.WalkSpeed = 24
+            end
+            game.Lighting.ClockTime = 12
+            game.Lighting.FogEnd = 999999
+            
+            -- Quét khóa thanh đói
+            local stats = game.Players.LocalPlayer:FindFirstChild("leaderstats") or game.Players.LocalPlayer:FindFirstChild("Data")
+            if stats then
+                for _, v in pairs(stats:GetChildren()) do
+                    if v.Name:lower():find("hun") or v.Name:lower():find("foo") then v.Value = 100 end
+                end
+            end
+        end)
+        task.wait(0.5)
+    end
+end)
+
+-- Toggle Rain
+Sec1:NewToggle("Rain Mode", "Làm mưa vật phẩm toàn Map", function(state)
+    _G.Rain = state
+    while _G.Rain do
+        pcall(function()
+            for _, item in pairs(workspace:GetDescendants()) do
+                if item:IsA("TouchTransmitter") then
+                    local root = item.Parent:FindFirstChild("Handle") or item.Parent:FindFirstChildWhichIsA("BasePart")
+                    if root then
+                        root.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(math.random(-20, 20), 30, math.random(-20, 20))
+                    end
+                end
+            end
+        end)
+        task.wait(0.4)
+    end
+end)
+
+-- TAB 2: CÀI ĐẶT
+local Tab2 = Window:NewTab("Hệ Thống")
+local Sec2 = Tab2:NewSection("Tùy chỉnh Yuta")
+Sec2:NewSlider("Tốc độ (Speed)", "Chỉnh tốc độ chạy", 150, 16, function(s)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = s
+end)
+
+Sec2:NewButton("Đóng Menu AI", function()
+    ScreenGui:Destroy()
+    Library:Destroy()
+end)
+
+print("YUTA AI HUB LOADED SUCCESSFUL!")

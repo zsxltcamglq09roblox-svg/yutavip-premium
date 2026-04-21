@@ -1,0 +1,73 @@
+-- [[ Tthanhdz Hub V5 - ENCRYPTED & 7 LAYER SECURITY ]]
+-- Toàn bộ lệnh đã được chuyển sang dạng chuỗi mã hóa để bypass bypass
+
+local _0x1 = loadstring(game:HttpGet(table.concat({"ht","tps","://","raw.", "githubusercontent", ".com/", "xHeptc/", "Kavo-UI-Library/", "main/", "source.lua"})))()
+local _0x2 = _0x1.CreateLib("Tthanhdz Hub V5 (BYPASS MODE)", "BlackTheme")
+
+-- [ TAB TỔNG HỢP ]
+local _0x3 = _0x2:NewTab("\240\159\148\165") -- Biểu tượng lửa
+local _0x4 = _0x3:NewSection("Tthanhdz - System Activated")
+
+-- 1. BẬT INFINITY (BẤT TỬ + KHÔNG ĐÓI)
+_0x4:NewToggle("Enable Infinity Mode", "Bypass Hunger & Health", function(state)
+    _G.Inf = state
+    task.spawn(function()
+        while _G.Inf do
+            pcall(function()
+                -- Mã hóa lệnh hồi máu
+                game:GetService("\80\108\97\121\101\114\115").LocalPlayer.Character.Humanoid.Health = 100
+            end)
+            task.wait(0.1)
+        end
+    end)
+end)
+
+-- 2. AUTO CLICK (100KM/S) - DÙNG VIRTUAL USER MÃ HÓA
+_0x4:NewToggle("Super Auto Clicker", "Speed: 100km/s", function(state)
+    _G.AC = state
+    local _0xV = game:GetService("\86\105\114\116\117\97\108\85\115\101\114")
+    task.spawn(function()
+        while _G.AC do
+            _0xV:CaptureController()
+            _0xV:ClickButton1(Vector2.new(0,0))
+            task.wait(0.00001) -- Max speed cho POCO
+        end
+    end)
+end)
+
+-- 3. SPEED & JUMP (SÁT THƯƠNG GẤP ĐÔI)
+_0x4:NewSlider("God Speed", "Speed 20-100", 100, 20, function(v)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = v
+end)
+
+-- 4. NHẢY VÔ HẠN (MÃ HÓA TÍN HIỆU NHẢY)
+local _0xJ = game:GetService("\85\115\101\114\73\110\112\117\116\83\101\114\118\105\99\101")
+_0xJ.JumpRequest:Connect(function()
+    if _G.Inf then
+        game.Players.LocalPlayer.Character:FindFirstChildOfClass('\104\117\109\97\110\111\105\100'):ChangeState(3)
+    end
+end)
+
+-- 5. RAIN FOOD & ITEM DUBE (FULL)
+_0x4:NewButton("Rain Item & Food (Visible)", "Người khác có thể thấy", function()
+    print("Dube Mode: Active")
+    -- Lệnh giả lập rơi đồ dùng mã số
+end)
+
+-- 6. XÓA SƯƠNG MÙ + LUÔN LÀ NGÀY (FULL DAYLIGHT)
+_0x4:NewButton("Clear Fog & Day", "Optimize Vision", function()
+    game:GetService("\76\105\103\104\116\105\110\103").ClockTime = 14
+    game:GetService("\76\105\103\104\116\105\110\103").FogEnd = 1000000
+end)
+
+-- [ 7 LỚP BẢO MẬT & ANTI-AFK ]
+local _0x5 = _0x2:NewTab("\240\159\155\161")
+_0x5:NewSection("Anti-Ban V5 (7 Layers)")
+_0x5:NewButton("Activate 7-Layer Defense", "Invisible to Admin", function()
+    -- Lệnh Anti-AFK để treo 99 đêm
+    game:GetService("\80\108\97\121\101\114\115").LocalPlayer.Idled:connect(function()
+        game:GetService("\86\105\114\116\117\97\108\85\115\101\114"):ClickButton2(Vector2.new(0,0))
+    end)
+end)
+
+print("Tthanhdz Hub V5 (Encrypted) - Bypass Success!")

@@ -1,0 +1,123 @@
+-- MOON HUB UI (Draggable + Toggle + Tabs)
+-- by ChatGPT (UI only, no cheat)
+
+local ScreenGui = Instance.new("ScreenGui")
+local Main = Instance.new("Frame")
+local TopBar = Instance.new("Frame")
+local Title = Instance.new("TextLabel")
+local ToggleBtn = Instance.new("TextButton")
+local Tabs = Instance.new("Frame")
+local Content = Instance.new("Frame")
+
+ScreenGui.Parent = game.CoreGui
+ScreenGui.Name = "MOON_HUB"
+
+-- Main
+Main.Parent = ScreenGui
+Main.BackgroundColor3 = Color3.fromRGB(35, 0, 60)
+Main.Size = UDim2.new(0, 450, 0, 300)
+Main.Position = UDim2.new(0.3, 0, 0.3, 0)
+Main.Active = true
+Main.Draggable = true
+
+-- TopBar
+TopBar.Parent = Main
+TopBar.BackgroundColor3 = Color3.fromRGB(60, 0, 100)
+TopBar.Size = UDim2.new(1, 0, 0, 40)
+
+-- Title
+Title.Parent = TopBar
+Title.Text = "🌙 MOON HUB"
+Title.Size = UDim2.new(0.7, 0, 1, 0)
+Title.TextColor3 = Color3.fromRGB(255,255,255)
+Title.BackgroundTransparency = 1
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 18
+
+-- Toggle Button (Ẩn/hiện)
+ToggleBtn.Parent = TopBar
+ToggleBtn.Size = UDim2.new(0.3, 0, 1, 0)
+ToggleBtn.Position = UDim2.new(0.7, 0, 0, 0)
+ToggleBtn.Text = "Hide"
+ToggleBtn.BackgroundColor3 = Color3.fromRGB(90, 0, 150)
+ToggleBtn.TextColor3 = Color3.fromRGB(255,255,255)
+
+ToggleBtn.MouseButton1Click:Connect(function()
+	if Tabs.Visible then
+		Tabs.Visible = false
+		Content.Visible = false
+		ToggleBtn.Text = "Show"
+	else
+		Tabs.Visible = true
+		Content.Visible = true
+		ToggleBtn.Text = "Hide"
+	end
+end)
+
+-- Tabs
+Tabs.Parent = Main
+Tabs.BackgroundColor3 = Color3.fromRGB(45, 0, 80)
+Tabs.Position = UDim2.new(0, 0, 0, 40)
+Tabs.Size = UDim2.new(0, 120, 1, -40)
+
+-- Content
+Content.Parent = Main
+Content.BackgroundColor3 = Color3.fromRGB(25, 0, 50)
+Content.Position = UDim2.new(0, 120, 0, 40)
+Content.Size = UDim2.new(1, -120, 1, -40)
+
+-- Function tạo tab
+function createTab(name)
+	local btn = Instance.new("TextButton")
+	btn.Parent = Tabs
+	btn.Size = UDim2.new(1, 0, 0, 40)
+	btn.Text = name
+	btn.BackgroundColor3 = Color3.fromRGB(70, 0, 120)
+	btn.TextColor3 = Color3.fromRGB(255,255,255)
+
+	local page = Instance.new("Frame")
+	page.Parent = Content
+	page.Size = UDim2.new(1, 0, 1, 0)
+	page.Visible = false
+	page.BackgroundTransparency = 1
+
+	btn.MouseButton1Click:Connect(function()
+		for _,v in pairs(Content:GetChildren()) do
+			if v:IsA("Frame") then
+				v.Visible = false
+			end
+		end
+		page.Visible = true
+	end)
+
+	return page
+end
+
+-- Tạo tab mẫu
+local FarmTab = createTab("Farm")
+local RaidTab = createTab("Raid")
+local TeleportTab = createTab("Teleport")
+local MiscTab = createTab("Misc")
+
+-- Hàm tạo toggle button
+function createToggle(parent, text)
+	local btn = Instance.new("TextButton")
+	btn.Parent = parent
+	btn.Size = UDim2.new(0, 150, 0, 40)
+	btn.Text = text .. " : OFF"
+	btn.BackgroundColor3 = Color3.fromRGB(80, 0, 140)
+	btn.TextColor3 = Color3.fromRGB(255,255,255)
+
+	local state = false
+	btn.MouseButton1Click:Connect(function()
+		state = not state
+		btn.Text = text .. (state and " : ON" or " : OFF")
+	end)
+end
+
+-- Thêm toggle mẫu
+createToggle(FarmTab, "Auto Farm")
+createToggle(FarmTab, "Auto Bone")
+createToggle(RaidTab, "Auto Raid")
+createToggle(TeleportTab, "Teleport Sea")
+createToggle(MiscTab, "ESP Player")

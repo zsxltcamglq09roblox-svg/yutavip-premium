@@ -1,0 +1,115 @@
+-- MOON HUB | Purple Moon Theme | English Version
+repeat wait() until game:IsLoaded()
+
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
+local MoonTheme = {
+    SchemeColor = Color3.fromRGB(138, 43, 226), 
+    Background = Color3.fromRGB(20, 15, 30), 
+    Header = Color3.fromRGB(30, 20, 45),
+    TextColor = Color3.fromRGB(255, 255, 255),
+    ElementColor = Color3.fromRGB(45, 30, 65)
+}
+
+local Window = OrionLib:MakeWindow({
+    Name = "🌙 MOON HUB | Premium", 
+    HidePremium = false, 
+    SaveConfig = true, 
+    ConfigFolder = "MoonHub",
+    IntroText = "🌙 MOON HUB LOADING...",
+    Theme = MoonTheme
+})
+
+-- 1. FARM TAB
+local TabFarm = Window:MakeTab({Name = "Main Farm", Icon = "rbxassetid://4483345998"})
+TabFarm:AddToggle({Name = "Auto Farm Level", Default = false, Callback = function(v) _G.Farm = v end})
+TabFarm:AddToggle({Name = "Auto Get Quest", Default = true, Callback = function(v) _G.GetQuest = v end})
+TabFarm:AddToggle({Name = "No Quest Farm", Default = false, Callback = function(v) _G.NoQuest = v end})
+TabFarm:AddToggle({Name = "Auto Bone Farm", Default = false, Callback = function(v) end})
+TabFarm:AddToggle({Name = "Auto Katakuri Farm", Default = false, Callback = function(v) end})
+TabFarm:AddButton({Name = "Gacha Bone", Callback = function() end})
+TabFarm:AddButton({Name = "Pray", Callback = function() end})
+TabFarm:AddButton({Name = "Try Your Luck", Callback = function() end})
+TabFarm:AddButton({Name = "Find Haki Color NPC", Callback = function() end})
+TabFarm:AddToggle({Name = "Auto Haki Rainbow", Default = false, Callback = function(v) end})
+TabFarm:AddToggle({Name = "Auto Fishing", Default = false, Callback = function(v) end})
+TabFarm:AddToggle({Name = "Auto Up Race V2/V3", Default = false, Callback = function(v) end})
+TabFarm:AddToggle({Name = "Auto Factory (Sea 2)", Default = false, Callback = function(v) end})
+TabFarm:AddToggle({Name = "Auto Pirate Raid (Sea 3)", Default = false, Callback = function(v) end})
+TabFarm:AddToggle({Name = "Auto Pick Berry", Default = false, Callback = function(v) end})
+TabFarm:AddToggle({Name = "Auto Chest Farm", Default = false, Callback = function(v) end})
+TabFarm:AddToggle({Name = "Auto Farm Material", Default = false, Callback = function(v) end})
+TabFarm:AddToggle({Name = "Auto Nearest Farm", Default = false, Callback = function(v) end})
+TabFarm:AddToggle({Name = "Auto Training Dummy", Default = false, Callback = function(v) end})
+
+-- 2. ITEM TAB
+local TabItem = Window:MakeTab({Name = "Items", Icon = "rbxassetid://4483345998"})
+TabItem:AddToggle({Name = "Auto Sea 2/3", Default = false, Callback = function(v) end})
+TabItem:AddToggle({Name = "Auto Saber", Default = false, Callback = function(v) end})
+TabItem:AddToggle({Name = "Auto Rengoku", Default = false, Callback = function(v) end})
+TabItem:AddToggle({Name = "Auto Gravity Cane", Default = false, Callback = function(v) end})
+TabItem:AddToggle({Name = "Auto Dragon Trident", Default = false, Callback = function(v) end})
+TabItem:AddToggle({Name = "Auto Longsword", Default = false, Callback = function(v) end})
+TabItem:AddToggle({Name = "Fast Attack (Silent)", Default = false, Callback = function(v) end})
+TabItem:AddToggle({Name = "Auto Bisento V2", Default = false, Callback = function(v) end})
+TabItem:AddToggle({Name = "Auto Dark Blade V3", Default = false, Callback = function(v) end})
+TabItem:AddToggle({Name = "Auto Elite Hunter", Default = false, Callback = function(v) end})
+TabItem:AddToggle({Name = "Auto Yama", Default = false, Callback = function(v) end})
+TabItem:AddToggle({Name = "Auto Tushita", Default = false, Callback = function(v) end})
+TabItem:AddToggle({Name = "Auto Hallow Scythe", Default = false, Callback = function(v) end})
+TabItem:AddToggle({Name = "Auto CDK Quest", Default = false, Callback = function(v) end})
+TabItem:AddToggle({Name = "Auto Soul Guitar", Default = false, Callback = function(v) end})
+
+-- 3. SEA EVENT
+local TabSea = Window:MakeTab({Name = "Sea Event", Icon = "rbxassetid://4483345998"})
+TabSea:AddLabel("Leviathan Status: 0/8")
+TabSea:AddDropdown({Name = "Select Boat", Options = {"Wooden", "Fast", "Big"}, Callback = function(v) end})
+TabSea:AddDropdown({Name = "Sea Danger Zone", Options = {"1","2","3","4","5","6"}, Callback = function(v) end})
+TabSea:AddToggle({Name = "Auto Boat Pilot", Default = false, Callback = function(v) end})
+TabSea:AddToggle({Name = "Auto Shark/Terror Shark", Default = false, Callback = function(v) end})
+TabSea:AddToggle({Name = "Auto Sea Beast", Default = false, Callback = function(v) end})
+TabSea:AddToggle({Name = "Auto Kitsune Island", Default = false, Callback = function(v) end})
+TabSea:AddToggle({Name = "Auto Farm Azure", Default = false, Callback = function(v) end})
+
+-- 4. DRAGON DOJO
+local TabDojo = Window:MakeTab({Name = "Dragon Dojo", Icon = "rbxassetid://4483345998"})
+TabDojo:AddToggle({Name = "Auto Belt White-Black", Default = false, Callback = function(v) end})
+TabDojo:AddToggle({Name = "Auto Volcano Destruct", Default = false, Callback = function(v) end})
+TabDojo:AddToggle({Name = "Auto Up Dragon Race V1-V4", Default = false, Callback = function(v) end})
+
+-- 5. MELEE
+local TabMelee = Window:MakeTab({Name = "Melee", Icon = "rbxassetid://4483345998"})
+TabMelee:AddToggle({Name = "Auto Superhuman/Godhuman", Default = false, Callback = function(v) end})
+TabMelee:AddToggle({Name = "Auto Sharkman/DeathStep", Default = false, Callback = function(v) end})
+
+-- 6. RACE V4
+local TabRace = Window:MakeTab({Name = "Race V4", Icon = "rbxassetid://4483345998"})
+TabRace:AddToggle({Name = "Auto Mirage Island", Default = false, Callback = function(v) end})
+TabRace:AddToggle({Name = "Auto Lock Moon", Default = false, Callback = function(v) end})
+TabRace:AddButton({Name = "Teleport Temple of Time", Callback = function() end})
+
+-- 7. RAID
+local TabRaid = Window:MakeTab({Name = "Raid", Icon = "rbxassetid://4483345998"})
+TabRaid:AddDropdown({Name = "Select Raid", Options = {"Flame","Ice","Light","Dark","Dough"}, Callback = function(v) end})
+TabRaid:AddToggle({Name = "Kill Aura", Default = false, Callback = function(v) end})
+TabRaid:AddToggle({Name = "Auto Next Island", Default = false, Callback = function(v) end})
+
+-- 8. TELEPORT
+local TabTP = Window:MakeTab({Name = "Teleport", Icon = "rbxassetid://4483345998"})
+TabTP:AddButton({Name = "Sea 1/2/3", Callback = function() end})
+TabTP:AddButton({Name = "Turtle/Mansion/Hydra", Callback = function() end})
+
+-- 9. FRUIT/STATS
+local TabFruit = Window:MakeTab({Name = "Fruit/Stats", Icon = "rbxassetid://4483345998"})
+TabFruit:AddDropdown({Name = "Select Stats", Options = {"Melee","Defense","Sword","Fruit"}, Callback = function(v) end})
+TabFruit:AddButton({Name = "Random Fruit", Callback = function() end})
+TabFruit:AddToggle({Name = "Auto Store/Drop Fruit", Default = false, Callback = function(v) end})
+
+-- 10. ESP & SERVER
+local TabMisc = Window:MakeTab({Name = "Misc", Icon = "rbxassetid://4483345998"})
+TabMisc:AddToggle({Name = "ESP Player/Fruit", Default = false, Callback = function(v) end})
+TabMisc:AddButton({Name = "Server Hop (Low/Full/Special)", Callback = function() end})
+TabMisc:AddToggle({Name = "Infinite Ability/Walk on Water", Default = false, Callback = function(v) end})
+TabMisc:AddToggle({Name = "Full Bright/No Fog", Default = false, Callback = function(v) end})
+
+OrionLib:Init()

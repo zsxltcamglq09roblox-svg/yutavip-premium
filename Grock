@@ -1,0 +1,122 @@
+--  MOON Hub | Blox Fruits - Purple Moon Theme
+-- Phong cách giống W-Azure / Maru Hub (sạch - mượt - nhiều tính năng)
+
+repeat task.wait() until game:IsLoaded()
+
+-- Load Redz Lib (phiên bản phổ biến 2026)
+local RedzLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/RedzHub/RedzLib/main/Source.lua"))()
+
+local Window = RedzLib:MakeWindow({
+    Name = " MOON Hub | Blox Fruits",
+    Icon = "rbxassetid://6031094678", -- Icon trăng + dao (có thể thay)
+    HidePremium = false,
+})
+
+-- Purple Moon Theme (tím huyền bí)
+-- RedzLib hỗ trợ set color accent nếu lib có hàm
+
+-- ================== TẠO TAB (giống cấu trúc W-Azure) ==================
+local FarmTab      = Window:MakeTab({Name = "🌾 Farm", Icon = "rbxassetid://4483362458"})
+local SeaTab       = Window:MakeTab({Name = "🌊 Sea Events", Icon = "rbxassetid://6031097223"})
+local RaceTab      = Window:MakeTab({Name = "🐉 Race V4 + Drago", Icon = "rbxassetid://6034834164"})
+local RaidTab      = Window:MakeTab({Name = "⚔ Raid", Icon = "rbxassetid://6031097223"})
+local CombatTab    = Window:MakeTab({Name = "🥊 Combat", Icon = "rbxassetid://6034834164"})
+local ItemsTab     = Window:MakeTab({Name = "🛡️ Items", Icon = "rbxassetid://6031075939"})
+local TeleportTab  = Window:MakeTab({Name = "🚀 Teleport", Icon = "rbxassetid://6031094678"})
+local FruitTab     = Window:MakeTab({Name = "🍎 Fruit", Icon = "rbxassetid://6031075939"})
+local ESPTab       = Window:MakeTab({Name = "👁 ESP", Icon = "rbxassetid://6031097223"})
+local MiscTab      = Window:MakeTab({Name = "🔧 Misc", Icon = "rbxassetid://6031075939"})
+
+-- ================== FARM TAB ==================
+FarmTab:AddToggle({
+    Name = "Auto Farm Level + Nhiệm Vụ",
+    Default = false,
+    Callback = function(v) getgenv().AutoFarmLevel = v end,
+})
+
+FarmTab:AddToggle({
+    Name = "Auto Farm Bone + Katakuri",
+    Default = false,
+    Callback = function(v) getgenv().AutoBone = v end,
+})
+
+FarmTab:AddToggle({
+    Name = "Auto Haki Rainbow",
+    Default = false,
+    Callback = function(v) getgenv().RainbowHaki = v end,
+})
+
+FarmTab:AddToggle({
+    Name = "Auto Factory (Sea 2)",
+    Default = false,
+    Callback = function(v) getgenv().AutoFactory = v end,
+})
+
+FarmTab:AddToggle({
+    Name = "Auto Hải Tặc (Sea 3)",
+    Default = false,
+    Callback = function(v) getgenv().AutoPirate = v end,
+})
+
+-- Thêm các toggle còn lại tương tự: Auto Fish, Auto Up V2/V3, Auto Saber, Auto Rengoku, Auto Bisento V2, Auto Dark Blade V3, Auto Elite, Auto Yama, Auto Tushita, Auto CDK, Auto Soul Guitar...
+
+-- ================== RAID & SEA EVENTS ==================
+RaidTab:AddDropdown({
+    Name = "Chọn Raid",
+    Options = {"Default", "Lửa", "Băng", "Ánh Sáng", "Dung Nham", "Nhện", "Chấn Động", "Bóng Tối", "Phượng Hoàng", "Bột"},
+    Default = "Default",
+    Callback = function(Value) getgenv().SelectedRaid = Value end,
+})
+
+RaidTab:AddToggle({
+    Name = "Auto Raid + Kill Aura",
+    Default = false,
+    Callback = function(v) getgenv().AutoRaid = v end,
+})
+
+SeaTab:AddToggle({
+    Name = "Auto Sea Events (Leviathan, Cá Mập...)",
+    Default = false,
+    Callback = function(v) getgenv().AutoSeaEvent = v end,
+})
+
+-- ================== MISC ==================
+MiscTab:AddToggle({
+    Name = "Always Day",
+    Default = false,
+    Callback = function(v)
+        if v then game.Lighting.ClockTime = 14 end
+    end,
+})
+
+MiscTab:AddToggle({
+    Name = "Walk On Water",
+    Default = false,
+    Callback = function(v) getgenv().WaterWalk = v end,
+})
+
+MiscTab:AddSlider({
+    Name = "Kill Aura Range",
+    Min = 50,
+    Max = 300,
+    Default = 100,
+    Increment = 25,
+    Callback = function(v) getgenv().AuraRange = v end,
+})
+
+-- ================== MAIN LOOP (Combat + Farm) ==================
+task.spawn(function()
+    while task.wait(0.2) do
+        pcall(function()
+            if getgenv().KillAura or getgenv().AutoFarmLevel then
+                -- Thêm logic tấn công + tween farm ở đây (cần hook combat từ game)
+            end
+        end)
+    end
+end)
+
+RedzLib:Notify({
+    Title = " MOON Hub",
+    Content = "Load thành công! GUI kiểu W-Azure / Maru. Farm ngon nhé!",
+    Duration = 6,
+})

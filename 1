@@ -1,0 +1,46 @@
+-- Tạo Frame chứa cả dòng Toggle
+local ToggleContainer = Instance.new("Frame")
+ToggleContainer.Size = UDim2.new(1, 0, 0, 40)
+ToggleContainer.BackgroundColor3 = Color3.fromRGB(25, 25, 25) -- Màu nền tối
+ToggleContainer.BorderSizePixel = 0
+
+-- Chữ bên trái (Ví dụ: Tự Động Cày Cấp)
+local Title = Instance.new("TextLabel")
+Title.Parent = ToggleContainer
+Title.Size = UDim2.new(0.8, 0, 1, 0)
+Title.Position = UDim2.new(0.05, 0, 0, 0)
+Title.BackgroundTransparency = 1
+Title.Text = "Tự Động Cày Cấp"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.Font = Enum.Font.GothamBold
+Title.TextXAlignment = Enum.TextXAlignment.Left
+
+-- Nút vuông bên phải (Checkbox)
+local Checkbox = Instance.new("TextButton")
+Checkbox.Parent = ToggleContainer
+Checkbox.Size = UDim2.new(0, 24, 0, 24)
+Checkbox.Position = UDim2.new(0.9, 0, 0.5, -12) -- Căn giữa lề phải
+Checkbox.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Checkbox.Text = ""
+
+-- Viền vàng cho Nút Vuông (Bí quyết ở đây)
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Parent = Checkbox
+UIStroke.Color = Color3.fromRGB(255, 215, 0) -- Màu vàng Gold
+UIStroke.Thickness = 2
+UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
+-- Logic Bật/Tắt
+local Toggled = false
+Checkbox.MouseButton1Click:Connect(function()
+    Toggled = not Toggled
+    if Toggled then
+        Checkbox.BackgroundColor3 = Color3.fromRGB(255, 215, 0) -- Đổ màu vàng khi bật
+        -- Chèn function Auto Farm của ông vào đây
+        print("Đã bật Tự Động Cày Cấp")
+    else
+        Checkbox.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- Trả về màu đen khi tắt
+        -- Chèn function Tắt Auto Farm vào đây
+        print("Đã tắt Tự Động Cày Cấp")
+    end
+end)

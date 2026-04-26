@@ -1,0 +1,242 @@
+-- Kích hoạt thư viện Orion
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
+-- Tùy chỉnh màu sắc "Tím Trăng" (Purple Moon Theme)
+local MoonTheme = {
+    SchemeColor = Color3.fromRGB(138, 43, 226), -- Tím dạ quang
+    Background = Color3.fromRGB(20, 15, 30), -- Đen ánh tím
+    Header = Color3.fromRGB(30, 20, 45),
+    TextColor = Color3.fromRGB(255, 255, 255),
+    ElementColor = Color3.fromRGB(45, 30, 65)
+}
+
+-- Tạo Cửa Sổ Chính
+local Window = OrionLib:MakeWindow({
+    Name = "MOON HUB | Premium Script", 
+    HidePremium = false, 
+    SaveConfig = true, 
+    ConfigFolder = "MoonHubConfig",
+    IntroText = "Welcome to MOON HUB",
+    Theme = MoonTheme
+})
+
+-- ==========================================
+-- 1. TAB FARM
+-- ==========================================
+local TabFarm = Window:MakeTab({Name = "Farm", Icon = "rbxassetid://4483345998", PremiumOnly = false})
+
+TabFarm:AddToggle({Name = "Auto Farm Level", Default = false, Callback = function(Value) _G.AutoFarm = Value end})
+TabFarm:AddToggle({Name = "Nhận Nhiệm Vụ", Default = true, Callback = function(Value) _G.TakeQuest = Value end})
+TabFarm:AddToggle({Name = "Không Nhận Nhiệm Vụ", Default = false, Callback = function(Value) _G.NoQuest = Value end})
+TabFarm:AddToggle({Name = "Auto Farm Bone", Default = false, Callback = function(Value) end})
+TabFarm:AddToggle({Name = "Auto Farm Katakuri", Default = false, Callback = function(Value) end})
+
+TabFarm:AddButton({Name = "Click Gacha Bone", Callback = function() end})
+TabFarm:AddButton({Name = "Click Cầu Nguyện", Callback = function() end})
+TabFarm:AddButton({Name = "Click Thử Vận May", Callback = function() end})
+TabFarm:AddButton({Name = "Tìm Ông Bán Màu Haki", Callback = function() end})
+
+TabFarm:AddToggle({Name = "Auto Haki Rainbow", Default = false, Callback = function(Value) end})
+TabFarm:AddToggle({Name = "Auto Fish", Default = false, Callback = function(Value) end})
+TabFarm:AddToggle({Name = "Auto Up V2", Default = false, Callback = function(Value) end})
+TabFarm:AddToggle({Name = "Auto Up V3", Default = false, Callback = function(Value) end})
+TabFarm:AddToggle({Name = "Auto Đánh Nhà Máy (Sea 2)", Default = false, Callback = function(Value) end})
+TabFarm:AddToggle({Name = "Auto Đánh Hải Tặc (Sea 3)", Default = false, Callback = function(Value) end})
+TabFarm:AddToggle({Name = "Auto Nhặt Trái Berry", Default = false, Callback = function(Value) end})
+TabFarm:AddToggle({Name = "Auto Nhặt Rương", Default = false, Callback = function(Value) end})
+TabFarm:AddToggle({Name = "Auto Farm Nguyên Liệu", Default = false, Callback = function(Value) end})
+TabFarm:AddToggle({Name = "Auto Đánh Quái Gần Nhất", Default = false, Callback = function(Value) end})
+TabFarm:AddToggle({Name = "Auto Đánh Dummy (Sea 3)", Default = false, Callback = function(Value) end})
+
+-- ==========================================
+-- 2. TAB ITEM
+-- ==========================================
+local TabItem = Window:MakeTab({Name = "Item", Icon = "rbxassetid://4483345998", PremiumOnly = false})
+
+TabItem:AddToggle({Name = "Auto Lên Sea 2", Default = false, Callback = function(Value) end})
+TabItem:AddToggle({Name = "Auto Lên Sea 3", Default = false, Callback = function(Value) end})
+TabItem:AddToggle({Name = "Auto Saber", Default = false, Callback = function(Value) end})
+TabItem:AddToggle({Name = "Auto Rengoku", Default = false, Callback = function(Value) end})
+TabItem:AddToggle({Name = "Auto Gậy Trọng Lực", Default = false, Callback = function(Value) end})
+TabItem:AddToggle({Name = "Auto Đinh Ba Rồng", Default = false, Callback = function(Value) end})
+TabItem:AddToggle({Name = "Auto Long Sword", Default = false, Callback = function(Value) end})
+
+TabItem:AddDropdown({
+    Name = "Tùy Chỉnh Âm Thanh Đánh",
+    Default = "Có Tiếng",
+    Options = {"Có Tiếng", "Không Có Tiếng"},
+    Callback = function(Value) end
+})
+
+TabItem:AddToggle({Name = "Auto Nâng Bisento V2", Default = false, Callback = function(Value) end})
+TabItem:AddToggle({Name = "Auto Nâng Hắc Kiếm V3", Default = false, Callback = function(Value) end})
+
+TabItem:AddLabel("Số Elite Đã Đánh: 0")
+TabItem:AddToggle({Name = "Auto Đánh Elite", Default = false, Callback = function(Value) end})
+
+TabItem:AddToggle({Name = "Auto Lấy Yama", Default = false, Callback = function(Value) end})
+TabItem:AddToggle({Name = "Auto Lấy Tushita", Default = false, Callback = function(Value) end})
+TabItem:AddToggle({Name = "Auto Lấy Lưỡi Hái Bóng Tối", Default = false, Callback = function(Value) end})
+TabItem:AddToggle({Name = "Auto Làm NV CDK", Default = false, Callback = function(Value) end})
+TabItem:AddToggle({Name = "Auto Làm NV CDK (Yama)", Default = false, Callback = function(Value) end})
+TabItem:AddToggle({Name = "Auto Làm NV CDK (Tushita)", Default = false, Callback = function(Value) end})
+TabItem:AddToggle({Name = "Auto Tìm Bán Kiếm (Sea 2)", Default = false, Callback = function(Value) end})
+TabItem:AddToggle({Name = "Auto Lấy Đàn Linh Hồn", Default = false, Callback = function(Value) end})
+
+-- ==========================================
+-- 3. TAB SEA EVENT
+-- ==========================================
+local TabSea = Window:MakeTab({Name = "Sea Event", Icon = "rbxassetid://4483345998", PremiumOnly = false})
+
+TabSea:AddLabel("Số lượng Leviathan hiện tại: 0 / Max 8")
+TabSea:AddDropdown({Name = "Chọn Thuyền", Default = "Thuyền Gỗ", Options = {"Thuyền Gỗ", "Thuyền Nhanh", "Tàu Lớn"}, Callback = function(Value) end})
+TabSea:AddDropdown({Name = "Chọn Vùng Biển", Default = "1", Options = {"1", "2", "3", "4", "5", "6"}, Callback = function(Value) end})
+TabSea:AddButton({Name = "Click Mua Thuyền", Callback = function() end})
+
+TabSea:AddToggle({Name = "Auto Lái Thuyền", Default = false, Callback = function(Value) end})
+TabSea:AddToggle({Name = "Auto Đánh Cá Mập", Default = false, Callback = function(Value) end})
+TabSea:AddToggle({Name = "Auto Đánh Cá Điện", Default = false, Callback = function(Value) end})
+TabSea:AddToggle({Name = "Auto Đánh Cá Mập Tận Thế", Default = false, Callback = function(Value) end})
+TabSea:AddToggle({Name = "Auto Phá Thuyền", Default = false, Callback = function(Value) end})
+TabSea:AddToggle({Name = "Auto Phá Thuyền Ma", Default = false, Callback = function(Value) end})
+TabSea:AddToggle({Name = "Auto Đánh Thủy Quái", Default = false, Callback = function(Value) end})
+TabSea:AddToggle({Name = "Auto Bay Vào Đảo Kitsune", Default = false, Callback = function(Value) end})
+TabSea:AddToggle({Name = "Auto Farm Lửa Xanh", Default = false, Callback = function(Value) end})
+TabSea:AddButton({Name = "Click Đổi Lửa", Callback = function() end})
+
+-- ==========================================
+-- 4. TAB DRAGON DOJO
+-- ==========================================
+local TabDojo = Window:MakeTab({Name = "Dragon Dojo", Icon = "rbxassetid://4483345998", PremiumOnly = false})
+
+TabDojo:AddToggle({Name = "Auto Farm Lửa", Default = false, Callback = function(Value) end})
+TabDojo:AddToggle({Name = "Auto Lấy Đai Trắng -> Đen", Default = false, Callback = function(Value) end})
+TabDojo:AddToggle({Name = "Auto Bay Đến Dragon Dojo", Default = false, Callback = function(Value) end})
+TabDojo:AddToggle({Name = "Auto Bay Đến Núi Lửa", Default = false, Callback = function(Value) end})
+TabDojo:AddToggle({Name = "Auto Nhặt Xương", Default = false, Callback = function(Value) end})
+TabDojo:AddToggle({Name = "Auto Nhặt Trứng", Default = false, Callback = function(Value) end})
+TabDojo:AddToggle({Name = "Auto Phá Dung Nham", Default = false, Callback = function(Value) end})
+TabDojo:AddButton({Name = "Xóa Dung Nham", Callback = function() end})
+TabDojo:AddToggle({Name = "Auto Up Tộc Rồng V1", Default = false, Callback = function(Value) end})
+TabDojo:AddToggle({Name = "Auto Up Tộc Rồng V2", Default = false, Callback = function(Value) end})
+TabDojo:AddToggle({Name = "Auto Up Tộc Rồng V3", Default = false, Callback = function(Value) end})
+TabDojo:AddToggle({Name = "Auto Up Tộc Rồng V4", Default = false, Callback = function(Value) end})
+
+-- ==========================================
+-- 5. TAB MELEE
+-- ==========================================
+local TabMelee = Window:MakeTab({Name = "Melee", Icon = "rbxassetid://4483345998", PremiumOnly = false})
+
+TabMelee:AddToggle({Name = "Auto Lấy Super Human", Default = false, Callback = function(Value) end})
+TabMelee:AddToggle({Name = "Auto Lấy Tử Cước (Death Step)", Default = false, Callback = function(Value) end})
+TabMelee:AddToggle({Name = "Auto Lấy Lôi Trảo (E-Claw)", Default = false, Callback = function(Value) end})
+TabMelee:AddToggle({Name = "Auto Lấy Võ Cá Mập (Sharkman)", Default = false, Callback = function(Value) end})
+TabMelee:AddToggle({Name = "Auto Lấy Hỏa Diệt Long (Dragon Talon)", Default = false, Callback = function(Value) end})
+TabMelee:AddToggle({Name = "Auto Lấy Godhuman", Default = false, Callback = function(Value) end})
+TabMelee:AddToggle({Name = "Auto Lấy Huyết Quỷ Thuật", Default = false, Callback = function(Value) end})
+
+-- ==========================================
+-- 6. TAB RACE V4
+-- ==========================================
+local TabRace = Window:MakeTab({Name = "Race V4", Icon = "rbxassetid://4483345998", PremiumOnly = false})
+
+TabRace:AddToggle({Name = "Auto Bay Vào Đảo Kỳ Bí", Default = false, Callback = function(Value) end})
+TabRace:AddToggle({Name = "Auto Lock Moon", Default = false, Callback = function(Value) end})
+TabRace:AddButton({Name = "Dịch Chuyển Đến Đồng Hồ Cổ Đại", Callback = function() end})
+TabRace:AddToggle({Name = "Auto Hoàn Thành NV Tộc", Default = false, Callback = function(Value) end})
+TabRace:AddToggle({Name = "Auto Kill Player", Default = false, Callback = function(Value) end})
+
+-- ==========================================
+-- 7. TAB RAID
+-- ==========================================
+local TabRaid = Window:MakeTab({Name = "Raid", Icon = "rbxassetid://4483345998", PremiumOnly = false})
+
+TabRaid:AddDropdown({
+    Name = "Chọn Raid",
+    Default = "Mặc Định",
+    Options = {"Mặc Định", "Lửa", "Băng", "Ánh Sáng", "Dung Nham", "Nhện", "Chấn Động", "Bóng Tối", "Phượng Hoàng", "Bột (Dough)"},
+    Callback = function(Value) end
+})
+TabRaid:AddToggle({Name = "Kill Aura", Default = false, Callback = function(Value) end})
+TabRaid:AddToggle({Name = "Auto Qua Đảo", Default = false, Callback = function(Value) end})
+TabRaid:AddToggle({Name = "Auto Raid", Default = false, Callback = function(Value) end})
+
+-- ==========================================
+-- 8. TAB DỊCH CHUYỂN
+-- ==========================================
+local TabTeleport = Window:MakeTab({Name = "Dịch Chuyển", Icon = "rbxassetid://4483345998", PremiumOnly = false})
+
+TabTeleport:AddButton({Name = "Dịch Chuyển Sea 1", Callback = function() end})
+TabTeleport:AddButton({Name = "Dịch Chuyển Sea 2", Callback = function() end})
+TabTeleport:AddButton({Name = "Dịch Chuyển Sea 3", Callback = function() end})
+TabTeleport:AddButton({Name = "Bay Đến Đảo Biển Kẹo Ngọt", Callback = function() end})
+TabTeleport:AddButton({Name = "Bay Đến Đảo Rùa", Callback = function() end})
+TabTeleport:AddButton({Name = "Dịch Chuyển Đến Pháo Đài", Callback = function() end})
+TabTeleport:AddButton({Name = "Dịch Chuyển Đến Dinh Thự", Callback = function() end})
+TabTeleport:AddButton({Name = "Dịch Chuyển Đến Đảo Phụ Nữ (Hydra)", Callback = function() end})
+
+-- ==========================================
+-- 9. TAB FRUIT
+-- ==========================================
+local TabFruit = Window:MakeTab({Name = "Fruit / Nâng Chỉ Số", Icon = "rbxassetid://4483345998", PremiumOnly = false})
+
+TabFruit:AddDropdown({
+    Name = "Tùy Chọn Nâng Chỉ Số",
+    Default = "Mặc Định",
+    Options = {"Mặc Định", "Cận Chiến (Melee)", "Máu (Defense)", "Trái Ác Quỷ (Fruit)", "Kiếm (Sword)", "Súng (Gun)"},
+    Callback = function(Value) end
+})
+
+TabFruit:AddButton({Name = "Click Mua Stock Fruit", Callback = function() end})
+TabFruit:AddButton({Name = "Click Random Fruit", Callback = function() end})
+TabFruit:AddToggle({Name = "Auto Thả Trái", Default = false, Callback = function(Value) end})
+TabFruit:AddToggle({Name = "Auto Lưu Trái", Default = false, Callback = function(Value) end})
+TabFruit:AddToggle({Name = "Dịch Chuyển Đến Trái Rơi", Default = false, Callback = function(Value) end})
+
+-- ==========================================
+-- 10. TAB ESP (Nhìn Xuyên Tường)
+-- ==========================================
+local TabESP = Window:MakeTab({Name = "ESP", Icon = "rbxassetid://4483345998", PremiumOnly = false})
+
+TabESP:AddToggle({Name = "ESP Player", Default = false, Callback = function(Value) end})
+TabESP:AddToggle({Name = "ESP Gear", Default = false, Callback = function(Value) end})
+TabESP:AddToggle({Name = "ESP Fruit", Default = false, Callback = function(Value) end})
+TabESP:AddToggle({Name = "ESP Trái Berry", Default = false, Callback = function(Value) end})
+TabESP:AddToggle({Name = "ESP Đảo", Default = false, Callback = function(Value) end})
+
+-- ==========================================
+-- 11. TAB HOP SERVER
+-- ==========================================
+local TabHop = Window:MakeTab({Name = "Hop Server", Icon = "rbxassetid://4483345998", PremiumOnly = false})
+
+TabHop:AddButton({Name = "Vô Server Ít Người Chơi", Callback = function() end})
+TabHop:AddButton({Name = "Vô Server Nhiều Người Chơi", Callback = function() end})
+TabHop:AddButton({Name = "Vô Server Có Katakuri V2", Callback = function() end})
+TabHop:AddButton({Name = "Vô Server Có Râu Đen", Callback = function() end})
+TabHop:AddButton({Name = "Vô Server Có Rip_Indra", Callback = function() end})
+
+-- ==========================================
+-- 12. TAB MISC (Chức Năng Phụ)
+-- ==========================================
+local TabMisc = Window:MakeTab({Name = "Misc", Icon = "rbxassetid://4483345998", PremiumOnly = false})
+
+TabMisc:AddButton({Name = "Xóa Chat", Callback = function() end})
+TabMisc:AddButton({Name = "Vào Phe Hải Quân", Callback = function() end})
+TabMisc:AddButton({Name = "Vào Phe Hải Tặc", Callback = function() end})
+
+TabMisc:AddDropdown({
+    Name = "Phạm Vi Đánh Aura",
+    Default = "Mặc Định",
+    Options = {"Mặc Định", "50", "100", "150", "200"},
+    Callback = function(Value) end
+})
+
+TabMisc:AddToggle({Name = "Xóa Sương Mù", Default = false, Callback = function(Value) end})
+TabMisc:AddToggle({Name = "Luôn Luôn Là Ngày", Default = false, Callback = function(Value) end})
+TabMisc:AddToggle({Name = "Luôn Luôn Là Đêm", Default = false, Callback = function(Value) end})
+TabMisc:AddToggle({Name = "Siêu Tốc Độ (Speed)", Default = false, Callback = function(Value) end})
+TabMisc:AddToggle({Name = "Đi Trên Nước", Default = false, Callback = function(Value) end})
+TabMisc:AddToggle({Name = "Đi Trên Nước Có Băng", Default = false, Callback = function(Value) end})
+
+-- Khởi tạo UI
+OrionLib:Init()

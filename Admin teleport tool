@@ -1,0 +1,22 @@
+-- Logic Dịch chuyển an toàn (Ví dụ minh họa)
+local player = game.Players.LocalPlayer
+local mouse = player:GetMouse()
+local tool = script.Parent
+
+tool.Activated:Connect(function()
+    local targetPos = mouse.Hit.p + Vector3.new(0, 3, 0) -- Tọa độ chuột click + 3 block để không kẹt đất
+    local character = player.Character
+    
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        local hrp = character.HumanoidRootPart
+        
+        -- Bước 1: Triệt tiêu lực quán tính để không bị văng ngược
+        hrp.Velocity = Vector3.new(0,0,0)
+        
+        -- Bước 2: Dịch chuyển (Sử dụng CFrame thay vì Position)
+        hrp.CFrame = CFrame.new(targetPos)
+        
+        -- Bước 3: Đợi một nhịp rất nhỏ để server cập nhật vị trí mới
+        task.wait(0.1)
+    end
+end)
